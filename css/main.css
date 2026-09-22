@@ -534,7 +534,7 @@ main { display: block; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem) 0 6rem;
+  padding: calc(var(--nav-height) + 3rem) 0 7rem;
   isolation: isolate;
   overflow: hidden;
 }
@@ -557,7 +557,7 @@ main { display: block; }
   z-index: -1;
   background:
     radial-gradient(900px 500px at 50% 30%, rgba(2, 10, 24, 0.05), rgba(2, 10, 24, 0.4)),
-    linear-gradient(180deg, rgba(2, 12, 28, 0.55) 0%, rgba(3, 20, 42, 0.45) 50%, rgba(5, 20, 42, 0.3) 78%, var(--bg-mid) 100%);
+    linear-gradient(180deg, rgba(2, 12, 28, 0.55) 0%, rgba(3, 20, 42, 0.45) 50%, rgba(5, 20, 42, 0.3) 100%);
 }
 
 .hero-content {
@@ -630,13 +630,13 @@ main { display: block; }
   min-height: 56vh;
   display: flex;
   align-items: flex-end;
-  padding: calc(var(--nav-height) + 4rem) 0 3.5rem;
+  padding: calc(var(--nav-height) + 4rem) 0 7rem;
   isolation: isolate;
   overflow: hidden;
 }
 .page-hero .hero-bg { animation-duration: 28s; }
 .page-hero .hero-veil {
-  background: linear-gradient(180deg, rgba(2, 12, 28, 0.55) 0%, rgba(3, 18, 40, 0.5) 55%, rgba(5, 20, 42, 0.42) 80%, var(--bg-mid) 100%);
+  background: linear-gradient(180deg, rgba(2, 12, 28, 0.55) 0%, rgba(3, 18, 40, 0.5) 55%, rgba(5, 20, 42, 0.42) 100%);
 }
 .page-hero h1 {
   font-size: clamp(2.3rem, 5.5vw, 3.4rem);
@@ -645,6 +645,35 @@ main { display: block; }
   text-shadow: 0 4px 26px rgba(0, 0, 0, 0.6);
 }
 .page-hero .section-lead { margin-top: 0.8rem; text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55); }
+
+/* ---------- Hero fade (home + interior heroes) ----------
+   The photo and its tint dissolve into the page over the hero's bottom
+   --hero-fade instead of fading to a flat color, so the real page
+   background shows through: no seam at the hero's edge, and dark mode
+   matches automatically. The stops trace an S-curve (smoothstep) so
+   neither end of the fade reads as a line. Keep the heroes' bottom
+   padding at ~0.7 x --hero-fade so text stays on the dark part. */
+.hero, .page-hero { --hero-fade: 160px; }
+.hero-veil, .hero-bg {
+  --ramp-from: 0px;
+  --hero-ramp: linear-gradient(to top,
+    transparent var(--ramp-from),
+    rgba(0, 0, 0, 0.028) calc(var(--ramp-from) + var(--hero-fade) * .1),
+    rgba(0, 0, 0, 0.104) calc(var(--ramp-from) + var(--hero-fade) * .2),
+    rgba(0, 0, 0, 0.216) calc(var(--ramp-from) + var(--hero-fade) * .3),
+    rgba(0, 0, 0, 0.352) calc(var(--ramp-from) + var(--hero-fade) * .4),
+    rgba(0, 0, 0, 0.5) calc(var(--ramp-from) + var(--hero-fade) * .5),
+    rgba(0, 0, 0, 0.648) calc(var(--ramp-from) + var(--hero-fade) * .6),
+    rgba(0, 0, 0, 0.784) calc(var(--ramp-from) + var(--hero-fade) * .7),
+    rgba(0, 0, 0, 0.896) calc(var(--ramp-from) + var(--hero-fade) * .8),
+    rgba(0, 0, 0, 0.972) calc(var(--ramp-from) + var(--hero-fade) * .9),
+    #000 calc(var(--ramp-from) + var(--hero-fade)));
+  -webkit-mask-image: var(--hero-ramp);
+          mask-image: var(--hero-ramp);
+}
+/* .hero-bg overhangs the hero by 4% and drifts (scale up to 1.12), which
+   leaves its own bottom ~7% below the hero's edge — start the ramp there. */
+.hero-bg { --ramp-from: 7%; }
 
 /* ============================================================
    HOME SECTIONS
@@ -1641,5 +1670,5 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 /* This hero photo is busy (caution tape, bright sky) — deepen the veil so the
    eyebrow and subtitle stay comfortably legible over it. */
 .hero-bg--taxibash + .hero-veil {
-  background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 80%, var(--bg-mid) 100%);
+  background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 100%);
 }
