@@ -1,0 +1,44 @@
+{
+  "alumni": [
+    {
+      "name": "James Voss",
+      "role": "NASA Astronaut \u00b7 Chapter President ('70\u2013'71)",
+      "photo": "assets/images/portraits/James_Voss.jpg",
+      "bio": "Served his country with the longest spacewalk on record (8 hours and 56 minutes) on STS-102. Distinguished NASA career, Army Ranger, and Associate Dean of Engineering for External Affairs at Auburn University.",
+      "link": "https://en.wikipedia.org/wiki/James_S._Voss",
+      "linkLabel": "Read more on Wikipedia"
+    },
+    {
+      "name": "Lt. Gen. Ronald L. Burgess",
+      "role": "17th Director, Defense Intelligence Agency",
+      "photo": "assets/images/portraits/LTG_BURGESS.jpg",
+      "bio": "Retired from the U.S. Army in 2012 after a 38-year career. Continues to serve the U.S. intelligence community by providing leadership and strategic vision safeguarding national security.",
+      "link": "https://mccrary.auburn.edu/advisory-board/burgess-ronald/",
+      "linkLabel": "Auburn profile"
+    },
+    {
+      "name": "Eric O'Neill",
+      "role": "Former FBI Operative",
+      "photo": "assets/images/portraits/Eric_ONeill_2019.jpg",
+      "bio": "Best known for his counterintelligence efforts to convict Robert Hanssen of spying against the United States, which became the subject of the movie \"Breach\".",
+      "link": "https://en.wikipedia.org/wiki/Eric_O%27Neill",
+      "linkLabel": "Read more on Wikipedia"
+    },
+    {
+      "name": "James W. Rane",
+      "role": "CEO, Great Southern Wood Preserving",
+      "photo": "assets/images/portraits/jimmy-rane-auburn.jpg",
+      "bio": "Chairman, President, and CEO of the leading producer of pressure-treated lumber in the United States. Member of the Auburn University Board of Trustees since 1999.",
+      "link": "https://www.jimmyranefoundation.org/",
+      "linkLabel": "Jimmy Rane Foundation"
+    },
+    {
+      "name": "Scott Yates",
+      "role": "Alumni Board President (Initiated 1991)",
+      "photo": "assets/images/portraits/scott yates.jpg",
+      "bio": "Served in the US Army as a Communications specialist. As Associate Vice President at Cox Communications, Scott has been integral to the success of Beta Zeta over the last three decades.",
+      "link": "update-info.html",
+      "linkLabel": "Update your contact info"
+    }
+  ]
+}

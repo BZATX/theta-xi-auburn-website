@@ -1,0 +1,57 @@
+# Runs once to pull public-domain Auburn campus photography (Carol M.
+# Highsmith / Library of Congress, "no known restrictions") onto this
+# branch, so the site serves real, free-to-use images of campus.
+# Needed because images can't be sourced from the authoring environment.
+name: Fetch campus photos
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/auburn-theta-xi-redesign-1jskmj]
+    paths: ['.github/workflows/fetch-campus-photos.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download from the Library of Congress
+        run: |
+          set -euo pipefail
+          mkdir -p assets/images/backgrounds
+          fetch () { # $1=digital id  $2=100-block folder  $3=output path
+            iiif="https://tile.loc.gov/image-services/iiif/service:pnp:highsm:$2:$1/full/!1800,1800/0/default.jpg"
+            plain="https://tile.loc.gov/storage-services/service/pnp/highsm/$2/${1}v.jpg"
+            curl -fsSL --http1.1 --retry 3 "$iiif" -o "$3" || curl -fsSL --http1.1 --retry 3 "$plain" -o "$3"
+            file "$3" | grep -qi 'JPEG image data'
+          }
+          fetch 07374 07300 "assets/images/backgrounds/loc_samford_hall.jpg"
+          fetch 07367 07300 "assets/images/backgrounds/loc_hargis_hall.jpg"
+          fetch 06470 06400 "assets/images/backgrounds/loc_university_chapel.jpg"
+          fetch 06469 06400 "assets/images/backgrounds/loc_eagle_statue.jpg"
+
+      - name: Optimize for the web
+        run: |
+          pip install --quiet Pillow
+          python3 - <<'EOF'
+          import glob
+          from PIL import Image
+          for p in sorted(glob.glob('assets/images/backgrounds/loc_*.jpg')):
+              im = Image.open(p).convert('RGB')
+              im.thumbnail((1800, 1800), Image.LANCZOS)
+              im.save(p, 'JPEG', quality=82, optimize=True)
+              print(p, im.size)
+          EOF
+          ls -la assets/images/backgrounds/loc_*.jpg
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/images/backgrounds/loc_*.jpg
+          git commit -m "Add public-domain Auburn campus photos (Carol M. Highsmith / Library of Congress)"
+          git push

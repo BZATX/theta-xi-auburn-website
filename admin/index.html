@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter Admin | Auburn Theta Xi</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="stylesheet" href="../css/main.css?v=25">
+  <link rel="stylesheet" href="admin.css?v=6">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../assets/images/system/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/images/system/apple-touch-icon.png">
+</head>
+<body data-root="../">
+  <div class="bg-ambient" aria-hidden="true"></div>
+
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a href="../index.html" class="brand">
+        <img src="../assets/images/system/crest traditional.png" alt="Theta Xi crest">
+        <span class="brand-text">
+          <span class="brand-name">CHAPTER ADMIN</span>
+          <span class="brand-sub">Beta Zeta &middot; Auburn</span>
+        </span>
+      </a>
+      <div class="admin-header-actions">
+        <a href="../index.html" class="btn btn-glass btn-sm">View Site</a>
+        <button id="logout-btn" class="btn btn-glass btn-sm" hidden>Log Out</button>
+      </div>
+    </header>
+
+    <!-- ============ LOGIN ============ -->
+    <section id="login-view" class="glass admin-panel">
+      <span class="eyebrow">Webmaster Access</span>
+      <h1 class="section-title" style="font-size:1.8rem;">Chapter Login</h1>
+      <p>Paste your GitHub access token to edit the website. Changes you save are committed to the site's GitHub repository and go live automatically within a couple of minutes.</p>
+
+      <div class="form-group" style="margin:1.5rem 0 1rem;">
+        <label for="token-input">GitHub Access Token</label>
+        <input type="password" id="token-input" class="form-control" placeholder="github_pat_…" autocomplete="off">
+      </div>
+      <label class="remember-row"><input type="checkbox" id="remember-token" checked> Remember me on this device</label>
+      <button id="login-btn" class="btn btn-primary" style="margin-top:1.4rem;">Connect</button>
+      <div id="login-status" class="form-status" role="status"></div>
+
+      <details class="token-help">
+        <summary>How do I get a token? (one-time setup)</summary>
+        <ol>
+          <li>Ask the webmaster to add your GitHub account as a <strong>collaborator</strong> on the <code>theta-xi-auburn-website</code> repository.</li>
+          <li>On GitHub go to <strong>Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens &rarr; Generate new token</strong>.</li>
+          <li>Under <strong>Repository access</strong> choose <em>Only select repositories</em> and pick <code>theta-xi-auburn-website</code>.</li>
+          <li>Under <strong>Permissions &rarr; Repository permissions</strong>, set <strong>Contents</strong> to <em>Read and write</em>. Leave everything else as "No access".</li>
+          <li>Generate the token, copy it, and paste it above. Treat it like a password — don't share it in group chats.</li>
+        </ol>
+      </details>
+    </section>
+
+    <!-- ============ EDITOR ============ -->
+    <section id="editor-view" hidden>
+      <nav class="admin-tabs" id="admin-tabs">
+        <button class="admin-tab active" data-section="members">Exec Board &amp; Bios</button>
+        <button class="admin-tab" data-section="gallery">Photo Gallery</button>
+        <button class="admin-tab" data-section="journal">Journal</button>
+        <button class="admin-tab" data-section="alumni">Notable Alumni</button>
+        <button class="admin-tab" data-section="chapter">Chapter Info</button>
+      </nav>
+
+      <div class="glass admin-panel">
+        <div class="admin-panel-head">
+          <div>
+            <h2 id="section-title" class="section-title" style="font-size:1.5rem; margin-bottom:0.3rem;">Exec Board &amp; Bios</h2>
+            <p id="section-hint" class="section-hint"></p>
+          </div>
+          <div class="admin-panel-actions">
+            <button id="add-item-btn" class="btn btn-glass btn-sm">+ Add</button>
+            <button id="save-btn" class="btn btn-primary btn-sm">Save &amp; Publish</button>
+          </div>
+        </div>
+        <div id="section-body" class="admin-items"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="admin.js?v=4"></script>
+</body>
+</html>

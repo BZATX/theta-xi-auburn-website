@@ -1,0 +1,19 @@
+{
+  "name": "Beta Zeta Chapter",
+  "school": "Auburn University",
+  "address": "835 West Magnolia Ave, Auburn, AL 36832",
+  "email": "thetaxibz@gmail.com",
+  "instagram": "https://www.instagram.com/authetaxi/",
+  "facebook": "https://www.facebook.com/profile.php?id=100067080071858",
+  "stats": {
+    "founded": 1954,
+    "yearsAtAuburn": 72,
+    "activeBrothers": 31,
+    "serviceHours": 700
+  },
+  "rush": {
+    "chairName": "Recruitment Chairman",
+    "chairEmail": "thetaxibz@gmail.com",
+    "chairPhone": "(913) 300-1872"
+  }
+}

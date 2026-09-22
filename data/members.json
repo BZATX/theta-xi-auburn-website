@@ -1,0 +1,68 @@
+{
+  "members": [
+    {
+      "name": "Aleks Meyerle",
+      "role": "President",
+      "major": "Professional Flight",
+      "hometown": "Frederick, Maryland",
+      "photo": "assets/images/portraits/officers-2026/aleks-meyerle-president.jpg",
+      "bio": "Hi, my name is Aleksander Meyerle, and I am from Frederick, Maryland. I am studying Professional Flight with the goal of becoming an airline pilot.",
+      "email": "thetaxibz@gmail.com"
+    },
+    {
+      "name": "Dylan Morgan",
+      "role": "Vice President",
+      "major": "Mechanical Engineering",
+      "hometown": "Hoover, Alabama",
+      "photo": "assets/images/portraits/officers-2026/dylan-morgan-vice-president.jpg",
+      "bio": "Hey, my name is Dylan Morgan and I am a junior studying Mechanical Engineering from Hoover, Alabama. My goal is to become a nuclear engineer and eventually a Senior Reactor Operator at a nuclear plant. Outside of Theta Xi, I am heavily involved in my campus ministry, The Auburn Wesley Foundation, and I am the GIS sub team lead for Auburn’s Engineers Without Borders Bolivia team.",
+      "email": ""
+    },
+    {
+      "name": "Hayes Pieper",
+      "role": "Treasurer",
+      "major": "Civil Engineering",
+      "hometown": "Wetumpka, Alabama",
+      "photo": "assets/images/portraits/officers-2026/hayes-pieper-treasurer.jpg",
+      "bio": "Hello, my name is Hayes Pieper. I am a senior in Civil Engineering. After graduation, I would like to get a job in Environmental or Geotechnical Engineering. I am from Wetumpka, Alabama. I am a member of WESA and ASCE.",
+      "email": ""
+    },
+    {
+      "name": "Daniel Weng",
+      "role": "Secretary",
+      "major": "Nursing",
+      "hometown": "Auburn, Alabama",
+      "photo": "assets/images/portraits/officers-2026/daniel-weng.jpg",
+      "bio": "My name is Daniel Weng. I am a nursing major from Auburn, Alabama. After college, I hope to eventually become a CRNA.",
+      "email": ""
+    },
+    {
+      "name": "Joe Goza",
+      "role": "Recruitment Chairman",
+      "major": "Business Finance",
+      "hometown": "Kansas City, Kansas",
+      "photo": "assets/images/portraits/officers-2026/joe-goza-recruitment-chairman.jpg",
+      "bio": "Hi, my name is Joe Goza and I’m a business finance major here at Auburn, and I’m the Recruitment Chairman of Theta Xi. I grew up 30 minutes south of Kansas City, Kansas with my four brothers and three sisters, so I’ve always been super family oriented. People would describe me as outgoing and I would have to agree with them since I’m always looking to meet new people and make new connections. WAR EAGLE!",
+      "email": "thetaxibz@gmail.com",
+      "phone": "(913) 300-1872"
+    },
+    {
+      "name": "Carter Parnell",
+      "role": "Social Chairman",
+      "major": "Professional Flight",
+      "hometown": "Fort Mill, South Carolina",
+      "photo": "assets/images/portraits/officers-2026/carter-parnell-social-chair.jpg",
+      "bio": "Hi! I'm Carter Parnell, a rising senior from Fort Mill, South Carolina majoring in professional flight. I recently earned my instrument rating and am halfway to my commercial license, with my sights set on a mainline like American or Delta. That lifelong love for people and aviation drives my service to the fraternity as social chair. Outside Theta Xi, I represent Auburn’s NGPA and have a passion for music and the outdoors!",
+      "email": ""
+    },
+    {
+      "name": "James Hart",
+      "role": "Scholarship Chairman",
+      "major": "Chemical Engineering",
+      "hometown": "Atlanta, Georgia",
+      "photo": "assets/images/portraits/officers-2026/james-hart-scholarship-chair.jpg",
+      "bio": "Hey, my name is James Hart and I am a sophomore studying Chemical Engineering from Atlanta, Georgia. My goal is to work with renewable energy, either through working as a nuclear engineer or as a researcher. Outside of Theta Xi, I am researching for the Goldsmith Group, and I am a member of Engineers Without Borders.",
+      "email": ""
+    }
+  ]
+}
