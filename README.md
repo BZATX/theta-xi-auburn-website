@@ -69,9 +69,16 @@ JSON read by the pages at load time:
 
 **Images** go in `assets/images/`:
 `portraits/` (headshots), `dynamic/` (event photos), `backgrounds/` (hero
-images), `uploads/` (anything added after launch), `system/` (crest, favicon).
+images), `uploads/` (anything added after launch), `system/` (crest),
+`brand/` (the Beta Zeta house logos in SVG and PNG for web, merch and
+marketing — see its README; use them as supplied, don't restyle them).
 Resize to ≤1800px JPEG before committing; reference them from the JSON with a
 repo-relative path like `assets/images/uploads/2026-president.jpg`.
+
+The browser-tab icons, home-screen icons, `site.webmanifest` and the link
+preview picture (`og-image.png`) sit at the top level of the repo, copied from
+`assets/images/brand/icons/`. Pages with their own photo keep it as their link
+preview; the rest use `og-image.png`.
 
 ### Adding new photos — use the Google Drive pathway
 

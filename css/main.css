@@ -646,6 +646,29 @@ main { display: block; }
 }
 .page-hero .section-lead { margin-top: 0.8rem; text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55); }
 
+/* Page-hero logo (Donate): the white 1a roofline wordmark takes the place of
+   the eyebrow label. The soft dark patch behind it moves with the logo, not
+   the drifting photo, so the house in the photo never shows through it. */
+.page-hero-mark-wrap {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: 0 0 1.5rem -2px;
+}
+.page-hero-mark-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -60px -104px -100px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side,
+    rgba(2, 12, 28, 0.8), rgba(2, 12, 28, 0.76) 45%, rgba(2, 12, 28, 0.5) 70%, rgba(2, 12, 28, 0.18) 88%, rgba(2, 12, 28, 0));
+}
+.page-hero-mark { display: block; width: 260px; height: auto; } /* kit minimum is 180px */
+@media (max-width: 680px) {
+  .page-hero-mark { width: 210px; }
+}
+
 /* ---------- Hero fade (home + interior heroes) ----------
    The photo and its tint dissolve into the page over the hero's bottom
    --hero-fade instead of fading to a flat color, so the real page
@@ -1321,6 +1344,89 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   margin-bottom: 1.4rem;
 }
 
+/* Parents "Find the Chapter House": address card with the 1b house seal, map beside it */
+.visit-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 370px) 1fr;
+  gap: clamp(1.2rem, 2.5vw, 1.75rem);
+  align-items: stretch;
+}
+.visit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(1.8rem, 3vw, 2.4rem) clamp(1.5rem, 2.6vw, 2.2rem);
+}
+.visit-seal { display: block; }
+.visit-seal img { width: 184px; height: auto; } /* kit minimum is 120px */
+.visit-address {
+  font-style: normal;
+  margin-top: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.visit-address strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.45rem;
+  line-height: 1.25;
+  color: var(--text-hi);
+}
+.visit-address span { font-size: 0.98rem; color: var(--text-mid); }
+.visit-distances {
+  list-style: none;
+  width: 100%;
+  margin: 1.4rem 0 1.5rem;
+  padding: 0;
+  border-top: 1px solid var(--glass-border);
+}
+.visit-distances li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.7rem 0.15rem;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 0.95rem;
+  color: var(--text-mid);
+}
+.visit-distances .mi {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--text-hi);
+  white-space: nowrap;
+}
+.visit-grid .map-frame { height: 100%; }
+.visit-grid .map-frame iframe { height: 100%; min-height: 420px; }
+@media (max-width: 860px) {
+  .visit-grid { grid-template-columns: 1fr; }
+  .visit-grid .map-frame iframe { height: 360px; min-height: 0; }
+}
+@media (max-width: 680px) {
+  .visit-seal img { width: 148px; }
+  .visit-address { margin-top: 1.1rem; }
+  .visit-address strong { font-size: 1.3rem; }
+}
+/* Tablet: one column, so the card lays out side by side instead of a tall stack */
+@media (min-width: 561px) and (max-width: 860px) {
+  .visit-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 360px);
+    justify-content: center;
+    align-items: center;
+    column-gap: clamp(1.8rem, 5vw, 3rem);
+    text-align: left;
+  }
+  .visit-seal { grid-row: 1 / span 3; }
+  .visit-seal img { width: 168px; }
+  .visit-address { margin-top: 0; }
+  .visit-distances { margin: 1rem 0 1.1rem; }
+  .visit-card .card-link { justify-self: start; }
+}
+
 /* Socials */
 .social-row {
   display: flex;
@@ -1364,6 +1470,14 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   margin-bottom: 2.8rem;
 }
 .footer-brand img { height: 64px; margin-bottom: 1rem; }
+/* Theta Xi crest and the Beta Zeta house seal, side by side */
+.footer-marks { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.4rem; }
+.footer-marks img { margin: 0; }
+.footer-marks > img { height: 88px; width: auto; }
+.footer-marks-rule { width: 1px; align-self: stretch; margin: 16px 0; background: rgba(255, 255, 255, 0.14); }
+.footer-seal-link { display: block; border-radius: 50%; transition: var(--transition-fast); }
+.footer-seal-link:hover { transform: translateY(-3px); }
+.footer-brand img.footer-seal { width: 132px; height: 132px; } /* kit minimum is 120px */
 .footer-brand p { font-size: 0.92rem; color: var(--text-low); }
 .footer-col h2 {
   font-family: var(--font-ui);

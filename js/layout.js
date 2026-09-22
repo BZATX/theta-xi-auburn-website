@@ -93,7 +93,13 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="${link("assets/images/system/crest traditional.png")}" alt="Theta Xi crest">
+          <div class="footer-marks">
+            <img src="${link("assets/images/system/crest traditional.png")}" alt="Theta Xi crest">
+            <span class="footer-marks-rule" aria-hidden="true"></span>
+            <a href="${link("pages/history.html")}" class="footer-seal-link" aria-label="Beta Zeta Association of Theta Xi — Our History">
+              <img src="${link("assets/images/brand/svg/bz-house-mark-2a-two-tone-seal-dark.svg")}" alt="" class="footer-seal" width="132" height="132" loading="lazy">
+            </a>
+          </div>
           <p><strong style="color:var(--text-hi)">Theta Xi Fraternity</strong><br>
           Beta Zeta Chapter &middot; Auburn University<br>
           Founded 1954 &middot; <em>Juncti Juvant — United They Serve</em></p>
