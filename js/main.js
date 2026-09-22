@@ -13,11 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // The navbar switches to its frosted-white "scrolled" style when the page
   // scrolls OR while the light mobile drawer is open behind it.
-  const scrollCue = document.querySelector(".scroll-cue"); // home page only
   const onScroll = () => {
     if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 24 || (drawer && drawer.classList.contains("open")));
-    // Fade the hero scroll hint out on scroll so it never slips behind the stats banner.
-    if (scrollCue) scrollCue.style.opacity = window.scrollY > 40 ? "0" : "1";
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });

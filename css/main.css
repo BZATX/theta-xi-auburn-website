@@ -525,16 +525,16 @@ main { display: block; }
 .drawer-scrim.show { opacity: 1; visibility: visible; }
 
 /* ============================================================
-   HERO — photo blends down into the airy page background
+   HERO — full-bleed photo panel with rounded bottom corners
    ============================================================ */
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: calc(100svh - 4.5rem); /* stops short so the stats card shows on first load */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem) 0 7rem;
+  padding: calc(var(--nav-height) + 3rem) 0 8rem;
   isolation: isolate;
   overflow: hidden;
 }
@@ -595,35 +595,6 @@ main { display: block; }
   flex-wrap: wrap;
 }
 
-.scroll-cue {
-  position: absolute;
-  bottom: 2.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 46px;
-  border: 2px solid rgba(13, 42, 80, 0.3);
-  border-radius: 999px;
-  transition: opacity 0.35s ease;
-}
-.scroll-cue::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  width: 4px;
-  height: 9px;
-  margin-left: -2px;
-  border-radius: 4px;
-  background: var(--orange-bright);
-  animation: cue 2s ease-in-out infinite;
-}
-@keyframes cue {
-  0%   { transform: translateY(0); opacity: 1; }
-  70%  { transform: translateY(14px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 0; }
-}
-
 /* ---------- Page hero (interior pages) ---------- */
 .page-hero {
   position: relative;
@@ -669,42 +640,26 @@ main { display: block; }
   .page-hero-mark { width: 210px; }
 }
 
-/* ---------- Hero fade (home + interior heroes) ----------
-   The photo and its tint dissolve into the page over the hero's bottom
-   --hero-fade instead of fading to a flat color, so the real page
-   background shows through: no seam at the hero's edge, and dark mode
-   matches automatically. The stops trace an S-curve (smoothstep) so
-   neither end of the fade reads as a line. Keep the heroes' bottom
-   padding at ~0.7 x --hero-fade so text stays on the dark part. */
-.hero, .page-hero { --hero-fade: 160px; }
-.hero-veil, .hero-bg {
-  --ramp-from: 0px;
-  --hero-ramp: linear-gradient(to top,
-    transparent var(--ramp-from),
-    rgba(0, 0, 0, 0.028) calc(var(--ramp-from) + var(--hero-fade) * .1),
-    rgba(0, 0, 0, 0.104) calc(var(--ramp-from) + var(--hero-fade) * .2),
-    rgba(0, 0, 0, 0.216) calc(var(--ramp-from) + var(--hero-fade) * .3),
-    rgba(0, 0, 0, 0.352) calc(var(--ramp-from) + var(--hero-fade) * .4),
-    rgba(0, 0, 0, 0.5) calc(var(--ramp-from) + var(--hero-fade) * .5),
-    rgba(0, 0, 0, 0.648) calc(var(--ramp-from) + var(--hero-fade) * .6),
-    rgba(0, 0, 0, 0.784) calc(var(--ramp-from) + var(--hero-fade) * .7),
-    rgba(0, 0, 0, 0.896) calc(var(--ramp-from) + var(--hero-fade) * .8),
-    rgba(0, 0, 0, 0.972) calc(var(--ramp-from) + var(--hero-fade) * .9),
-    #000 calc(var(--ramp-from) + var(--hero-fade)));
-  -webkit-mask-image: var(--hero-ramp);
-          mask-image: var(--hero-ramp);
+/* ---------- Hero panel (home + interior heroes) ----------
+   The photo runs solid to its bottom edge, which is rounded and lifted off
+   the page with a soft navy shadow, echoing the site's rounded cards. The
+   top stays full-bleed under the transparent navbar. */
+.hero, .page-hero {
+  --hero-radius: clamp(20px, 3.2vw, 44px);
+  border-radius: 0 0 var(--hero-radius) var(--hero-radius);
+  box-shadow:
+    0 30px 60px -30px rgba(3, 36, 77, 0.5),
+    0 14px 26px -16px rgba(3, 36, 77, 0.32);
 }
-/* .hero-bg overhangs the hero by 4% and drifts (scale up to 1.12), which
-   leaves its own bottom ~7% below the hero's edge — start the ramp there. */
-.hero-bg { --ramp-from: 7%; }
+.page-hero { margin-bottom: clamp(0.5rem, 1.6vw, 1.25rem); }
 
 /* ============================================================
    HOME SECTIONS
    ============================================================ */
 
-/* Stats strip — white glass over the hero/page seam */
+/* Stats strip — a near-solid card resting on the hero panel's bottom edge */
 .stats-strip {
-  margin-top: -4.5rem;
+  margin-top: -4rem;
   position: relative;
   z-index: 5;
 }
@@ -714,14 +669,14 @@ main { display: block; }
   gap: 1px;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: rgba(13, 42, 80, 0.14);
-  border: 1px solid rgba(13, 42, 80, 0.14);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
+  background: rgba(205, 217, 232, 0.96); /* shows only as the 1px dividers */
+  border: 1px solid rgba(13, 42, 80, 0.12);
+  box-shadow:
+    0 28px 56px -22px rgba(3, 36, 77, 0.34),
+    0 8px 18px -8px rgba(3, 36, 77, 0.16);
 }
 .stat-cell {
-  background: rgba(244, 248, 253, 0.45);
+  background: rgba(247, 250, 254, 0.94);
   text-align: center;
   padding: 2rem 1rem;
 }
@@ -1577,7 +1532,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .footer-bottom { justify-content: center; text-align: center; }
   .stats-strip { margin-top: -3rem; }
   .stat-cell { padding: 1.4rem 0.6rem; }
-  .hero { min-height: 92svh; }
+  .hero { min-height: 92svh; padding-bottom: 6rem; }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
 }
@@ -1726,9 +1681,18 @@ textarea.form-control { min-height: 130px; resize: vertical; }
      navy, which vanishes on the dark navbar. Use a legible silver instead. */
   .navbar.scrolled .nav-toggle span { background: var(--silver); }
 
-  /* Stats strip */
-  .stats-grid { background: rgba(255, 255, 255, 0.09); }
-  .stat-cell { background: rgba(255, 255, 255, 0.035); }
+  /* Stats strip: the same near-solid card, in deep navy */
+  .stats-grid {
+    background: rgba(40, 58, 84, 0.96);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 28px 56px -22px rgba(0, 0, 0, 0.6), 0 8px 18px -8px rgba(0, 0, 0, 0.4);
+  }
+  .stat-cell { background: rgba(14, 28, 48, 0.95); }
+
+  /* Hero panel shadow reads on the dark page */
+  .hero, .page-hero {
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7), 0 14px 26px -16px rgba(0, 0, 0, 0.5);
+  }
   .stat-value { color: #eaf1fb; }
 
   /* Audience cards (frosted body over photo) */
