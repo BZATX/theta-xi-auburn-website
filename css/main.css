@@ -286,13 +286,25 @@ main { display: block; }
      the transparent border, drawing a thin line under the menu.) */
   background: transparent;
 }
-.navbar.scrolled {
+/* The scrolled menu's frosted glass lives on a pseudo-layer, not the navbar
+   itself: an element with backdrop-filter stops its descendants' backdrop
+   blur from reaching the page, so the Explore dropdown showed the page
+   behind it as a crisp ghost instead of frosting it. */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1px; /* over the navbar's 1px bottom border too; this layer draws the line */
+  z-index: -1;
+  pointer-events: none;
+  border-bottom: 1px solid rgba(13, 42, 80, 0.14);
   background: rgba(232, 240, 248, 0.55);
-  border-bottom-color: rgba(13, 42, 80, 0.14);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: 0 10px 30px rgba(13, 42, 80, 0.10);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
+.navbar.scrolled::before { opacity: 1; }
 
 .nav-inner {
   width: min(1280px, 94%);
@@ -353,17 +365,30 @@ main { display: block; }
   color: rgba(255, 255, 255, 0.88);
   padding: 0.6rem 0.95rem;
   border-radius: 6px;
+  position: relative;
   transition: var(--transition-fast);
 }
-.nav-link:hover, .nav-link.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.14);
+/* Hover and current page: a thin orange underline that grows from the centre
+   (no filled box). The right inset drops the trailing letter-spacing. */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.95rem;
+  right: calc(0.95rem + 0.14em);
+  bottom: 0.3rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--orange-bright);
+  transform: scaleX(0);
+  transition: transform 0.25s var(--ease-smooth);
 }
+.nav-link:hover::after, .nav-link.active::after,
+.has-dropdown:hover > .nav-link::after,
+.has-dropdown:focus-within > .nav-link::after,
+.has-dropdown.open > .nav-link::after { transform: scaleX(1); }
+.nav-link:hover, .nav-link.active { color: #fff; }
 .navbar.scrolled .nav-link { color: var(--text-mid); }
-.navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active {
-  color: var(--navy);
-  background: rgba(3, 36, 77, 0.07);
-}
+.navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active { color: var(--navy); }
 .nav-social {
   display: inline-flex;
   align-items: center;
@@ -372,9 +397,9 @@ main { display: block; }
   color: rgba(255, 255, 255, 0.88);
   transition: var(--transition-fast);
 }
-.nav-social:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+.nav-social:hover { color: var(--orange-soft); }
 .navbar.scrolled .nav-social { color: var(--text-mid); }
-.navbar.scrolled .nav-social:hover { color: var(--navy); background: rgba(3, 36, 77, 0.07); }
+.navbar.scrolled .nav-social:hover { color: var(--orange); }
 .drawer-social { display: flex; gap: 0.8rem; margin-top: 1.4rem; }
 .nav-link .caret {
   width: 10px; height: 10px;
@@ -427,16 +452,33 @@ main { display: block; }
 }
 .dropdown-panel a {
   display: block;
+  position: relative;
   padding: 0.65rem 1rem;
   border-radius: var(--radius-sm);
   color: var(--text-mid);
   font-size: 0.92rem;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
-.dropdown-panel a:hover, .dropdown-panel a.active {
-  color: var(--navy);
-  background: rgba(0, 114, 206, 0.08);
+/* Hover and current page: darker text and a small orange marker (no filled row) */
+.dropdown-panel a::before,
+.mobile-drawer .drawer-group > a:not(.btn)::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 50%;
+  width: 3px;
+  height: 1.1em;
+  margin-top: -0.55em;
+  border-radius: 3px;
+  background: var(--orange-bright);
+  transform: scaleY(0);
+  transition: transform 0.2s var(--ease-smooth);
 }
+.dropdown-panel a:hover::before, .dropdown-panel a.active::before,
+.mobile-drawer .drawer-group > a:not(.btn):hover::before,
+.mobile-drawer .drawer-group > a.active::before { transform: scaleY(1); }
+.dropdown-panel a:hover, .dropdown-panel a.active { color: var(--navy); }
 
 /* Hamburger */
 .nav-toggle {
@@ -511,6 +553,7 @@ main { display: block; }
 }
 .mobile-drawer a {
   display: block;
+  position: relative;
   padding: 0.7rem 0.9rem;
   border-radius: var(--radius-sm);
   color: var(--text-hi);
@@ -518,10 +561,8 @@ main { display: block; }
   font-weight: 600;
   font-size: 1rem;
 }
-.mobile-drawer a:hover, .mobile-drawer a.active {
-  background: rgba(0, 114, 206, 0.08);
-  color: var(--orange);
-}
+.mobile-drawer .drawer-group > a:not(.btn):hover,
+.mobile-drawer .drawer-group > a.active { color: var(--orange); }
 .mobile-drawer .btn { width: 100%; margin-top: 1rem; color: #fff; }
 
 .drawer-scrim {
@@ -1765,7 +1806,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   :focus-visible { outline-color: var(--azure-soft); }
 
   /* Navbar (scrolled state) */
-  .navbar.scrolled {
+  .navbar::before {
     background: rgba(11, 24, 42, 0.85);
     border-bottom-color: rgba(255, 255, 255, 0.10);
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
@@ -1773,14 +1814,14 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .navbar.scrolled .brand { color: #eaf1fb; }
   .navbar.scrolled .brand img { filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5)); }
   .navbar.scrolled .nav-link { color: var(--text-mid); }
-  .navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active { color: #fff; background: rgba(255, 255, 255, 0.10); }
+  .navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active { color: #fff; }
   .navbar.scrolled .nav-social { color: var(--text-mid); }
-  .navbar.scrolled .nav-social:hover { color: #fff; background: rgba(255, 255, 255, 0.10); }
+  .navbar.scrolled .nav-social:hover { color: var(--orange-soft); }
 
   /* Explore dropdown */
   .dropdown-panel { background: rgba(13, 26, 46, 0.97); border-color: rgba(255, 255, 255, 0.14); box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5); }
   .dropdown-panel a { color: var(--text-mid); }
-  .dropdown-panel a:hover, .dropdown-panel a.active { color: #fff; background: rgba(0, 114, 206, 0.28); }
+  .dropdown-panel a:hover, .dropdown-panel a.active { color: #fff; }
 
   /* Mobile drawer + hamburger */
   .mobile-drawer { background: rgba(9, 20, 34, 0.98); }
@@ -1857,7 +1898,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
    sheet's pale rounded corners showed through the 0.55 frosted menu; a
    little more opacity hides them */
 @media (max-width: 680px) and (prefers-color-scheme: light) {
-  .navbar.scrolled { background: rgba(232, 240, 248, 0.72); }
+  .navbar::before { background: rgba(232, 240, 248, 0.72); }
 }
 
 /* Tailgate photo heroes (Alumni, Brotherhood, Update Info) — a stray cup,
