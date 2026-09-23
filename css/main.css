@@ -47,8 +47,16 @@
   --font-body: 'Inter', sans-serif;
 
   --nav-height: 76px;
-  --hero-top: 10px;                        /* hero card's gap from the top of the screen */
-  --hero-gap: clamp(8px, 1.4vw, 18px);     /* ...and from its sides */
+
+  /* Page sheet: the first section after every hero rises over the photo's
+     bottom on a full-width sheet of the page colour (see "Page sheet" below) */
+  --sheet-x: 96px;                         /* overlap: the sheet's top edge sits this far above the photo's end */
+  --sheet-r: 36px;                         /* its top-corner radius (keep >= 8px below --sheet-x) */
+  --sheet-fade: 160px;                     /* below the photo's end the sheet melts into the page over this */
+  --sheet-page: 226 234 244;               /* = --bg-mid, as RGB channels */
+  --sheet-lit: 226 234 244;                /* colour right under the top edge (one tone in light mode) */
+  --sheet-hi: rgba(255, 255, 255, 0.5);    /* 1px highlight along the top edge */
+  --sheet-shadow: 0 -10px 28px -10px rgba(2, 12, 28, 0.5); /* upward only, onto the photo */
 
   /* The site ships a light theme and an automatic dark variant (below). */
   color-scheme: light dark;
@@ -530,16 +538,16 @@ main { display: block; }
 .drawer-scrim.show { opacity: 1; visibility: visible; }
 
 /* ============================================================
-   HERO — full-bleed photo panel with rounded bottom corners
+   HERO — full-bleed photo; the page sheet rises over its bottom
    ============================================================ */
 .hero {
   position: relative;
-  min-height: calc(100svh - 4.5rem - var(--hero-top)); /* stops short so the stats card shows on first load */
+  min-height: calc(100svh - 8.5rem + var(--sheet-x)); /* sheet edge lands 8.5rem above the fold, so the stats show on first load */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem - var(--hero-top)) 0 6rem;
+  padding: calc(var(--nav-height) + 3rem) 0 calc(var(--sheet-x) + 3.5rem); /* >= 56px between the buttons and the sheet */
   isolation: isolate;
   overflow: hidden;
 }
@@ -575,9 +583,9 @@ main { display: block; }
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
 }
 .hero h1 {
-  font-size: clamp(2.45rem, 7vw, 4.4rem); /* phones: fits one line inside the inset card */
+  font-size: clamp(2.6rem, 7vw, 4.4rem);
   font-weight: 600;
-  text-wrap: balance; /* on a narrow card it splits "To Lead." / "To Serve." instead of orphaning a word */
+  text-wrap: balance; /* on narrow phones it splits "To Lead." / "To Serve." instead of orphaning a word */
   letter-spacing: 0;
   margin: 1.1rem 0 1.2rem;
   text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
@@ -604,10 +612,10 @@ main { display: block; }
 /* ---------- Page hero (interior pages) ---------- */
 .page-hero {
   position: relative;
-  min-height: calc(56vh - var(--hero-top)); /* bottom edge, and so the heading, stays where it was */
+  min-height: calc(56vh + var(--sheet-x)); /* taller by the overlap, so the uncovered photo keeps its size */
   display: flex;
   align-items: flex-end;
-  padding: calc(var(--nav-height) + 4rem - var(--hero-top)) 0 7rem;
+  padding: calc(var(--nav-height) + 4rem) 0 calc(7rem + var(--sheet-x));
   isolation: isolate;
   overflow: hidden;
 }
@@ -646,30 +654,90 @@ main { display: block; }
   .page-hero-mark { width: 210px; }
 }
 
-/* ---------- Hero card (home + interior heroes) ----------
-   The top photo is a floating card: inset from the top and sides of the
-   screen, all four corners rounded, lifted off the page with a soft navy
-   shadow like the site's other cards. The menu floats on top of it. */
-.hero, .page-hero {
-  --hero-radius: clamp(16px, 1.8vw, 24px);
-  margin: var(--hero-top) var(--hero-gap) 0;
-  border-radius: var(--hero-radius);
-  box-shadow:
-    0 26px 50px -26px rgba(3, 36, 77, 0.45),
-    0 10px 20px -12px rgba(3, 36, 77, 0.25);
+/* ---------- Page sheet (every page) ----------
+   The hero photo runs full width. The first section after it rises over the
+   photo's bottom as a full-width sheet of the page colour with large rounded
+   top corners, a 1px highlight and a soft upward shadow, so the photo meets
+   the page on one clean curve that belongs to the page itself. Below the
+   photo's end the sheet dissolves into the page, so it has no bottom edge.
+   No glass here: over a darkened photo, glass readable enough for text is
+   nearly opaque anyway and leaves a grey band. Floating things stay glass. */
+@media (max-width: 1024px) { :root { --sheet-x: 80px; --sheet-r: 30px; --sheet-fade: 140px; } }
+@media (max-width: 680px)  { :root { --sheet-x: 60px; --sheet-r: 22px; --sheet-fade: 120px; } }
+
+/* Photo layer: end it just past the corner radius instead of at the taller
+   hero's bottom, so each photo keeps its framing. The base scale(1.04) adds
+   ~2% below the box, so r + 8px keeps the corner areas beside the rounded
+   edge filled at every point of the slow zoom. */
+.hero > .hero-bg, .page-hero > .hero-bg { bottom: calc(var(--sheet-x) - var(--sheet-r) - 8px); }
+
+/* The sheet itself: the section right after the hero */
+main > :is(.hero, .page-hero) + * {
+  position: relative;
+  z-index: 0;
+  margin-top: calc(-1 * var(--sheet-x));
 }
-.page-hero { margin-bottom: clamp(0.75rem, 2vw, 1.5rem); }
+/* the sheet is opaque, so content can start one corner-radius + 1.5rem below
+   its edge (!important beats each page's inline padding-top) */
+main > .page-hero + .section { padding-top: calc(var(--sheet-r) + 1.5rem) !important; }
+
+/* ONE layer does colour, radius, highlight and shadow, so their edges line up */
+main > :is(.hero, .page-hero) + *::before,
+main:has(> .page-hero:last-child)::after {
+  content: "";
+  pointer-events: none;
+  border-radius: var(--sheet-r) var(--sheet-r) 0 0;
+  background: linear-gradient(180deg,
+    rgb(var(--sheet-lit)) 0,
+    rgb(var(--sheet-page)) calc(var(--sheet-x) - 24px),
+    rgb(var(--sheet-page)) calc(var(--sheet-x) + 16px),
+    rgb(var(--sheet-page) / 0.8) calc(var(--sheet-x) + 16px + var(--sheet-fade) * 0.3),
+    rgb(var(--sheet-page) / 0.45) calc(var(--sheet-x) + 16px + var(--sheet-fade) * 0.55),
+    rgb(var(--sheet-page) / 0.15) calc(var(--sheet-x) + 16px + var(--sheet-fade) * 0.8),
+    rgb(var(--sheet-page) / 0) calc(var(--sheet-x) + 16px + var(--sheet-fade)));
+  box-shadow: inset 0 1px 0 var(--sheet-hi), var(--sheet-shadow);
+  /* keep only the upward shadow; otherwise it peeks out of the layer's
+     transparent bottom end as a faint grey line across the page */
+  -webkit-clip-path: inset(-48px 0 0 0);
+  clip-path: inset(-48px 0 0 0);
+}
+main > :is(.hero, .page-hero) + *::before {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(var(--sheet-x) + 16px + var(--sheet-fade));
+}
+
+/* 404: nothing follows the hero inside <main>, so main::after is a short lip
+   of the same sheet running down to the footer */
+main:has(> .page-hero:last-child)::after {
+  display: block;
+  position: relative;
+  z-index: 0;
+  --sheet-gap: clamp(3rem, 8vw, 6rem); /* = .site-footer margin-top */
+  height: calc(var(--sheet-x) + var(--sheet-gap));
+  margin-top: calc(-1 * var(--sheet-x));
+  margin-bottom: calc(-1 * var(--sheet-gap));
+  background: linear-gradient(180deg, rgb(var(--sheet-lit)) 0, rgb(var(--sheet-page)) calc(var(--sheet-x) - 24px));
+}
+
+/* Short laptop windows (e.g. 1366x768 minus browser bars): compress the home
+   hero so the whole stats row shows on first load. Buttons stay 48px clear. */
+@media (min-width: 681px) and (max-height: 780px) {
+  main > .hero { padding-top: calc(var(--nav-height) + 0.75rem); padding-bottom: calc(var(--sheet-x) + 3rem); }
+  main > .hero .hero-crest { width: 68px; margin-bottom: 0.9rem; }
+  main > .hero h1 { margin: 0.7rem 0 0.8rem; }
+  main > .hero .hero-tagline { margin-bottom: 1.6rem; }
+}
 
 /* ============================================================
    HOME SECTIONS
    ============================================================ */
 
-/* Stats strip — a near-solid card resting on the hero panel's bottom edge */
-.stats-strip {
-  margin-top: -4rem;
-  position: relative;
-  z-index: 5;
-}
+/* Stats strip — on the home page the numbers sit straight on the page sheet */
+.stats-strip { padding-top: 0.5rem; }
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -682,17 +750,32 @@ main { display: block; }
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow);
 }
-/* Home: near-solid so the hero panel's edge doesn't show through the numbers */
 .stats-strip .stats-grid {
-  background: rgba(205, 217, 232, 0.96); /* shows only as the 1px dividers */
-  border-color: rgba(13, 42, 80, 0.12);
-  backdrop-filter: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   -webkit-backdrop-filter: none;
-  box-shadow:
-    0 28px 56px -22px rgba(3, 36, 77, 0.34),
-    0 8px 18px -8px rgba(3, 36, 77, 0.16);
+  backdrop-filter: none;
+  overflow: visible;
+  gap: 0;
 }
-.stats-strip .stat-cell { background: rgba(247, 250, 254, 0.94); }
+.stats-strip .stat-cell { position: relative; background: transparent; padding: 1.6rem 1rem; }
+.stats-strip .stat-value { line-height: 1.25; }
+.stats-strip .stat-cell + .stat-cell::before { /* short hairline dividers */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(3, 36, 77, 0.2), transparent);
+}
+@media (max-width: 1024px) { .stats-strip .stat-cell:nth-child(3)::before { display: none; } }
+@media (min-width: 681px) and (max-height: 780px) { /* short laptop windows: whole row on first load */
+  .stats-strip { padding-top: 0; }
+  .stats-strip .stat-cell { padding: 1.25rem 1rem; }
+}
 .stat-cell {
   background: rgba(244, 248, 253, 0.45);
   text-align: center;
@@ -1548,12 +1631,11 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .form-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 1.8rem; }
   .footer-bottom { justify-content: center; text-align: center; }
-  .stats-strip { margin-top: -3rem; }
   .stat-cell { padding: 1.4rem 0.6rem; }
-  .hero { min-height: calc(92svh - var(--hero-top)); padding-bottom: 6rem; }
-  /* Keep the crest and menu button inside the hero card's corners; 8px keeps
-     "Beta Zeta · Auburn" on one line on a 390px phone, as before the card */
-  .nav-inner { width: calc(100% - 2 * (var(--hero-gap) + 8px)); }
+  .stats-strip .stat-cell { padding: 1.1rem 0.6rem; }
+  /* 390px: labels broke as "FOUNDED AT / AUBURN" */
+  .stats-strip .stat-label { letter-spacing: 0.12em; font-size: 0.7rem; text-wrap: balance; }
+  .hero { min-height: calc(92svh - 3rem + var(--sheet-x)); }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
 }
@@ -1671,6 +1753,11 @@ textarea.form-control { min-height: 130px; resize: vertical; }
     /* Re-lighten the text-safe accents so they read on dark surfaces */
     --azure-text: #6fb2ee;
     --orange-text: #ff9a4d;
+    /* Page sheet in deep navy; a touch lighter under its edge catches the light */
+    --sheet-page: 10 22 38;
+    --sheet-lit: 14 29 49;
+    --sheet-hi: rgba(255, 255, 255, 0.13);
+    --sheet-shadow: 0 -14px 34px -12px rgba(0, 0, 0, 0.6);
   }
   body { background-color: var(--bg-mid); }
 
@@ -1702,20 +1789,12 @@ textarea.form-control { min-height: 130px; resize: vertical; }
      navy, which vanishes on the dark navbar. Use a legible silver instead. */
   .navbar.scrolled .nav-toggle span { background: var(--silver); }
 
-  /* Stats cards (glass); the home strip gets the same near-solid card in deep navy */
+  /* Stats cards (glass); on the home sheet the numbers stay bare */
   .stats-grid { background: rgba(255, 255, 255, 0.09); }
   .stat-cell { background: rgba(255, 255, 255, 0.035); }
-  .stats-strip .stats-grid {
-    background: rgba(40, 58, 84, 0.96);
-    border-color: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 28px 56px -22px rgba(0, 0, 0, 0.6), 0 8px 18px -8px rgba(0, 0, 0, 0.4);
-  }
-  .stats-strip .stat-cell { background: rgba(14, 28, 48, 0.95); }
-
-  /* Hero card shadow reads on the dark page */
-  .hero, .page-hero {
-    box-shadow: 0 26px 50px -26px rgba(0, 0, 0, 0.7), 0 10px 20px -12px rgba(0, 0, 0, 0.5);
-  }
+  .stats-strip .stats-grid { background: transparent; }
+  .stats-strip .stat-cell { background: transparent; }
+  .stats-strip .stat-cell + .stat-cell::before { background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16), transparent); }
   .stat-value { color: #eaf1fb; }
 
   /* Audience cards (frosted body over photo) */
@@ -1774,12 +1853,19 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 100%);
 }
 
+/* Phones, light mode: while the page scrolls under the menu, the page
+   sheet's pale rounded corners showed through the 0.55 frosted menu; a
+   little more opacity hides them */
+@media (max-width: 680px) and (prefers-color-scheme: light) {
+  .navbar.scrolled { background: rgba(232, 240, 248, 0.72); }
+}
+
 /* Tailgate photo heroes (Alumni, Brotherhood, Update Info) — a stray cup,
    a ball and a cooler sit at the very bottom of the photo. The photo layer
-   runs 30% past the hero's bottom edge (out of view), so at any screen
-   shape the visible crop ends on grass above them; the 68% anchor keeps the
+   runs well past the page sheet's edge (out of view), so at any screen shape
+   the visible crop ends on grass above them; the 68% anchor keeps the
    wide-screen framing where it was. */
-.hero-bg--tailgate {
-  bottom: -30%;
+.page-hero > .hero-bg--tailgate {
+  bottom: calc(var(--sheet-x) * 1.3 - 30%);
   background-position: 50% 68%;
 }
