@@ -380,12 +380,16 @@ main { display: block; }
   border-radius: 2px;
   background: var(--orange-bright);
   transform: scaleX(0);
-  transition: transform 0.25s var(--ease-smooth);
+  /* No transition here: on the way out it disappears at once. Shrinking it
+     left a small orange nub behind for a moment when moving between links. */
 }
 .nav-link:hover::after, .nav-link.active::after,
 .has-dropdown:hover > .nav-link::after,
 .has-dropdown:focus-within > .nav-link::after,
-.has-dropdown.open > .nav-link::after { transform: scaleX(1); }
+.has-dropdown.open > .nav-link::after {
+  transform: scaleX(1);
+  transition: transform 0.25s var(--ease-smooth); /* grows in */
+}
 .nav-link:hover, .nav-link.active { color: #fff; }
 .navbar.scrolled .nav-link { color: var(--text-mid); }
 .navbar.scrolled .nav-link:hover, .navbar.scrolled .nav-link.active { color: var(--navy); }
@@ -473,11 +477,15 @@ main { display: block; }
   border-radius: 3px;
   background: var(--orange-bright);
   transform: scaleY(0);
-  transition: transform 0.2s var(--ease-smooth);
+  /* No transition here: it disappears at once when the pointer moves on
+     (shrinking left an orange dot beside the previous item) */
 }
 .dropdown-panel a:hover::before, .dropdown-panel a.active::before,
 .mobile-drawer .drawer-group > a:not(.btn):hover::before,
-.mobile-drawer .drawer-group > a.active::before { transform: scaleY(1); }
+.mobile-drawer .drawer-group > a.active::before {
+  transform: scaleY(1);
+  transition: transform 0.2s var(--ease-smooth); /* grows in */
+}
 .dropdown-panel a:hover, .dropdown-panel a.active { color: var(--navy); }
 
 /* Hamburger */
