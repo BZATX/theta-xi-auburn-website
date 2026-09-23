@@ -96,7 +96,7 @@
           <div class="footer-marks">
             <img src="${link("assets/images/system/crest traditional.png")}" alt="Theta Xi crest">
             <span class="footer-marks-rule" aria-hidden="true"></span>
-            <a href="${link("pages/history.html")}" class="footer-seal-link" aria-label="Beta Zeta Association of Theta Xi — Our History">
+            <a href="${link("pages/history.html")}" class="footer-seal-link" aria-label="Our History, Beta Zeta Association of Theta Xi">
               <img src="${link("assets/images/brand/svg/bz-house-mark-2a-two-tone-seal-dark.svg")}" alt="" class="footer-seal" width="132" height="132" loading="lazy">
             </a>
           </div>
@@ -129,7 +129,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; ${new Date().getFullYear()} Theta Xi — Beta Zeta Chapter. All rights reserved.</p>
+        <p>&copy; ${new Date().getFullYear()} Theta Xi, Beta Zeta Chapter. All rights reserved.</p>
         <p><a href="${link("pages/privacy.html")}">Privacy</a> &middot; <a href="${link("pages/accessibility.html")}">Accessibility</a> &middot; <a href="https://thetaxi.org" target="_blank" rel="noopener">Theta Xi National</a></p>
       </div>
     </div>
