@@ -534,7 +534,7 @@ main { display: block; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem) 0 8rem;
+  padding: calc(var(--nav-height) + 3rem) 0 6rem;
   isolation: isolate;
   overflow: hidden;
 }
@@ -669,14 +669,25 @@ main { display: block; }
   gap: 1px;
   overflow: hidden;
   border-radius: var(--radius-lg);
+  background: rgba(13, 42, 80, 0.14);
+  border: 1px solid rgba(13, 42, 80, 0.14);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+/* Home: near-solid so the hero panel's edge doesn't show through the numbers */
+.stats-strip .stats-grid {
   background: rgba(205, 217, 232, 0.96); /* shows only as the 1px dividers */
-  border: 1px solid rgba(13, 42, 80, 0.12);
+  border-color: rgba(13, 42, 80, 0.12);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow:
     0 28px 56px -22px rgba(3, 36, 77, 0.34),
     0 8px 18px -8px rgba(3, 36, 77, 0.16);
 }
+.stats-strip .stat-cell { background: rgba(247, 250, 254, 0.94); }
 .stat-cell {
-  background: rgba(247, 250, 254, 0.94);
+  background: rgba(244, 248, 253, 0.45);
   text-align: center;
   padding: 2rem 1rem;
 }
@@ -1681,13 +1692,15 @@ textarea.form-control { min-height: 130px; resize: vertical; }
      navy, which vanishes on the dark navbar. Use a legible silver instead. */
   .navbar.scrolled .nav-toggle span { background: var(--silver); }
 
-  /* Stats strip: the same near-solid card, in deep navy */
-  .stats-grid {
+  /* Stats cards (glass); the home strip gets the same near-solid card in deep navy */
+  .stats-grid { background: rgba(255, 255, 255, 0.09); }
+  .stat-cell { background: rgba(255, 255, 255, 0.035); }
+  .stats-strip .stats-grid {
     background: rgba(40, 58, 84, 0.96);
     border-color: rgba(255, 255, 255, 0.12);
     box-shadow: 0 28px 56px -22px rgba(0, 0, 0, 0.6), 0 8px 18px -8px rgba(0, 0, 0, 0.4);
   }
-  .stat-cell { background: rgba(14, 28, 48, 0.95); }
+  .stats-strip .stat-cell { background: rgba(14, 28, 48, 0.95); }
 
   /* Hero panel shadow reads on the dark page */
   .hero, .page-hero {
@@ -1751,11 +1764,12 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 100%);
 }
 
-/* Alumni hero — a stray cup and a cooler sit at the very bottom of the
-   tailgate photo. The photo layer runs 25% past the hero's bottom edge (out
-   of view), so at any screen shape the visible crop ends on grass above
-   them; the 64% anchor keeps the wide-screen framing where it was. */
-.hero-bg--alumni {
-  bottom: -25%;
-  background-position: 50% 64%;
+/* Tailgate photo heroes (Alumni, Brotherhood, Update Info) — a stray cup,
+   a ball and a cooler sit at the very bottom of the photo. The photo layer
+   runs 30% past the hero's bottom edge (out of view), so at any screen
+   shape the visible crop ends on grass above them; the 68% anchor keeps the
+   wide-screen framing where it was. */
+.hero-bg--tailgate {
+  bottom: -30%;
+  background-position: 50% 68%;
 }
