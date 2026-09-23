@@ -129,38 +129,43 @@ document.addEventListener("DOMContentLoaded", () => {
   observeReveals();
 
   /* ---------------- Count-up stats ---------------- */
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const formatCount = (el, v) => {
+    const isFloat = String(el.dataset.count).includes(".");
+    const plain = el.dataset.plain !== undefined; // years: no thousands separator
+    return isFloat ? v.toFixed(2) : plain ? String(Math.round(v)) : Math.round(v).toLocaleString();
+  };
   const countObserver = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
-        const target = parseFloat(el.dataset.count);
-        const isFloat = String(el.dataset.count).includes(".");
-        const plain = el.dataset.plain !== undefined; // years: no thousands separator
-        const finalText = isFloat ? target.toFixed(2) : plain ? String(target) : target.toLocaleString();
+        obs.unobserve(el);
+        el.dataset.counted = "running";
         // Respect reduced-motion: show the final value without the ticking animation.
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          el.textContent = finalText;
-          obs.unobserve(el);
-          return;
-        }
+        if (reduceMotion()) { el.textContent = formatCount(el, parseFloat(el.dataset.count)); el.dataset.counted = "done"; return; }
         const duration = 1600;
         const start = performance.now();
         const step = (now) => {
-          const p = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          const n = Math.round(target * eased);
-          el.textContent = isFloat ? (target * eased).toFixed(2) : plain ? String(n) : n.toLocaleString();
+          // The first frame's timestamp can precede `start`; clamp so it never counts below 0.
+          const p = Math.min(Math.max((now - start) / duration, 0), 1);
+          // Read the target every frame, so chapter data arriving mid-count just retargets it.
+          el.textContent = formatCount(el, parseFloat(el.dataset.count) * (1 - Math.pow(1 - p, 3)));
           if (p < 1) requestAnimationFrame(step);
+          else el.dataset.counted = "done";
         };
         requestAnimationFrame(step);
-        obs.unobserve(el);
       });
     },
     { threshold: 0.4 }
   );
+  // Each number counts once. Until it does it reads 0, so a half-visible number
+  // never shows its final value and then snaps back to 0 to start counting.
   const observeCounts = (scope) =>
-    (scope || document).querySelectorAll("[data-count]").forEach((el) => countObserver.observe(el));
+    (scope || document).querySelectorAll("[data-count]:not([data-counted])").forEach((el) => {
+      if (!reduceMotion()) el.textContent = formatCount(el, 0);
+      countObserver.observe(el);
+    });
   observeCounts();
 
   /* ---------------- Dynamic content (data/*.json) ---------------- */
@@ -189,6 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (value == null) return;
       if (el.dataset.count !== undefined) {
         el.dataset.count = value;
+        // Already finished counting before the data arrived: just show the value.
+        // (Mid-count, the animation picks up the new target by itself.)
+        if (el.dataset.counted === "done") el.textContent = formatCount(el, parseFloat(value));
       } else if (el.tagName === "A") {
         el.href = String(value).includes("@") ? `mailto:${value}` : value;
         if (!el.dataset.keepText) el.textContent = value;

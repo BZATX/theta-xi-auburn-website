@@ -599,7 +599,7 @@ main { display: block; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem) 0 calc(var(--sheet-x) + 3.5rem); /* >= 56px between the buttons and the sheet */
+  padding: calc(var(--nav-height) + 3rem) 0 calc(var(--sheet-x) + 6rem); /* room for the stats box rising 3.25rem over the sheet's edge, ~44px below the buttons */
   isolation: isolate;
   overflow: hidden;
 }
@@ -781,9 +781,9 @@ main.hero-only::after {
 }
 
 /* Short laptop windows (e.g. 1366x768 minus browser bars): compress the home
-   hero so the whole stats row shows on first load. Buttons stay 48px clear. */
+   hero so the stats box shows on first load. */
 @media (min-width: 681px) and (max-height: 780px) {
-  main > .hero { padding-top: calc(var(--nav-height) + 0.75rem); padding-bottom: calc(var(--sheet-x) + 3rem); }
+  main > .hero { padding-top: calc(var(--nav-height) + 0.75rem); }
   main > .hero .hero-crest { width: 68px; margin-bottom: 0.9rem; }
   main > .hero h1 { margin: 0.7rem 0 0.8rem; }
   main > .hero .hero-tagline { margin-bottom: 1.6rem; }
@@ -793,8 +793,8 @@ main.hero-only::after {
    HOME SECTIONS
    ============================================================ */
 
-/* Stats strip — on the home page the numbers sit straight on the page sheet */
-.stats-strip { padding-top: 0.5rem; }
+/* Stats strip — on the home page the stats box straddles the page sheet's
+   curved edge: half over the photo, half over the page */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -808,29 +808,20 @@ main.hero-only::after {
   box-shadow: var(--glass-shadow);
 }
 .stats-strip .stats-grid {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  position: relative;
+  top: -3.25rem;          /* shifted with top, not a negative margin, which would */
+  margin-bottom: -3.25rem; /* collapse into the section and drag the sheet up too */
+  background: rgba(205, 217, 232, 0.96); /* near-solid; shows only as the 1px dividers */
+  border-color: rgba(13, 42, 80, 0.12);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  overflow: visible;
-  gap: 0;
+  box-shadow:
+    0 28px 56px -22px rgba(3, 36, 77, 0.34),
+    0 8px 18px -8px rgba(3, 36, 77, 0.16);
 }
-.stats-strip .stat-cell { position: relative; background: transparent; padding: 1.6rem 1rem; }
+.stats-strip .stat-cell { background: rgba(247, 250, 254, 0.94); }
 .stats-strip .stat-value { line-height: 1.25; }
-.stats-strip .stat-cell + .stat-cell::before { /* short hairline dividers */
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 22%;
-  bottom: 22%;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(3, 36, 77, 0.2), transparent);
-}
-@media (max-width: 1024px) { .stats-strip .stat-cell:nth-child(3)::before { display: none; } }
-@media (min-width: 681px) and (max-height: 780px) { /* short laptop windows: whole row on first load */
-  .stats-strip { padding-top: 0; }
+@media (min-width: 681px) and (max-height: 780px) { /* short laptop windows: a shorter box shows whole on first load */
   .stats-strip .stat-cell { padding: 1.25rem 1rem; }
 }
 .stat-cell {
@@ -1695,10 +1686,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .footer-grid { grid-template-columns: 1fr; gap: 1.8rem; }
   .footer-bottom { justify-content: center; text-align: center; }
   .stat-cell { padding: 1.4rem 0.6rem; }
-  .stats-strip .stat-cell { padding: 1.1rem 0.6rem; }
+  .stats-strip .stats-grid { top: -2.5rem; margin-bottom: -2.5rem; }
   /* 390px: labels broke as "FOUNDED AT / AUBURN" */
   .stats-strip .stat-label { letter-spacing: 0.12em; font-size: 0.7rem; text-wrap: balance; }
-  .hero { min-height: calc(92svh - 3rem + var(--sheet-x)); }
+  .hero { min-height: calc(92svh - 3rem + var(--sheet-x)); padding-bottom: calc(var(--sheet-x) + 5rem); }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
 }
@@ -1858,12 +1849,15 @@ textarea.form-control { min-height: 130px; resize: vertical; }
      navy, which vanishes on the dark navbar. Use a legible silver instead. */
   .navbar.scrolled .nav-toggle span { background: var(--silver); }
 
-  /* Stats cards (glass); on the home sheet the numbers stay bare */
+  /* Stats cards (glass); the home stats box is the same near-solid card in deep navy */
   .stats-grid { background: rgba(255, 255, 255, 0.09); }
   .stat-cell { background: rgba(255, 255, 255, 0.035); }
-  .stats-strip .stats-grid { background: transparent; }
-  .stats-strip .stat-cell { background: transparent; }
-  .stats-strip .stat-cell + .stat-cell::before { background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16), transparent); }
+  .stats-strip .stats-grid {
+    background: rgba(40, 58, 84, 0.96);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 28px 56px -22px rgba(0, 0, 0, 0.6), 0 8px 18px -8px rgba(0, 0, 0, 0.4);
+  }
+  .stats-strip .stat-cell { background: rgba(14, 28, 48, 0.95); }
   .stat-value { color: #eaf1fb; }
 
   /* Audience cards (frosted body over photo) */
