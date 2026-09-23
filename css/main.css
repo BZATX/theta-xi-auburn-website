@@ -281,8 +281,8 @@ main { display: block; }
   align-items: center;
   transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   border-bottom: 1px solid transparent;
-  /* No backdrop at the top of the page: the menu floats on the hero card, whose
-     tint keeps it legible. (The old dark gradient also repeated one row into
+  /* No backdrop at the top of the page: the menu floats on the hero photo,
+     whose dark veil keeps it legible. (The old dark gradient also repeated one row into
      the transparent border, drawing a thin line under the menu.) */
   background: transparent;
 }
@@ -721,7 +721,8 @@ main { display: block; }
 .hero > .hero-bg, .page-hero > .hero-bg { bottom: calc(var(--sheet-x) - var(--sheet-r) - 8px); }
 
 /* The sheet itself: the section right after the hero */
-main > :is(.hero, .page-hero) + * {
+main > .hero + *,
+main > .page-hero + * {
   position: relative;
   z-index: 0;
   margin-top: calc(-1 * var(--sheet-x));
@@ -731,8 +732,9 @@ main > :is(.hero, .page-hero) + * {
 main > .page-hero + .section { padding-top: calc(var(--sheet-r) + 1.5rem) !important; }
 
 /* ONE layer does colour, radius, highlight and shadow, so their edges line up */
-main > :is(.hero, .page-hero) + *::before,
-main:has(> .page-hero:last-child)::after {
+main > .hero + *::before,
+main > .page-hero + *::before,
+main.hero-only::after {
   content: "";
   pointer-events: none;
   border-radius: var(--sheet-r) var(--sheet-r) 0 0;
@@ -750,7 +752,8 @@ main:has(> .page-hero:last-child)::after {
   -webkit-clip-path: inset(-48px 0 0 0);
   clip-path: inset(-48px 0 0 0);
 }
-main > :is(.hero, .page-hero) + *::before {
+main > .hero + *::before,
+main > .page-hero + *::before {
   position: absolute;
   z-index: -1;
   left: 0;
@@ -759,9 +762,10 @@ main > :is(.hero, .page-hero) + *::before {
   height: calc(var(--sheet-x) + 16px + var(--sheet-fade));
 }
 
-/* 404: nothing follows the hero inside <main>, so main::after is a short lip
-   of the same sheet running down to the footer */
-main:has(> .page-hero:last-child)::after {
+/* 404 (<main class="hero-only">): nothing follows the hero inside <main>, so
+   main::after is a short lip of the same sheet running down to the footer.
+   A class rather than :has(), so browsers without :has() keep the sheet. */
+main.hero-only::after {
   display: block;
   position: relative;
   z-index: 0;
