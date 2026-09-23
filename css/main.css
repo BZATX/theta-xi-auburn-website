@@ -47,6 +47,8 @@
   --font-body: 'Inter', sans-serif;
 
   --nav-height: 76px;
+  --hero-top: 10px;                        /* hero card's gap from the top of the screen */
+  --hero-gap: clamp(8px, 1.4vw, 18px);     /* ...and from its sides */
 
   /* The site ships a light theme and an automatic dark variant (below). */
   color-scheme: light dark;
@@ -271,7 +273,10 @@ main { display: block; }
   align-items: center;
   transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   border-bottom: 1px solid transparent;
-  background: linear-gradient(180deg, rgba(2, 12, 28, 0.5), rgba(2, 12, 28, 0));
+  /* No backdrop at the top of the page: the menu floats on the hero card, whose
+     tint keeps it legible. (The old dark gradient also repeated one row into
+     the transparent border, drawing a thin line under the menu.) */
+  background: transparent;
 }
 .navbar.scrolled {
   background: rgba(232, 240, 248, 0.55);
@@ -529,12 +534,12 @@ main { display: block; }
    ============================================================ */
 .hero {
   position: relative;
-  min-height: calc(100svh - 4.5rem); /* stops short so the stats card shows on first load */
+  min-height: calc(100svh - 4.5rem - var(--hero-top)); /* stops short so the stats card shows on first load */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(var(--nav-height) + 3rem) 0 6rem;
+  padding: calc(var(--nav-height) + 3rem - var(--hero-top)) 0 6rem;
   isolation: isolate;
   overflow: hidden;
 }
@@ -570,8 +575,9 @@ main { display: block; }
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
 }
 .hero h1 {
-  font-size: clamp(2.6rem, 7vw, 4.4rem);
+  font-size: clamp(2.45rem, 7vw, 4.4rem); /* phones: fits one line inside the inset card */
   font-weight: 600;
+  text-wrap: balance; /* on a narrow card it splits "To Lead." / "To Serve." instead of orphaning a word */
   letter-spacing: 0;
   margin: 1.1rem 0 1.2rem;
   text-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
@@ -598,10 +604,10 @@ main { display: block; }
 /* ---------- Page hero (interior pages) ---------- */
 .page-hero {
   position: relative;
-  min-height: 56vh;
+  min-height: calc(56vh - var(--hero-top)); /* bottom edge, and so the heading, stays where it was */
   display: flex;
   align-items: flex-end;
-  padding: calc(var(--nav-height) + 4rem) 0 7rem;
+  padding: calc(var(--nav-height) + 4rem - var(--hero-top)) 0 7rem;
   isolation: isolate;
   overflow: hidden;
 }
@@ -640,18 +646,19 @@ main { display: block; }
   .page-hero-mark { width: 210px; }
 }
 
-/* ---------- Hero panel (home + interior heroes) ----------
-   The photo runs solid to its bottom edge, which is rounded and lifted off
-   the page with a soft navy shadow, echoing the site's rounded cards. The
-   top stays full-bleed under the transparent navbar. */
+/* ---------- Hero card (home + interior heroes) ----------
+   The top photo is a floating card: inset from the top and sides of the
+   screen, all four corners rounded, lifted off the page with a soft navy
+   shadow like the site's other cards. The menu floats on top of it. */
 .hero, .page-hero {
-  --hero-radius: clamp(20px, 3.2vw, 44px);
-  border-radius: 0 0 var(--hero-radius) var(--hero-radius);
+  --hero-radius: clamp(16px, 1.8vw, 24px);
+  margin: var(--hero-top) var(--hero-gap) 0;
+  border-radius: var(--hero-radius);
   box-shadow:
-    0 30px 60px -30px rgba(3, 36, 77, 0.5),
-    0 14px 26px -16px rgba(3, 36, 77, 0.32);
+    0 26px 50px -26px rgba(3, 36, 77, 0.45),
+    0 10px 20px -12px rgba(3, 36, 77, 0.25);
 }
-.page-hero { margin-bottom: clamp(0.5rem, 1.6vw, 1.25rem); }
+.page-hero { margin-bottom: clamp(0.75rem, 2vw, 1.5rem); }
 
 /* ============================================================
    HOME SECTIONS
@@ -1543,7 +1550,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .footer-bottom { justify-content: center; text-align: center; }
   .stats-strip { margin-top: -3rem; }
   .stat-cell { padding: 1.4rem 0.6rem; }
-  .hero { min-height: 92svh; padding-bottom: 6rem; }
+  .hero { min-height: calc(92svh - var(--hero-top)); padding-bottom: 6rem; }
+  /* Keep the crest and menu button inside the hero card's corners; 8px keeps
+     "Beta Zeta · Auburn" on one line on a 390px phone, as before the card */
+  .nav-inner { width: calc(100% - 2 * (var(--hero-gap) + 8px)); }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
 }
@@ -1702,9 +1712,9 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   }
   .stats-strip .stat-cell { background: rgba(14, 28, 48, 0.95); }
 
-  /* Hero panel shadow reads on the dark page */
+  /* Hero card shadow reads on the dark page */
   .hero, .page-hero {
-    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7), 0 14px 26px -16px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 26px 50px -26px rgba(0, 0, 0, 0.7), 0 10px 20px -12px rgba(0, 0, 0, 0.5);
   }
   .stat-value { color: #eaf1fb; }
 
