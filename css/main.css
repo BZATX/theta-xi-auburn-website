@@ -46,7 +46,7 @@
   --font-ui: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 
-  --nav-height: 76px;
+  --nav-height: 4.75rem; /* 76px at the default text size; grows with larger text */
 
   /* Page sheet: the first section after every hero rises over the photo's
      bottom on a full-width sheet of the page colour (see "Page sheet" below) */
@@ -297,7 +297,9 @@ main { display: block; }
   z-index: -1;
   pointer-events: none;
   border-bottom: 1px solid rgba(13, 42, 80, 0.14);
-  background: rgba(232, 240, 248, 0.55);
+  /* 0.72: enough to keep the page sheet's rounded edge from showing through
+     as it scrolls under the menu, and to keep the menu text readable */
+  background: rgba(232, 240, 248, 0.72);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: 0 10px 30px rgba(13, 42, 80, 0.10);
@@ -342,9 +344,10 @@ main { display: block; }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   display: block;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); /* legible over bright patches of the photo */
 }
-.navbar.scrolled .brand-sub { color: var(--text-low); }
+.navbar.scrolled .brand-sub { color: var(--text-mid); text-shadow: none; }
 
 .nav-links {
   display: flex;
@@ -651,6 +654,7 @@ main { display: block; }
   max-width: 620px;
   margin: 0 auto 2.4rem;
 }
+.page-hero .hero-actions { justify-content: flex-start; } /* heading and text are left-aligned there */
 .hero-actions {
   display: flex;
   gap: 1rem;
@@ -1379,7 +1383,7 @@ main.hero-only::after {
   grid-template-columns: 1fr 1fr;
   gap: 1.2rem;
 }
-.form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+.form-group { display: flex; flex-direction: column; justify-content: flex-end; gap: 0.45rem; } /* inputs in a row line up even when one label wraps */
 .form-group.full { grid-column: 1 / -1; }
 .form-group label {
   font-family: var(--font-ui);
@@ -1623,6 +1627,12 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 }
 .footer-bottom a { color: var(--text-low); }
 .footer-bottom a:hover { color: var(--orange-soft); }
+/* Room for the floating back-to-top button (46px, bottom-right) so it never
+   covers the bottom row of links when scrolled all the way down. Wider
+   windows keep the row clear of it already. */
+@media (max-width: 1360px) {
+  .site-footer { padding-bottom: calc(46px + clamp(1rem, 3vw, 2rem) + 1rem); }
+}
 
 /* ============================================================
    SCROLL REVEAL
@@ -1655,7 +1665,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 1024px) {
+@media (max-width: 64em) { /* = 1024px at the default text size; with larger text the phone menu takes over sooner */
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
   .nav-cta-mobile {
@@ -1708,6 +1718,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   outline-offset: 3px;
   border-radius: 4px;
 }
+/* On dark photos and the navy footer the blue ring is hard to see: use white */
+.hero :focus-visible, .page-hero :focus-visible, .cta-banner :focus-visible,
+.site-footer :focus-visible, .navbar:not(.scrolled) :focus-visible { outline-color: #fff; }
+.navbar .dropdown-panel :focus-visible { outline-color: #0060b0; } /* the dropdown is a light panel */
 :focus:not(:focus-visible) { outline: none; }
 
 /* Screen-reader-only text (e.g. "opens in a new tab", required-field notes) */
@@ -1734,7 +1748,8 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 /* Skip-to-content link (appears on first Tab press) */
 .skip-link {
   position: fixed;
-  top: -80px;
+  top: 12px;
+  transform: translateY(calc(-100% - 24px)); /* fully off-screen at any text size */
   left: 12px;
   z-index: 2000;
   background: var(--navy);
@@ -1746,9 +1761,9 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   font-size: 0.9rem;
   text-decoration: none;
   box-shadow: 0 8px 24px rgba(2, 10, 26, 0.35);
-  transition: top 0.2s ease;
+  transition: transform 0.2s ease;
 }
-.skip-link:focus { top: 12px; }
+.skip-link:focus { transform: none; }
 
 /* Button press feedback (matches specificity of the hover transforms above) */
 .btn-primary:active, .btn-glass:active, .btn:active {
@@ -1816,6 +1831,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 
   /* Focus ring: the light-mode #0060b0 is too dark on dark surfaces */
   :focus-visible { outline-color: var(--azure-soft); }
+  .navbar .dropdown-panel :focus-visible { outline-color: var(--azure-soft); }
 
   /* Navbar (scrolled state) */
   .navbar::before {
@@ -1904,13 +1920,6 @@ textarea.form-control { min-height: 130px; resize: vertical; }
    eyebrow and subtitle stay comfortably legible over it. */
 .hero-bg--taxibash + .hero-veil {
   background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 100%);
-}
-
-/* Phones, light mode: while the page scrolls under the menu, the page
-   sheet's pale rounded corners showed through the 0.55 frosted menu; a
-   little more opacity hides them */
-@media (max-width: 680px) and (prefers-color-scheme: light) {
-  .navbar::before { background: rgba(232, 240, 248, 0.72); }
 }
 
 /* Tailgate photo heroes (Alumni, Brotherhood, Update Info) — a stray cup,
