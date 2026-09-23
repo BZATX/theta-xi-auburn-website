@@ -1750,3 +1750,12 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 .hero-bg--taxibash + .hero-veil {
   background: linear-gradient(180deg, rgba(2, 12, 28, 0.68) 0%, rgba(3, 18, 40, 0.6) 55%, rgba(5, 20, 42, 0.52) 100%);
 }
+
+/* Alumni hero — a stray cup and a cooler sit at the very bottom of the
+   tailgate photo. The photo layer runs 25% past the hero's bottom edge (out
+   of view), so at any screen shape the visible crop ends on grass above
+   them; the 64% anchor keeps the wide-screen framing where it was. */
+.hero-bg--alumni {
+  bottom: -25%;
+  background-position: 50% 64%;
+}
