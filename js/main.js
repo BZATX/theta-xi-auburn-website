@@ -340,10 +340,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------------- Netlify forms (rush interest, alumni updates) ----------------
-     Any form with data-netlify posts back to the site; Netlify records the
+     Forms marked data-ajax-submit post back to the site; Netlify records the
      submission and emails it to the address configured in the dashboard.
-     Per-form messages come from data-success / data-error attributes. */
-  document.querySelectorAll("form[data-netlify]").forEach((form) => {
+     (Netlify strips data-netlify from the published HTML, so it can't be the
+     hook.) Per-form messages come from data-success / data-error attributes. */
+  document.querySelectorAll("form[data-ajax-submit]").forEach((form) => {
     const status = form.querySelector(".form-status");
     if (!status) return;
     form.addEventListener("submit", async (e) => {

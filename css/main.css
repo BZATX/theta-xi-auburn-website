@@ -196,13 +196,14 @@ main { display: block; }
 
 .btn-primary {
   color: #fff;
-  background: linear-gradient(120deg, var(--orange) 0%, var(--orange-bright) 100%);
-  box-shadow: 0 10px 26px rgba(221, 85, 12, 0.32);
+  /* deep orange keeps the white label at 4.7:1 or better (WCAG AA) */
+  background: linear-gradient(120deg, #b23909 0%, #c94a08 100%);
+  box-shadow: 0 10px 26px rgba(178, 57, 9, 0.32);
 }
 .btn-primary:hover {
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(221, 85, 12, 0.42);
+  box-shadow: 0 16px 34px rgba(178, 57, 9, 0.42);
 }
 
 .btn-glass {
@@ -835,7 +836,7 @@ main.hero-only::after {
   font-weight: 600;
   color: var(--navy);
 }
-.stat-value .stat-suffix { color: var(--orange); }
+.stat-value .stat-suffix { color: var(--orange-text); }
 .stat-label {
   font-size: 0.78rem;
   font-weight: 600;
@@ -1699,7 +1700,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
    ============================================================ */
 /* Darker text-safe accents that clear WCAG AA (4.5:1) on light surfaces.
    --orange-text/--azure-text are re-lightened inside the dark-mode block. */
-:root { --orange-text: #b23909; --azure-text: #005fa8; }
+:root { --orange-text: #a33307; --azure-text: #005fa8; }
 
 /* Visible keyboard focus — only for keyboard users, not mouse clicks.
    #0060b0 clears the 3:1 focus-indicator ratio on light backgrounds

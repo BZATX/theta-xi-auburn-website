@@ -161,9 +161,13 @@ configuration → Notifications → Form submission notifications →
 
 ## Other things the next person should know
 
-- **Rush interest form** (`pages/join.html`) uses **Netlify Forms** — the
-  form posts back to the site and Netlify captures it (no scripts, no
-  backend). Submissions are listed in the Netlify dashboard under **Forms →
+- **Rush interest form** (`pages/recruitment.html`) uses **Netlify Forms** —
+  the form posts back to the site and Netlify captures it (no backend).
+  `js/main.js` sends it in the background so the page shows its own
+  thank-you message; it finds the form by `data-ajax-submit`, because
+  Netlify removes `data-netlify` when it publishes. Old addresses (such as
+  the retired `pages/join.html`) forward to their replacements via
+  `_redirects`. Submissions are listed in the Netlify dashboard under **Forms →
   rush-interest**, and an email notification containing the full answers
   goes to `thetaxibz@gmail.com` (configured under Site configuration →
   Notifications → Form submission notifications). One-time setup: form

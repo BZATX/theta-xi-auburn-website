@@ -1,0 +1,12 @@
+# Old addresses forward to the pages that replaced them (Netlify reads this file).
+# The rush form moved from join.html to the Recruitment page in July 2026, the
+# Service page was folded into Philanthropy, and before March 2026 a few pages
+# lived at the top level instead of under /pages/.
+/pages/join.html      /pages/recruitment.html    301
+/pages/join           /pages/recruitment.html    301
+/pages/service.html   /pages/philanthropy.html   301
+/pages/service        /pages/philanthropy.html   301
+/service.html         /pages/philanthropy.html   301
+/brotherhood.html     /pages/brotherhood.html    301
+/leadership.html      /pages/leadership.html     301
+/scholarship.html     /pages/scholarship.html    301
