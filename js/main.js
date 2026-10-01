@@ -131,9 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------------- Count-up stats ---------------- */
   const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const formatCount = (el, v) => {
-    const isFloat = String(el.dataset.count).includes(".");
+    const decimals = (String(el.dataset.count).split(".")[1] || "").length; // 3.31 -> 2, 97.5 -> 1
     const plain = el.dataset.plain !== undefined; // years: no thousands separator
-    return isFloat ? v.toFixed(2) : plain ? String(Math.round(v)) : Math.round(v).toLocaleString();
+    return decimals ? v.toFixed(decimals) : plain ? String(Math.round(v)) : Math.round(v).toLocaleString();
   };
   const countObserver = new IntersectionObserver(
     (entries, obs) => {
