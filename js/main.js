@@ -295,8 +295,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-journal]").forEach((journalMount) => {
     const limit = parseInt(journalMount.dataset.journal, 10) || Infinity;
     const category = journalMount.dataset.journalCategory;
+    const section = journalMount.closest("[data-hide-if-empty]");
     loadData("journal").then((data) => {
-      if (!data || !data.posts) return;
+      if (!data || !data.posts) { if (section) section.hidden = true; return; }
       const posts = [...data.posts]
         .filter((p) => !category || p.category === category)
         .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -329,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", open);
         card.querySelector(".journal-cover")?.addEventListener("click", open);
       });
-      if (!posts.length && journalMount.closest("[data-hide-if-empty]")) journalMount.closest("[data-hide-if-empty]").hidden = true;
+      if (!posts.length && section) section.hidden = true;
       observeReveals(journalMount);
     });
   });
@@ -361,14 +362,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "ArrowLeft") { e.preventDefault(); lb._show(lb._index - 1); }
         if (e.key === "ArrowRight") { e.preventDefault(); lb._show(lb._index + 1); }
       });
-      let touchX = null;
-      lb.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+      // Swipe = one finger, mostly sideways, page not zoomed (so pinching and
+      // panning around a zoomed photo don't change it).
+      let touchX = null, touchY = null;
+      const zoomed = () => window.visualViewport && window.visualViewport.scale > 1.01;
+      lb.addEventListener("touchstart", (e) => {
+        if (e.touches.length > 1 || zoomed()) { touchX = null; return; }
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+      }, { passive: true });
       lb.addEventListener("touchend", (e) => {
-        if (touchX == null) return;
+        if (touchX == null || e.touches.length) { touchX = null; return; }
         const dx = e.changedTouches[0].clientX - touchX;
+        const dy = e.changedTouches[0].clientY - touchY;
         touchX = null;
-        if (Math.abs(dx) > 40) lb._show(lb._index + (dx < 0 ? 1 : -1));
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) lb._show(lb._index + (dx < 0 ? 1 : -1));
       });
+      lb.addEventListener("touchcancel", () => { touchX = null; });
+      // Hide the old photo while the next one loads, so the count never sits under the wrong picture.
+      const lbImg = lb.querySelector(".lightbox-img");
+      const reveal = () => { lbImg.style.visibility = ""; };
+      lbImg.addEventListener("load", reveal);
+      lbImg.addEventListener("error", reveal);
       lb.addEventListener("close", () => {
         document.documentElement.classList.remove("lightbox-open");
         if (lb._opener && document.contains(lb._opener)) lb._opener.focus();
@@ -385,13 +400,17 @@ document.addEventListener("DOMContentLoaded", () => {
     lb._show = (n) => {
       lb._index = (n + photos.length) % photos.length;
       img.src = resolveImg(photos[lb._index]);
+      img.style.visibility = img.complete ? "" : "hidden";
       img.alt = `${title ? title + ", " : ""}photo ${lb._index + 1} of ${photos.length}`;
       lb.querySelector(".lightbox-count").textContent = many ? `${lb._index + 1} / ${photos.length}` : "";
-      if (many) new Image().src = resolveImg(photos[(lb._index + 1) % photos.length]); // preload the next one
+      if (many) { // preload the photos on either side
+        new Image().src = resolveImg(photos[(lb._index + 1) % photos.length]);
+        new Image().src = resolveImg(photos[(lb._index - 1 + photos.length) % photos.length]);
+      }
     };
     lb._show(0);
-    document.documentElement.classList.add("lightbox-open");
     lb.showModal();
+    document.documentElement.classList.add("lightbox-open");
   }
 
   /* Photo gallery */

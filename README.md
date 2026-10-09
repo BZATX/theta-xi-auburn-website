@@ -61,14 +61,15 @@ JSON read by the pages at load time:
 | File | Controls | Shown on |
 | --- | --- | --- |
 | `data/members.json` | Exec board: name, role, major, hometown, photo, bio, email | Members page + first 4 on the home page |
-| `data/journal.json` | News posts: title, date (YYYY-MM-DD), cover, excerpt, link | Journal page + newest 3 on the home page |
+| `data/journal.json` | News posts: title, date (YYYY-MM-DD), cover, excerpt, link. Optional: `location`, `photos` (list of image paths; adds a "View photos" button that opens a photo viewer), `category` (`alumni` also lists the post under Past Alumni Events on the Alumni page) | Journal (Social) page + newest 3 on the home page; `alumni` posts also on the Alumni page |
 | `data/gallery.json` | Photos with captions and a category (`brotherhood`, `service`, `house`) | Brotherhood page (brotherhood), Service page (service) |
 | `data/alumni.json` | Notable alumni cards | Notable Alumni page |
 | `data/chapter.json` | Home-page stats (founded, years, brothers, service hours) and contact info | Home page |
 | `data/instagram.json` | Board-picked Instagram post URLs, shown as official free embeds (no widget vendor, no view limits). Refresh biannually: replace the URLs (post → share → copy link; `?...` junk is stripped automatically) | Journal page |
 
 **Images** go in `assets/images/`:
-`portraits/` (headshots), `dynamic/` (event photos), `backgrounds/` (hero
+`portraits/` (headshots), `dynamic/` (event photos), `events/` (photo sets
+for journal posts), `backgrounds/` (hero
 images), `uploads/` (anything added after launch), `system/` (crest),
 `brand/` (the Beta Zeta house logos in SVG and PNG for web, merch and
 marketing — see its README; use them as supplied, don't restyle them).
