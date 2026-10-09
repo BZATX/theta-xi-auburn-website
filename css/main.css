@@ -1253,25 +1253,6 @@ main.hero-only::after {
 }
 .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
 
-/* ---------- Event highlight — TEMPORARY (remove after Oct 2026) ---------- */
-.event-highlight .split-copy {
-  border-left: 4px solid var(--orange);
-  padding-left: clamp(1.2rem, 3vw, 2rem);
-}
-.event-details-block {
-  margin-bottom: 1.2rem;
-  padding: 0.9rem 1.2rem;
-  border-radius: var(--radius-sm);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-}
-.event-detail-line {
-  margin-bottom: 0.15rem;
-  font-size: 1.05rem;
-}
-
 /* CTA banner — keeps the navy photo treatment for contrast */
 .cta-banner {
   position: relative;
