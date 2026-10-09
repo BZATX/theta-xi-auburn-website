@@ -290,33 +290,108 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* Journal posts */
-  const journalMount = document.querySelector("[data-journal]");
-  if (journalMount) {
+  /* Journal posts. data-journal="3" limits the count; data-journal-category="alumni"
+     shows only posts with that category (the Alumni page's event archive). */
+  document.querySelectorAll("[data-journal]").forEach((journalMount) => {
     const limit = parseInt(journalMount.dataset.journal, 10) || Infinity;
+    const category = journalMount.dataset.journalCategory;
     loadData("journal").then((data) => {
       if (!data || !data.posts) return;
-      const posts = [...data.posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const posts = [...data.posts]
+        .filter((p) => !category || p.category === category)
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, limit);
       journalMount.innerHTML = posts
-        .slice(0, limit)
         .map((p, i) => {
           const date = p.date
             ? new Date(p.date + "T12:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
             : "";
+          const photos = Array.isArray(p.photos) ? p.photos.filter(Boolean) : [];
           return `
         <article class="glass-card journal-card reveal d${(i % 3) + 1}">
-          ${p.cover ? `<div class="journal-cover" style="background-image:url('${cssUrl(resolveImg(p.cover))}')"></div>` : ""}
+          ${p.cover ? `<div class="journal-cover${photos.length ? " has-photos" : ""}" style="background-image:url('${cssUrl(resolveImg(p.cover))}')"></div>` : ""}
           <div class="journal-body">
             ${date ? `<span class="journal-date">${esc(date)}</span>` : ""}
             <h3>${esc(p.title)}</h3>
+            ${p.location ? `<span class="journal-place">${esc(p.location)}</span>` : ""}
             <p>${esc(p.excerpt)}</p>
+            ${photos.length ? `<button type="button" class="card-link journal-photos-btn" data-post="${i}">View photos (${photos.length}) <span class="arrow">&rarr;</span></button>` : ""}
             ${p.link ? `<a class="card-link" href="${esc(p.link)}" target="_blank" rel="noopener">Read more <span class="arrow">&rarr;</span></a>` : ""}
           </div>
         </article>`;
         })
         .join("");
+      journalMount.querySelectorAll(".journal-card").forEach((card, i) => {
+        const btn = card.querySelector(".journal-photos-btn");
+        if (!btn) return;
+        const post = posts[i];
+        const open = () => openLightbox(post.photos.filter(Boolean), post.title, btn);
+        btn.addEventListener("click", open);
+        card.querySelector(".journal-cover")?.addEventListener("click", open);
+      });
+      if (!posts.length && journalMount.closest("[data-hide-if-empty]")) journalMount.closest("[data-hide-if-empty]").hidden = true;
       observeReveals(journalMount);
     });
+  });
+
+  /* Photo viewer for journal posts with a "photos" list. Built on <dialog>, which
+     handles focus and Escape; arrow keys and swipes move between photos. */
+  let lightbox;
+  function openLightbox(photos, title, opener) {
+    if (!photos.length) return;
+    if (!lightbox) {
+      lightbox = document.createElement("dialog");
+      lightbox.className = "lightbox";
+      lightbox.innerHTML = `
+        <button type="button" class="lightbox-btn lightbox-close" aria-label="Close photos">&times;</button>
+        <figure class="lightbox-figure">
+          <img class="lightbox-img" alt="">
+          <figcaption class="lightbox-caption"><span class="lightbox-title"></span> <span class="lightbox-count" aria-live="polite"></span></figcaption>
+        </figure>
+        <button type="button" class="lightbox-btn lightbox-prev" aria-label="Previous photo">&lsaquo;</button>
+        <button type="button" class="lightbox-btn lightbox-next" aria-label="Next photo">&rsaquo;</button>`;
+      document.body.appendChild(lightbox);
+      const lb = lightbox;
+      lb.querySelector(".lightbox-close").addEventListener("click", () => lb.close());
+      lb.querySelector(".lightbox-prev").addEventListener("click", () => lb._show(lb._index - 1));
+      lb.querySelector(".lightbox-next").addEventListener("click", () => lb._show(lb._index + 1));
+      // Clicking the dark area around the photo closes it.
+      lb.addEventListener("click", (e) => { if (e.target === lb || e.target.classList.contains("lightbox-figure")) lb.close(); });
+      lb.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") { e.preventDefault(); lb._show(lb._index - 1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); lb._show(lb._index + 1); }
+      });
+      let touchX = null;
+      lb.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener("touchend", (e) => {
+        if (touchX == null) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        touchX = null;
+        if (Math.abs(dx) > 40) lb._show(lb._index + (dx < 0 ? 1 : -1));
+      });
+      lb.addEventListener("close", () => {
+        document.documentElement.classList.remove("lightbox-open");
+        if (lb._opener && document.contains(lb._opener)) lb._opener.focus();
+      });
+    }
+    const lb = lightbox;
+    const img = lb.querySelector(".lightbox-img");
+    const many = photos.length > 1;
+    lb.querySelector(".lightbox-prev").hidden = !many;
+    lb.querySelector(".lightbox-next").hidden = !many;
+    lb.querySelector(".lightbox-title").textContent = title || "";
+    lb.setAttribute("aria-label", `${title || "Event"} photos`);
+    lb._opener = opener;
+    lb._show = (n) => {
+      lb._index = (n + photos.length) % photos.length;
+      img.src = resolveImg(photos[lb._index]);
+      img.alt = `${title ? title + ", " : ""}photo ${lb._index + 1} of ${photos.length}`;
+      lb.querySelector(".lightbox-count").textContent = many ? `${lb._index + 1} / ${photos.length}` : "";
+      if (many) new Image().src = resolveImg(photos[(lb._index + 1) % photos.length]); // preload the next one
+    };
+    lb._show(0);
+    document.documentElement.classList.add("lightbox-open");
+    lb.showModal();
   }
 
   /* Photo gallery */

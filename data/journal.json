@@ -1,10 +1,32 @@
 {
   "posts": [
     {
+      "title": "Alumni Reunion 2026",
+      "date": "2026-10-03",
+      "category": "alumni",
+      "location": "The Beer Hog, Pelham",
+      "cover": "assets/images/events/2026-alumni-reunion-1.jpg",
+      "excerpt": "Brothers, spouses, and friends from across the decades got together at The Beer Hog in Pelham for our annual alumni reunion.",
+      "photos": [
+        "assets/images/events/2026-alumni-reunion-1.jpg",
+        "assets/images/events/2026-alumni-reunion-2.jpg",
+        "assets/images/events/2026-alumni-reunion-3.jpg",
+        "assets/images/events/2026-alumni-reunion-4.jpg"
+      ],
+      "link": ""
+    },
+    {
       "title": "Alumni Tailgate 2025",
       "date": "2025-10-18",
+      "category": "alumni",
+      "location": "The chapter house",
       "cover": "assets/images/backgrounds/alumni_tailgate_2025_wide.JPG",
       "excerpt": "Brothers and alumni from five decades of Beta Zeta got together on the Plains for our annual tailgate, with good food and plenty of old stories.",
+      "photos": [
+        "assets/images/backgrounds/alumni_tailgate_2025_wide.JPG",
+        "assets/images/dynamic/alumni_tailgate_2025_tall_edited.jpg",
+        "assets/images/dynamic/alumni-tailgate-banner.jpg"
+      ],
       "link": ""
     },
     {

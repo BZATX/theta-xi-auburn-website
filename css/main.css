@@ -1175,6 +1175,97 @@ main.hero-only::after {
 }
 .journal-body h3 { font-size: 1.22rem; font-weight: 600; margin-bottom: 0.6rem; }
 .journal-body p { font-size: 0.93rem; flex: 1; }
+.journal-place {
+  display: block;
+  margin: -0.3rem 0 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-low);
+}
+.journal-cover.has-photos { cursor: pointer; }
+/* "View photos" is a button styled like the other card links */
+.journal-photos-btn {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.journal-photos-btn + .card-link { margin-top: 0.6rem; }
+/* Alumni event archive: centers the cards while there are only one or two */
+.event-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 370px));
+  justify-content: center;
+}
+
+/* Photo viewer (opened from "View photos" on a journal card) */
+html.lightbox-open { overflow: hidden; }
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+}
+.lightbox::backdrop { background: rgba(2, 12, 26, 0.92); }
+.lightbox-figure {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 4rem 4.5rem 1.5rem;
+}
+.lightbox-img {
+  max-width: 100%;
+  max-height: calc(100dvh - 9rem);
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.lightbox-caption {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+}
+.lightbox-count { margin-left: 0.6rem; color: rgba(255, 255, 255, 0.65); }
+.lightbox-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.lightbox-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.lightbox-btn[hidden] { display: none; }
+.lightbox :focus-visible { outline-color: #fff; }
+.lightbox-close { top: 1rem; right: 1rem; font-size: 1.8rem; }
+.lightbox-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+.lightbox-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+@media (max-width: 680px) {
+  /* Phones: photo uses the full width; arrows sit below it */
+  .lightbox-figure { padding: 4rem 0.75rem 5.5rem; }
+  .lightbox-img { max-height: calc(100dvh - 12rem); }
+  .lightbox-prev, .lightbox-next { top: auto; bottom: 1.2rem; transform: none; }
+  .lightbox-prev { left: calc(50% - 3.6rem); }
+  .lightbox-next { right: calc(50% - 3.6rem); }
+}
 
 /* Timeline (history) */
 .timeline {
@@ -1674,6 +1765,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .hero { min-height: calc(92svh - 3rem + var(--sheet-x)); padding-bottom: calc(var(--sheet-x) + 5rem); }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
+  .journal-card { padding: 0; } /* photo runs edge to edge, as on desktop */
 }
 
 /* ============================================================
