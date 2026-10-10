@@ -576,6 +576,8 @@ main { display: block; }
 /* Current page / hover: brand blue text; the orange marker bar stays as the accent */
 .mobile-drawer .drawer-group > a:not(.btn):hover,
 .mobile-drawer .drawer-group > a.active { color: var(--azure-text); }
+/* Deeper orange bar on the current page so it stands out at 3:1+ (the text colour alone doesn't) */
+.mobile-drawer .drawer-group > a.active::before { background: var(--orange-text); }
 .mobile-drawer .btn { width: 100%; margin-top: 1rem; color: #fff; }
 
 .drawer-scrim {
