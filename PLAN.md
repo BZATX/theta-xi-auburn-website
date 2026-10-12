@@ -1,64 +1,100 @@
-# Theta Xi Auburn Website — Living Plan
+# Theta Xi Auburn Website: Plan
 
-This document tracks completed work and future tasks for the Beta Zeta chapter
-website. It serves as a unified roadmap for both webmasters to coordinate on.
+Completed work and future ideas for the Beta Zeta chapter website. For the
+current state, what's waiting to go live, and short-term to-dos, see
+[`HANDOFF.md`](HANDOFF.md).
 
-## 2026 Redesign (glassmorphism rebuild)
-- [x] Full visual redesign: hero → audience cards (Students / Parents /
-      Alumni) → stats → Explore pages → Journal.
-- [x] Light & airy glassmorphism design system in `css/main.css` — white,
-      silver, and Theta Xi azure with navy photo overlays/footer and Auburn
-      orange actions (frosted nav, glass cards, blended gradient sections,
-      scroll reveals, count-up stats, reduced-motion support).
-- [x] Square favicon + apple-touch-icon generated from the crest.
-- [x] Navigation: Home · Explore ▾ (About, Why Theta Xi, History,
-      Philanthropy, Brotherhood, Parents, Alumni) · Members · Journal · Donate ·
-      Join CTA — with a sliding glass drawer on mobile.
-- [x] Shared navbar/footer extracted to `js/layout.js` so every page stays in sync.
-- [x] All 12 legacy pages carried over and restyled; new `why-theta-xi.html`
-      page added.
-- [x] OpenGraph tags on every page for rich link previews in iMessage/GroupMe.
+## 2026 redesign (done)
 
-## Backend / chapter self-service (done)
-- [x] Content moved to `data/*.json`: exec board bios, notable alumni, journal
-      posts, photo gallery, chapter stats & contacts.
-- [x] `/admin` chapter panel: GitHub-token login, edit/add/reorder/delete
-      entries, upload photos (auto-resized to 1600px JPEG), one-click
-      "Save & Publish" that commits to this repo and triggers a redeploy.
-- [x] **Decision:** content updates flow through the alumni board — the
-      chapter sends headshots/bios/photos to the board, and a board member
-      applies them via a Claude Code session (workflow documented in README).
-      Undergrads are not repo collaborators; the `/admin` panel remains as a
-      board-only backup editor.
-- [ ] Add officer bios (plus majors/hometowns) to `data/members.json` —
-      photos and roles are already live; the chapter owes bios by
-      **June 15, 2026 at 5:00 PM**.
+- [x] Full visual redesign. Home page: top photo → stats → audience cards
+      (Incoming Students / Parents / Alumni) → A Home For All True Men →
+      four pillars → purpose quote → Meet the Officers (4) → News From the
+      Chapter (3) → Instagram → map → call to action.
+- [x] Light glass design system in `css/main.css`: white, silver and Theta Xi
+      azure with navy photo overlays and footer, Auburn orange buttons,
+      rounded page "sheet" over the top photo, scroll reveals, count-up
+      stats, reduced-motion support and automatic dark mode.
+- [x] Navigation: Home · Explore ▾ (About Us, Why Theta Xi, Recruitment,
+      Meet the Officers, Our History, Philanthropy, Brotherhood, For
+      Parents) · Scholarships · Social · Alumni · Donate · Rush button ·
+      Instagram. On phones it's a sliding menu with Explore and Chapter
+      groups.
+- [x] Shared navbar and footer in `js/layout.js`, so every page stays in sync.
+- [x] Legacy pages carried over and restyled; `why-theta-xi.html` added.
+      Later, the rush form moved from `join.html` to `recruitment.html`, and
+      the Service page was folded into `philanthropy.html`; `_redirects`
+      forwards the old addresses.
+- [x] Link previews (OpenGraph tags) on every page.
+- [x] Beta Zeta house-mark branding (Sept 2026): browser-tab and home-screen
+      icons, web manifest, link-preview image, footer seal, Donate wordmark,
+      Parents address card. The old crest icons in
+      `assets/images/system/` are no longer used.
 
-## Functionality & content
+## Content workflow (done)
+
+- [x] Content moved to `data/*.json`: officers, notable alumni, news posts,
+      photo gallery, home stats, Instagram picks.
+- [x] `/admin` browser editor with GitHub-token login; edits and photo
+      uploads commit straight to `main`.
+- [x] **Decision:** content updates go through the alumni board. The chapter
+      sends headshots, bios and photos to the board, and a board member
+      applies them in a Claude Code session (see README). Undergraduates
+      are not repo collaborators; `/admin` is a board-only backup.
+- [x] Site copied into a new repository owned by the `BZATX` GitHub
+      organization (Sept 22, 2026). Earlier history is in the old
+      `theta-xi-auburn-website-archive` repository.
+- [x] Officer bios, majors and hometowns in `data/members.json` for all 7
+      officers (photos in `assets/images/portraits/officers-2026/`).
+
+## Functionality and content
+
 - [x] **Alumni "Update Your Info":** on-site Netlify form
-      (`pages/update-info.html`) replacing the legacy personal-account
-      Google Form. Email notification to `betazetatxalumni@gmail.com`
-      configured in Netlify (June 2026). Remaining: paste the v3.3
-      instruction block (Drive runbook) into the recurring Claude task.
-- [x] **Rush form (Netlify Forms):** wired up and live — form detection
-      enabled and email notification for `rush-interest` submissions to
-      `thetaxibz@gmail.com` configured in Netlify (June 2026).
-- [ ] **History polish:** add historical chapter photos, vintage t-shirts, and
-      old composites to `history.html` / the gallery.
-- [ ] **Brotherhood galleries:** photograph and upload event categories via the
-      admin panel — parties/formals, outdoors trips, intramurals, swaps.
-- [x] **Real campus photos:** replaced the four AI-generated "Auburn b-roll"
-      images with public-domain Library of Congress photographs (Carol M.
-      Highsmith) of Samford Hall, Hargis Hall, Toomer's Corner, and the
-      campus eagle statue. Credits in README.
-- [ ] **Real photos (philanthropy):** the MS Society and Habitat images are
-      still AI-generated; replace with real event photography when available.
+      (`pages/update-info.html`, form `alumni-update`) replacing the old
+      Google Form. Emails go to `betazetatxalumni@gmail.com`, where the
+      board's Alumni Inbox Monitor automation processes them (runbook in
+      Drive).
+- [x] **Rush form:** Netlify form `rush-interest`, with email notifications
+      to `thetaxibz@gmail.com`.
+- [x] **Form messages fixed** (Sept 30, 2026): the thank-you and error messages
+      now work on the published site (`data-ajax-submit`).
+- [x] **Real photos:** Taxi Bash 2025 and Habitat build-day photos on the
+      Philanthropy page; Library of Congress photo of Hargis Hall.
+- [x] **Plain-language pass** (Sept 2026): removed AI-sounding copy and
+      claims the site couldn't support.
+- [x] **Fact corrections** (Sept 30, 2026): James Voss spacewalk record, Jimmy
+      Rane's title, recruitment timing, and sourced retention and
+      graduation stats on the Recruitment page.
+- [x] **Accessible colors** (Sept 30 to Oct 9, 2026): deeper orange
+      buttons; small text links changed from dark orange to brand blue
+      (measured 4.74:1 or better in light mode, 5.32:1 in dark). The phone
+      menu fix is waiting to publish; see HANDOFF.md for what's still open.
+- [x] **Alumni event archive** (Oct 2026): "Past Alumni Events" on the
+      Alumni page with a full-screen photo viewer; news posts can carry a
+      photo set.
+- [x] **Instagram:** Instagram's own free post embeds on the Social and
+      Brotherhood pages; picks live in `data/instagram.json`. Refresh twice a
+      year.
+- [ ] **History:** add historical chapter photos, vintage shirts and old
+      composites to the History page.
+- [ ] **Brotherhood gallery:** collect event photos (formals, trips,
+      intramurals, swaps) in the Drive "Website Pictures" folder and add them
+      to `data/gallery.json`. Separate galleries per event type would need a
+      small code change.
+- [ ] **Photo sources:** confirm where `auburn-sign.jpg`,
+      `jordan-hare-stadium.jpg`, `jordan-hare-dusk.jpg`, the alumni
+      portraits, the Founding Fathers composite (`dynamic/FoundingFathers.png`),
+      the house rendering and the employer logos came from, then credit or
+      replace them.
+- [ ] **Admin panel catch-up:** let `/admin` edit a post's location, photos
+      and category; update its hints, which still mention a "Members page",
+      a "Service page" and a "Notable Alumni page".
 
-## Pro-level enhancements (future)
-- [ ] Motion: drone shot or video loop for the homepage hero background.
-- [ ] Google Calendar embed for rush dates, philanthropy events, and tailgates.
-- [x] Instagram on the Journal page: official free post embeds, no widget
-      vendor. Board-picked posts live in `data/instagram.json`; refresh
-      biannually (or as needed) by swapping the URLs.
-- [ ] Google Analytics 4 to monitor traffic during rush week.
-- [ ] Brotherhood testimonial carousel (quotes from alumni and recent grads).
+## Possible future additions
+
+- [ ] Video loop or drone shot behind the home page's top photo.
+- [ ] Google Calendar embed for rush dates, philanthropy events and
+      tailgates.
+- [ ] Visitor analytics during rush week.
+- [ ] Brotherhood testimonials (quotes from alumni and recent grads).
+- [ ] Show `chapter.json`'s contact fields on the site, or remove them, so
+      there's one place to change contact details.
