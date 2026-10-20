@@ -1,34 +1,33 @@
 # Website handoff: current state
 
-**Last updated: Oct 11, 2026.** Update this file at the end of any work
+**Last updated: Oct 20, 2026.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time.
 
 ## At a glance
 
-- **Live site:** `main` at `d496d10` (published Oct 9, 2026).
-- **Waiting to go live:** the commits on `claude/great-sagan-6b17gi` listed
-  below. The plan is to publish them together on or after **Oct 20, 2026**,
-  once Netlify credits are available again.
-- **Why the wait:** the Netlify account ran out of credits on Oct 9 after 14
+- **Live site:** `main` at `43ba463` (pushed Oct 20, 2026). The Claude
+  session can't reach auburnthetaxi.com, so the owner checks the live pages
+  after a publish. As of this update, that check for the Oct 20 publish
+  hadn't been reported.
+- **Waiting to go live:** nothing that changes the site. This file's own
+  update sits on the development branch and goes out with the next publish.
+- **Netlify credits:** the account ran out of credits on Oct 9 after 14
   separate publishes between Sept 22 and Oct 9 (11 in September, 3 in
-  October). Each push to `main` is a paid "production deploy"; previews of
-  other branches are free. Publish in batches from now on.
-- **Reminder:** a reminder to publish is scheduled in the owner's Claude Code
-  session for Oct 20, 2026, 10:00 AM Eastern (9:00 AM Central). It only
-  appears inside that session.
+  October), and publishing resumed Oct 20. Each push to `main` is a paid
+  "production deploy"; previews of other branches are free. Publish in
+  batches.
 
-## Waiting on the development branch (not live yet)
+## Last publish (Oct 20, 2026)
 
-Compare with `git log --oneline origin/main..origin/claude/great-sagan-6b17gi`.
-As of Oct 11:
+One push to `main`, moving it from `d496d10` to `43ba463`:
 
 | Commit | Change |
 | --- | --- |
 | `70fc306` | Removes the "Welcome, New Associate Members" news post. It used an alumni tailgate photo as a stand-in; there is no photo of the new member class. |
 | `837e3c8` | Phone menu: the current page and hovered items are blue instead of bright orange (which failed contrast at about 2.6 to 3:1), and the menu background is a little more solid so the blue passes over dark photos. Officer email links are blue and stay blue on hover. |
 | `abcec2c` | Phone menu: the current page's marker bar uses the deeper orange so it stands out (5.1:1 or better). |
-| docs commit | This file, `CLAUDE.md`, corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
+| `43ba463` | This file, `CLAUDE.md`, corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
 
 ### Publishing checklist
 
@@ -37,13 +36,11 @@ As of Oct 11:
    `git log --oneline origin/claude/great-sagan-6b17gi..origin/main` should
    print nothing. If it prints commits (someone saved in `/admin`), merge
    `origin/main` into the development branch first.
-3. Review the list above with the owner, then push the development branch to
-   `main` once.
-4. A few minutes later, check on the live site, on a phone and a laptop:
-   - Social page and home page: the new-member post is gone.
-   - Phone menu (☰): the current page shows in blue with an orange bar.
-   - Meet the Officers: email links are blue, underline on hover.
-   - Alumni page: "Past Alumni Events" still works, and "View photos" opens.
+3. Review what's waiting with the owner
+   (`git log --oneline origin/main..origin/claude/great-sagan-6b17gi`), then
+   push the development branch to `main` once.
+4. A few minutes later, check the changed pages on the live site, on a phone
+   and a laptop.
 5. If a page looks unstyled or old, refresh once; the stylesheet version
    bump should handle returning visitors.
 6. Update this file.
