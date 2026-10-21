@@ -1495,8 +1495,9 @@ html.lightbox-open { overflow: hidden; }
 }
 textarea.form-control { min-height: 130px; resize: vertical; }
 
+/* The message box stays in the page (empty and zero-height until a message
+   arrives) so screen readers are already listening when it is filled. */
 .form-status {
-  display: none;
   margin-top: 1.4rem;
   padding: 1rem 1.2rem;
   border-radius: var(--radius-sm);
@@ -1504,14 +1505,13 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   text-align: center;
   border: 1px solid transparent;
 }
+.form-status:empty { margin: 0; padding: 0; border: 0; }
 .form-status.success {
-  display: block;
   color: #1b5e20;
   background: rgba(220, 245, 225, 0.85);
   border-color: rgba(60, 160, 90, 0.4);
 }
 .form-status.error {
-  display: block;
   color: #b02a2a;
   background: rgba(253, 232, 232, 0.9);
   border-color: rgba(220, 100, 100, 0.45);

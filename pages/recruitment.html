@@ -217,31 +217,32 @@
                 data-success="Thank you! Our Recruitment Chairman will reach out shortly."
                 data-error="There was an issue submitting the form. Please email thetaxibz@gmail.com directly.">
             <input type="hidden" name="form-name" value="rush-interest">
-            <p class="form-legend">Fields marked <span class="req" aria-hidden="true">*</span> are required.</p>
+            <p class="form-legend">Fields marked <span class="req" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
             <div class="form-grid">
               <div class="form-group">
                 <label for="rf-first">First Name <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="rf-first" name="firstName" class="form-control" placeholder="John" required>
+                <input type="text" id="rf-first" name="firstName" class="form-control" placeholder="John" autocomplete="given-name" required>
               </div>
               <div class="form-group">
                 <label for="rf-last">Last Name <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="rf-last" name="lastName" class="form-control" placeholder="Doe" required>
+                <input type="text" id="rf-last" name="lastName" class="form-control" placeholder="Doe" autocomplete="family-name" required>
               </div>
               <div class="form-group">
                 <label for="rf-email">Email Address <span class="req" aria-hidden="true">*</span></label>
-                <input type="email" id="rf-email" name="email" class="form-control" placeholder="johndoe@auburn.edu" required>
+                <input type="email" id="rf-email" name="email" class="form-control" placeholder="johndoe@auburn.edu" autocomplete="email" required>
               </div>
               <div class="form-group">
                 <label for="rf-phone">Phone Number <span class="req" aria-hidden="true">*</span></label>
-                <input type="tel" id="rf-phone" name="phone" class="form-control" placeholder="(555) 555-5555" required>
+                <input type="tel" id="rf-phone" name="phone" class="form-control" placeholder="(555) 555-5555" autocomplete="tel" required>
               </div>
               <div class="form-group">
                 <label for="rf-hs">High School <span class="req" aria-hidden="true">*</span></label>
                 <input type="text" id="rf-hs" name="highSchool" class="form-control" placeholder="Hometown High" required>
               </div>
               <div class="form-group">
-                <label for="rf-gpa">GPA <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="rf-gpa" name="gpa" class="form-control" placeholder="3.8" required>
+                <label for="rf-gpa">GPA (high school, or Auburn GPA if already enrolled) <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="rf-gpa" name="gpa" class="form-control" placeholder="3.8" inputmode="decimal" autocomplete="off"
+                       pattern="[0-4]([.,][0-9]{1,3})?|5([.,]0{1,3})?" data-invalid-msg="Enter your GPA as a number from 0 to 5, such as 3.8." required>
               </div>
               <div class="form-group full">
                 <label for="rf-interest">Why are you interested in joining Theta Xi?</label>
@@ -257,7 +258,7 @@
 
             <p style="margin-top:1.4rem; font-size:0.8rem; color:var(--text-low);">We use this only to contact you about rush. We never sell or share your information. See our <a href="privacy.html" class="text-link">privacy policy</a>.</p>
             <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Submit Interest Form</button>
-            <div id="form-status" class="form-status" role="status"></div>
+            <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
           </form>
         </div>
       </div>
