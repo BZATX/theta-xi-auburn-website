@@ -1,7 +1,43 @@
+# Response headers Netlify adds to the site (Netlify reads this file).
+
+# Security headers for every file.
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  X-XSS-Protection: 1; mode=block
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Content Security Policy for the public pages, in test ("report only") mode:
+# a browser lists anything outside it in the developer console but blocks
+# nothing. It allows what the pages really load: our own files, Google Fonts,
+# the Instagram embeds and their script, the Google Maps embeds, and the
+# inline styles the pages use. Once the live site's console stays clean, it
+# can be enforced by renaming the header to Content-Security-Policy.
+# Keep these four copies identical.
+/
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
+/index.html
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
+/404.html
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
+/pages/*
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
+
+# The admin editor holds a GitHub key, so its policy is enforced: scripts only
+# from this site, and the only outside address it may send data to is GitHub's
+# API. X-Robots-Tag keeps it out of search results (robots.txt leaves it
+# crawlable so search engines can see this).
+/admin/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'; manifest-src 'self'
+  X-Robots-Tag: noindex, nofollow
+
+# Caching. Browsers may keep photos and other images for a day. The
+# stylesheet is linked as main.css?v=N and N changes with every edit, so it
+# can be kept for a week. Scripts (js/) and content files (data/) have no
+# version number, so they are left out on purpose: browsers re-check them on
+# every visit, and edits show up right away.
+/assets/*
+  Cache-Control: public, max-age=86400
+/css/*
+  Cache-Control: public, max-age=604800

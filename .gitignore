@@ -2,3 +2,10 @@
 *.swp
 .vscode/
 .idea/
+
+# Local secrets, Netlify CLI state, and downloaded form submissions
+# (rush and alumni form exports are personal data: never commit them)
+.env
+.env.*
+.netlify/
+*.csv

@@ -1380,6 +1380,9 @@ html.lightbox-open { overflow: hidden; }
   background-size: cover;
   background-position: center;
 }
+/* A banner photo that loads on scroll (data-bg, see js/main.js) sits on navy
+   until it arrives, so the white text over it keeps its contrast. */
+.cta-banner .cta-bg[data-bg] { background-color: var(--navy); }
 .cta-banner::after {
   content: "";
   position: absolute;
