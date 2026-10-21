@@ -17,6 +17,9 @@
   margin-bottom: 2rem;
 }
 .admin-header .brand img { height: 52px; }
+/* main.css styles the subtitle for the navbar over a photo (near-white);
+   here it sits on the plain page background */
+.admin-header .brand-sub { color: var(--text-mid); text-shadow: none; }
 .admin-header-actions { display: flex; gap: 0.6rem; }
 
 .btn-sm { padding: 0.55rem 1.2rem; font-size: 0.78rem; }
@@ -32,12 +35,14 @@
   font-size: 0.92rem;
   color: var(--text-mid);
 }
+.remember-hint { font-size: 0.85rem; color: var(--text-low); margin: 0.35rem 0 0; }
+#login-status .form-status { text-align: left; }
 
 .token-help { margin-top: 2rem; }
 .token-help summary {
   cursor: pointer;
   font-weight: 600;
-  color: var(--azure);
+  color: var(--azure-text);
 }
 .token-help ol {
   margin: 1rem 0 0 1.3rem;
@@ -78,8 +83,21 @@
 .admin-tab:hover { color: var(--navy); background: rgba(3, 36, 77, 0.07); }
 .admin-tab.active {
   color: #fff;
-  background: linear-gradient(120deg, var(--orange), var(--orange-bright));
+  /* same deep orange as .btn-primary: white text stays above 4.5:1 */
+  background: linear-gradient(120deg, #b23909, #c94a08);
   border-color: transparent;
+}
+/* Dot after a tab name = that tab has unsaved changes (drawn with a border so
+   it also shows in Windows high-contrast mode) */
+.dirty-mark::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 0.25rem solid currentColor;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  vertical-align: 0.1em;
 }
 
 .admin-panel-head {
@@ -92,6 +110,24 @@
 }
 .admin-panel-actions { display: flex; gap: 0.6rem; }
 .section-hint { font-size: 0.9rem; color: var(--text-low); max-width: 520px; }
+.section-hint .req { margin-left: 0; }
+
+/* Unsaved-changes note and messages that stay until the next action */
+.unsaved-note {
+  margin: -0.6rem 0 1.2rem;
+  padding: 0.2rem 0 0.2rem 0.8rem;
+  border-left: 3px solid var(--orange);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+#save-status .form-status { margin: 0 0 1.4rem; text-align: left; }
+.form-status ul { list-style: disc; margin: 0.5rem 0 0 1.3rem; font-weight: 500; }
+.form-status a { color: inherit; text-decoration: underline; }
+.form-status .btn { margin-top: 0.8rem; }
+.status-detail { display: block; margin-top: 0.4rem; font-weight: 400; font-size: 0.88rem; }
+.admin-empty { color: var(--text-low); }
+.admin-items .form-control[aria-invalid="true"] { border-color: #b02a2a; border-width: 2px; }
 
 /* Item cards */
 .admin-items { display: grid; gap: 1.1rem; }
@@ -130,7 +166,7 @@
   transition: var(--transition-fast);
 }
 .icon-btn:hover { color: var(--navy); background: rgba(3, 36, 77, 0.12); }
-.icon-btn.danger:hover { background: rgba(200, 40, 40, 0.7); color: #fff; }
+.icon-btn.danger:hover { background: #b3261e; color: #fff; }
 
 .admin-fields {
   display: grid;
@@ -184,4 +220,23 @@
 @media (max-width: 640px) {
   .admin-fields { grid-template-columns: 1fr; }
   .admin-panel-head { flex-direction: column; }
+}
+
+/* Dark mode (follows the device setting, like the rest of the site).
+   The light-mode panels above are see-through white, which turned into a
+   pale grey box behind light text. */
+@media (prefers-color-scheme: dark) {
+  .admin-item { background: rgba(255, 255, 255, 0.04); }
+  .admin-tab:not(.active):hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+  .icon-btn { background: rgba(255, 255, 255, 0.06); }
+  .icon-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+  .icon-btn.danger:hover { background: #b3261e; color: #fff; }
+  .image-thumb { background-color: rgba(255, 255, 255, 0.06); }
+  .token-help code { background: rgba(255, 255, 255, 0.1); }
+  .admin-items .form-control[aria-invalid="true"] { border-color: #ff8a8a; }
+}
+
+/* Windows high-contrast mode: keep the open tab visible */
+@media (forced-colors: active) {
+  .admin-tab.active { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
 }
