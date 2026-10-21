@@ -168,9 +168,11 @@
   toTop.innerHTML =
     '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>';
   document.body.appendChild(toTop);
-  toTop.addEventListener("click", () =>
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  );
+  // Scroll smoothly, except for visitors who have asked their device to reduce motion.
+  toTop.addEventListener("click", () => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+  });
   const toggleToTop = () => toTop.classList.toggle("show", window.scrollY > 600);
   window.addEventListener("scroll", toggleToTop, { passive: true });
   toggleToTop();

@@ -613,7 +613,7 @@ main { display: block; }
   background-size: cover;
   background-position: center;
   transform: scale(1.04);
-  animation: heroDrift 22s ease-in-out infinite alternate;
+  animation: heroDrift 22s ease-in-out forwards; /* plays once, then holds */
 }
 @keyframes heroDrift {
   from { transform: scale(1.04) translateY(0); }
@@ -1748,6 +1748,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .hero-bg { animation: none; } /* top photos stay still */
 }
 
 /* ============================================================
