@@ -1148,6 +1148,7 @@ main.hero-only::after {
   height: 300px;
   background-size: cover;
   background-position: center 20%;
+  background-color: rgba(0, 114, 206, 0.06); /* placeholder tint when there's no photo */
   border-bottom: 1px solid var(--glass-border);
 }
 .alumni-body { padding: 1.6rem 1.7rem 1.8rem; flex: 1; display: flex; flex-direction: column; }
@@ -1205,6 +1206,17 @@ main.hero-only::after {
 .event-grid {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 370px));
   justify-content: center;
+}
+/* "Couldn't load" note shown in place of a card grid when its data file fails
+   (officers, alumni, news, gallery, Instagram). Spans the whole flex or grid row. */
+.load-error {
+  flex: 1 1 100%;
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-mid);
 }
 
 /* Photo viewer (opened from "View photos" on a journal card) */

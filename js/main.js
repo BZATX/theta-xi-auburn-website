@@ -173,8 +173,69 @@ document.addEventListener("DOMContentLoaded", () => {
     String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-  const cssUrl = (s) => String(s == null ? "" : s).replace(/["'\\]/g, "");
-  const resolveImg = (p) => (/^https?:\/\//.test(p || "") ? p : ROOT + (p || ""));
+  // Photo paths go inside CSS url('…'). Percent-encode the characters that would
+  // end the string or the url() (quotes, brackets, backslash, spaces) rather than
+  // dropping them, so a file name like "o'neill.jpg" still loads.
+  const cssUrl = (s) =>
+    String(s == null ? "" : s)
+      .replace(/%(?![0-9a-f]{2})/gi, "%25")
+      .replace(/["'()\\\s]/g, (c) => ({ "'": "%27", "(": "%28", ")": "%29" })[c] || encodeURIComponent(c));
+  // Repo-relative paths ("assets/images/…") get the page's ROOT; full addresses
+  // and site-absolute paths ("/assets/…") are used as typed.
+  const resolveImg = (p) => (/^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(p || "") ? p : ROOT + (p || ""));
+  // style="…" for a card's photo box, or nothing when there's no photo, so the
+  // box shows its plain placeholder tint instead of loading the page as an image.
+  const bgImage = (p) => {
+    const path = String(p == null ? "" : p).trim();
+    return path ? ` style="background-image:url('${esc(cssUrl(resolveImg(path)))}')"` : "";
+  };
+
+  /* Links typed into the JSON (or the /admin editor) are cleaned up before use:
+     "www.example.com" or "example.com/page" gets https://, an email address gets
+     mailto:, a site page such as "update-info.html" or "pages/donate.html" works
+     from every page, and only links to other sites open in a new tab. Any other
+     scheme (javascript: and the like) is dropped. */
+  function cleanLink(raw) {
+    let href = String(raw == null ? "" : raw).trim();
+    if (!href) return null;
+    const host = href.split(/[/?#]/)[0];
+    if (/^[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?$/i.test(host) && !/\.(html?|pdf|jpe?g|png|gif|webp|svg|json|txt)$/i.test(host)) {
+      href = "https://" + href; // a bare domain, e.g. www.linkedin.com/in/…
+    } else if (href.startsWith("//")) {
+      href = "https:" + href;
+    } else if (/^[a-z][a-z0-9+.-]*:/i.test(href)) {
+      if (/^(mailto|tel|sms):/i.test(href)) return { href, newTab: false };
+      if (!/^https?:/i.test(href)) return null;
+    } else if (/^[^\s@/]+@[^\s@/]+\.[a-z]{2,}$/i.test(href)) {
+      return { href: "mailto:" + href, newTab: false };
+    } else {
+      // One of the site's own pages or files. A bare "name.html" is a page in
+      // pages/; other paths are repo-relative, like photo paths.
+      if (!/^(\/|#|\?|\.\.?\/)/.test(href)) {
+        const path = href.split(/[?#]/)[0];
+        const inPages = !path.includes("/") && /\.html?$/i.test(path) && !/^(index|404)\.html?$/i.test(path);
+        href = ROOT + (inPages ? "pages/" : "") + href;
+      }
+      return { href, newTab: false };
+    }
+    let url;
+    try { url = new URL(href); } catch (e) { return null; }
+    const site = (h) => h.toLowerCase().replace(/^www\./, "");
+    return { href: url.href, newTab: site(url.hostname) !== site(location.hostname) };
+  }
+  // <a> for a cleaned link (inner is already-escaped HTML), or "" when there's no usable link.
+  const linkHtml = (raw, cls, inner) => {
+    const link = cleanLink(raw);
+    if (!link) return "";
+    return `<a class="${cls}" href="${esc(link.href)}"${link.newTab ? ' target="_blank" rel="noopener"' : ""}>${inner}</a>`;
+  };
+
+  /* When a data file can't load, say so where its cards would go instead of
+     leaving a blank space under the heading. */
+  const mailLink = (addr) => `<a class="text-link" href="mailto:${esc(addr)}">${esc(addr)}</a>`;
+  const showLoadError = (mount, message) => {
+    mount.innerHTML = `<p class="load-error">${message}</p>`;
+  };
 
   async function loadData(name) {
     try {
@@ -219,7 +280,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const igMount = document.querySelector("[data-instagram]");
   if (igMount) {
     loadData("instagram").then((data) => {
-      if (!data || !Array.isArray(data.posts) || !data.posts.length) return;
+      if (!data || !Array.isArray(data.posts)) {
+        showLoadError(igMount, `The Instagram posts couldn't load. Please refresh the page, or see them at <a class="text-link" href="https://www.instagram.com/authetaxi/" target="_blank" rel="noopener">@authetaxi</a>.`);
+        return;
+      }
+      if (!data.posts.length) return;
       igMount.innerHTML = data.posts
         .map((url) => {
           const clean = esc(String(url).split("?")[0]);
@@ -245,13 +310,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (memberMount) {
     const limit = parseInt(memberMount.dataset.members, 10) || Infinity;
     loadData("members").then((data) => {
-      if (!data || !data.members) return;
+      if (!data || !Array.isArray(data.members)) {
+        showLoadError(memberMount, `The officer list couldn't load. Please refresh the page, or email ${mailLink("thetaxibz@gmail.com")}.`);
+        return;
+      }
       memberMount.innerHTML = data.members
         .slice(0, limit)
         .map(
           (m, i) => `
         <article class="glass-card member-card reveal d${(i % 4) + 1}">
-          <div class="member-photo" style="background-image:url('${cssUrl(resolveImg(m.photo))}')"></div>
+          <div class="member-photo"${bgImage(m.photo)}></div>
           <div class="member-body">
             <h3>${esc(m.name)}</h3>
             <span class="member-role">${esc(m.role)}</span>
@@ -271,17 +339,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const alumniMount = document.querySelector("[data-alumni]");
   if (alumniMount) {
     loadData("alumni").then((data) => {
-      if (!data || !data.alumni) return;
+      if (!data || !Array.isArray(data.alumni)) {
+        showLoadError(alumniMount, `The alumni list couldn't load. Please refresh the page, or email ${mailLink("betazetatxalumni@gmail.com")}.`);
+        return;
+      }
       alumniMount.innerHTML = data.alumni
         .map(
           (a, i) => `
         <article class="glass-card alumni-card reveal d${(i % 3) + 1}">
-          <div class="alumni-photo" style="background-image:url('${cssUrl(resolveImg(a.photo))}')"></div>
+          <div class="alumni-photo"${bgImage(a.photo)}></div>
           <div class="alumni-body">
             <h3>${esc(a.name)}</h3>
             <span class="member-role">${esc(a.role)}</span>
             <p>${esc(a.bio)}</p>
-            ${a.link ? `<a class="card-link" href="${esc(a.link)}" target="_blank" rel="noopener">${esc(a.linkLabel || "Learn more")} <span class="arrow">&rarr;</span></a>` : ""}
+            ${linkHtml(a.link, "card-link", `${esc(a.linkLabel || "Learn more")} <span class="arrow">&rarr;</span>`)}
           </div>
         </article>`
         )
@@ -297,7 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const category = journalMount.dataset.journalCategory;
     const section = journalMount.closest("[data-hide-if-empty]");
     loadData("journal").then((data) => {
-      if (!data || !data.posts) { if (section) section.hidden = true; return; }
+      if (!data || !Array.isArray(data.posts)) {
+        // The Alumni page's archive section just hides; elsewhere, say what happened.
+        if (section) section.hidden = true;
+        else showLoadError(journalMount, `The latest news couldn't load. Please refresh the page, or email ${mailLink("thetaxibz@gmail.com")}.`);
+        return;
+      }
       const posts = [...data.posts]
         .filter((p) => !category || p.category === category)
         .sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -308,16 +384,17 @@ document.addEventListener("DOMContentLoaded", () => {
             ? new Date(p.date + "T12:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
             : "";
           const photos = Array.isArray(p.photos) ? p.photos.filter(Boolean) : [];
+          const cover = bgImage(p.cover);
           return `
         <article class="glass-card journal-card reveal d${(i % 3) + 1}">
-          ${p.cover ? `<div class="journal-cover${photos.length ? " has-photos" : ""}" style="background-image:url('${cssUrl(resolveImg(p.cover))}')"></div>` : ""}
+          ${cover ? `<div class="journal-cover${photos.length ? " has-photos" : ""}"${cover}></div>` : ""}
           <div class="journal-body">
             ${date ? `<span class="journal-date">${esc(date)}</span>` : ""}
             <h3>${esc(p.title)}</h3>
             ${p.location ? `<span class="journal-place">${esc(p.location)}</span>` : ""}
             <p>${esc(p.excerpt)}</p>
             ${photos.length ? `<button type="button" class="card-link journal-photos-btn" data-post="${i}">View photos (${photos.length}) <span class="arrow">&rarr;</span></button>` : ""}
-            ${p.link ? `<a class="card-link" href="${esc(p.link)}" target="_blank" rel="noopener">Read more <span class="arrow">&rarr;</span></a>` : ""}
+            ${linkHtml(p.link, "card-link", `Read more <span class="arrow">&rarr;</span>`)}
           </div>
         </article>`;
         })
@@ -418,8 +495,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (galleryMount) {
     const filter = galleryMount.dataset.gallery; // optional category filter
     loadData("gallery").then((data) => {
-      if (!data || !data.photos) return;
-      const photos = filter ? data.photos.filter((p) => p.category === filter) : data.photos;
+      if (!data || !Array.isArray(data.photos)) {
+        showLoadError(galleryMount, `These photos couldn't load. Please refresh the page, or email ${mailLink("thetaxibz@gmail.com")}.`);
+        return;
+      }
+      // Skip entries with no photo file (they'd load the page itself as an image).
+      const photos = data.photos.filter((p) => p && String(p.src || "").trim() && (!filter || p.category === filter));
       galleryMount.innerHTML = photos
         .map(
           (p, i) => `
