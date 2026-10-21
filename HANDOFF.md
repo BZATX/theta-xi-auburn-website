@@ -1,35 +1,27 @@
 # Website handoff: current state
 
-**Last updated: Oct 20, 2026.** Update this file at the end of any work
+**Last updated: Oct 21, 2026.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time.
 
 ## At a glance
 
-- **Live site: still the Oct 9 version (`d496d10`).** `main` was pushed to
-  `43ba463` on Oct 20, 2026 at 4:45 PM Eastern, but Netlify skipped that
-  deploy ("a new one was scheduled for the same branch"), and the account's
-  credits hadn't reset yet. Netlify's production branch is confirmed as
-  `main`.
-- **Next step: publish from Netlify, not from git.** Once credits reset, go
-  to Netlify → Deploys → Trigger deploy → Deploy site. That publishes
-  `43ba463` with no new push. Then check the changed pages (list below).
-- **Waiting to go live:** everything in the table below, plus this file's
-  own updates, which sit on the development branch and go out with the next
-  publish after that.
-- **Netlify credits:** the account ran out of credits on Oct 9 after 14
-  separate publishes between Sept 22 and Oct 9 (11 in September, 3 in
-  October). As of Oct 20 evening they had not reset; the owner expects a
-  reset around midnight and will retry Oct 21. Each push to `main` is a paid
+- **Live site:** `main` at `d0ff607`, published Oct 21, 2026. The owner
+  confirmed the changes on the live site. (The Claude session can't reach
+  auburnthetaxi.com, so the owner does the live check after each publish.)
+- **Waiting to go live:** nothing that changes the site. Updates to this file
+  sit on the development branch and go out with the next publish.
+- **Netlify credits:** the account ran out on Oct 9 after 14 separate
+  publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
+  skipped by Netlify because the credits hadn't reset yet; after they reset,
+  a second push on Oct 21 published. Each push to `main` is a paid
   "production deploy"; previews of other branches are free. Publish in
-  batches.
+  batches. If a deploy is skipped, check credits first, then use Netlify →
+  Deploys → Trigger deploy → Deploy site rather than pushing again.
 
-## Pushed Oct 20, 2026, not yet published by Netlify
+## Last publish (Oct 21, 2026)
 
-One push to `main`, moving it from `d496d10` to `43ba463`. Check after
-publishing: the new-member post is gone from the Social and home pages; the
-phone menu shows the current page in blue with an orange bar; officer email
-links on Meet the Officers are blue with an underline on hover.
+`main` moved from `d496d10` (Oct 9) to `d0ff607`. The site changes:
 
 | Commit | Change |
 | --- | --- |
