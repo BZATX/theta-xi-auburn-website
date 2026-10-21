@@ -1127,9 +1127,9 @@ main.hero-only::after {
    room, then go one per row, so "Secretary" and "Treasurer" never break
    mid-word. Container queries measure the grid in its own text size, so
    they follow the browser's text-size setting too. At the default size
-   the first applies only below about 340px, the second never. */
+   the first applies only below about 350px, the second below about 310px. */
 .member-grid--compact { container-type: inline-size; }
-@container (max-width: 19.5em) {
+@container (max-width: 20.25em) {
   .member-grid--compact .member-body { padding-left: 0.4rem; padding-right: 0.4rem; }
   .member-grid--compact .member-role { letter-spacing: 0.06em; }
 }
@@ -1821,7 +1821,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 /* Very large text (about 150% or more on a phone): the header Rush button
    no longer fits beside the logo and the menu button, so it hides there.
    Rush stays in the menu. At normal text sizes this never applies. */
-@media (max-width: 16.5em) {
+@media (max-width: 17.5em) {
   .nav-cta-mobile { display: none; }
 }
 @media (max-width: 15em) {
@@ -1834,8 +1834,6 @@ textarea.form-control { min-height: 130px; resize: vertical; }
     letter-spacing: 0.04em;
     text-align: center;
   }
-  .glass-card:not(.member-card, .journal-card, .alumni-card) { padding-left: 1rem; padding-right: 1rem; }
-  .glass-card[style*="padding"] { padding-left: 1rem !important; padding-right: 1rem !important; } /* cards with their padding set in the page */
   .glass-card > * { min-width: 0; } /* a long heading wraps inside the card instead of pushing it wider */
   .eyebrow { letter-spacing: 0.16em; }
   .visit-distances .mi { white-space: normal; }
@@ -1844,15 +1842,17 @@ textarea.form-control { min-height: 130px; resize: vertical; }
    text size, so it also works when only the page's text is enlarged (some
    zoom and reading tools) and the media query above can't tell. */
 .nav-inner { container-type: inline-size; }
-@container (max-width: 15.5em) {
+@container (max-width: 16.5em) {
   .nav-cta-mobile { display: none; }
 }
 /* Large text (about 125% or more on a phone): officer cards drop their outer
    padding (the photo runs edge to edge, as on desktop) so the email and
    "Recruitment Chairman" fit without breaking mid-word. */
 @media (max-width: 17.5em) {
-  .member-card.glass-card { padding: 0; }
-  .member-body { padding-left: 1rem; padding-right: 1rem; }
+  .member-card.glass-card, .alumni-card.glass-card { padding: 0; }
+  .member-body, .alumni-body { padding-left: 1rem; padding-right: 1rem; }
+  .glass-card:not(.member-card, .journal-card, .alumni-card) { padding-left: 1rem; padding-right: 1rem; }
+  .glass-card[style*="padding"] { padding-left: 1rem !important; padding-right: 1rem !important; } /* cards with their padding set in the page */
   .stats-grid { grid-template-columns: 1fr; }
 }
 
@@ -2198,16 +2198,18 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 
   /* Photos that load on scroll and haven't arrived yet are left out, rather
      than printing as empty boxes (js/main.js marks loaded ones "bg-ready").
-     A grid of cards prints all its photos or none. Without JavaScript the
-     photos are always there, so this doesn't apply. */
-  @media (scripting: enabled) {
-    .member-photo[data-bg]:not(.bg-ready), .alumni-photo[data-bg]:not(.bg-ready),
-    .journal-cover[data-bg]:not(.bg-ready) { display: none !important; }
-    .split-media:has(> [data-bg]:not(.bg-ready)) { display: none !important; }
-    .member-grid:has(.member-photo[data-bg]:not(.bg-ready)) .member-photo,
-    .alumni-grid:has(.alumni-photo[data-bg]:not(.bg-ready)) .alumni-photo,
-    .journal-grid:has(.journal-cover[data-bg]:not(.bg-ready)) .journal-cover { display: none !important; }
-  }
+     A grid of cards prints all its photos or none (a photo that failed to
+     load doesn't count). "js" is set on <html> by js/main.js; without
+     JavaScript the photos are always there, so this doesn't apply. */
+  .js .member-photo[data-bg]:not(.bg-ready), .js .alumni-photo[data-bg]:not(.bg-ready),
+  .js .journal-cover[data-bg]:not(.bg-ready) { display: none !important; }
+  .js .split-media:has(> [data-bg]:not(.bg-ready)) { display: none !important; }
+  .js .member-grid:has(.member-photo[data-bg]:not(.bg-ready, .bg-failed)) .member-photo,
+  .js .alumni-grid:has(.alumni-photo[data-bg]:not(.bg-ready, .bg-failed)) .alumni-photo,
+  .js .journal-grid:has(.journal-cover[data-bg]:not(.bg-ready, .bg-failed)) .journal-cover { display: none !important; }
+  .member-card .member-photo { aspect-ratio: 1 / 1; background-position: center 25%; } /* shorter cards, so a row fits on a page */
+  .noscript-nav:not(.noscript-footer) { display: none !important; } /* the no-JavaScript menu */
+  .noscript-footer { break-inside: avoid; }
 
   .glass-card, .stat-cell, .timeline-item, .gallery-item, .split-media,
   .visit-card, .quote-band, .cta-banner, .logo-tile,

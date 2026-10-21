@@ -716,6 +716,7 @@
     delete cache[id];
     markClean(id);
     await openSection(id);
+    $("#save-btn").focus(); // the button that was clicked is gone; keep keyboard users on the tab
   }
 
   saveStatus.addEventListener("click", (e) => {

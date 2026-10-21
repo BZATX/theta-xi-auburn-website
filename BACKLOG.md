@@ -214,6 +214,9 @@ Items with a "Still" note have a small follow-up.
   The phone menu closes when the window widens. Keyboard users move into the
   menu, can reach the close button, and focus comes back to a sensible
   place. The page behind is hidden from screen readers while it's open.
+  Still open (small): if the window is widened while the menu button itself
+  has focus, focus usually moves to the logo, but this hasn't been re-tested
+  after the last change.
 - **#14 Form fields don't help phones autofill, and two fields handle answers badly** (fixed, not live yet)
   Form fields tell phones what to autofill (except the mailing address box,
   which would only fill the street). GPA takes a number from 0 to 5 with a
@@ -227,12 +230,12 @@ Items with a "Still" note have a small follow-up.
   stay centered on small phones.
 - **#17 With very large text settings, the menu button and some words get cut off** (fixed, not live yet)
   With the browser's large-text setting, the menu button stays full size,
-  the header Rush button hides from about 150% text on phones (it stays in
-  the menu), and long words, buttons, stats and officer cards wrap instead
-  of being cut off. Still open: reading tools that enlarge only the page's
-  own text (not the browser setting) can still push a few buttons and stats
-  past the screen edge, and headings can break mid-word at 150% text or more
-  on the smallest phones.
+  the header Rush button hides on phones from about 125 to 150% text (it
+  stays in the menu), and long words, buttons, stats and officer cards wrap
+  instead of being cut off. Still open: reading tools that enlarge only the
+  page's own text (not the browser setting) can still push a few buttons,
+  stats and officer cards past the screen edge or split their words, and big
+  headings can break mid-word at 125% text or more on the smallest phones.
 - **#18 Pages load slowly on phones because photos are too big and load too early** (fixed, not live yet)
   Each page fetches its top photo first, and photos further down (including
   officer, alumni and news photos) load as the visitor scrolls near them.
@@ -243,9 +246,12 @@ Items with a "Still" note have a small follow-up.
   2%).
 - **#19 Printed pages come out mostly blank, and stats read as '0' until scrolled to** (fixed, not live yet)
   Printouts show all text in black on white, hide the menu and background
-  photos, and print the real stat numbers, which screen readers also hear.
-  Photos further down a page print once they have loaded, so scroll through
-  the page before printing to include them.
+  photos, keep section labels with their headings, and print the real stat
+  numbers, which screen readers also hear. Photos further down a page print
+  once they have loaded, so scroll through the page before printing to
+  include them. Still open (small): selecting several stats at once with the
+  mouse can pick up each number twice in some tools; copying with Ctrl+C
+  gives each number once.
 - **#20 Yulista employer tile has no description, is a very large file, and contains a third-party photo** (fixed, not live yet)
   Yulista is now a text tile like Kimley-Horn and Macquarie, so the large
   third-party photo is gone.

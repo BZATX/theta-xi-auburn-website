@@ -11,10 +11,10 @@
 
 .admin-header {
   display: flex;
-  flex-wrap: wrap; /* on the smallest phones the buttons drop below the logo */
+  flex-wrap: wrap; /* on phones the buttons can drop below the logo */
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1rem 0.6rem;
   margin-bottom: 2rem;
 }
 .admin-header .brand img { height: 52px; }
@@ -240,6 +240,7 @@
   .token-help code { background: rgba(255, 255, 255, 0.1); }
   .admin-items .form-control[aria-invalid="true"] { border-color: #ff8a8a; }
   .admin-item label { color: #a9b8cb; } /* solid, so it stays above 4.5:1 over the blue glow on phones */
+  .admin-item .form-control::placeholder { color: #b8c6d8; } /* the photo-path boxes sit on a lighter card */
 }
 
 /* Windows high-contrast mode: keep the open tab visible */
@@ -248,4 +249,4 @@
 }
 
 /* An upload button that's busy (aria-disabled keeps keyboard focus on it) */
-.upload-btn[aria-disabled="true"] { opacity: 0.6; cursor: progress; }
+.upload-btn[aria-disabled="true"] { cursor: progress; } /* the "Uploading…" label shows the state; no fading, so the focus ring stays clear */

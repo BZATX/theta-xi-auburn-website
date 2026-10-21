@@ -7,9 +7,10 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 ## At a glance
 
 - **Backlog fixes are waiting to publish.** On Oct 21 the owner asked for all
-  32 open items in `BACKLOG.md` to be fixed. They're done and tested on the
-  working branch (see "Waiting to go live" below) and go live with the next
-  push to `main`, once the owner says "push to main".
+  32 open items in `BACKLOG.md` to be fixed. 30 are fixed and tested on the
+  working branch (see "Waiting to go live" below); #22 and #26 also need the
+  board (see `BACKLOG.md`). They go live with the next push to `main`, once
+  the owner says "push to main".
 - **Live site:** the site content published Oct 21, 2026 (`main` at
   `d0ff607`). Later commits on `main` that only change docs carry
   `[skip netlify]`, so they don't publish anything or use credits.
@@ -17,7 +18,7 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** the backlog batch, about 20 commits on
+- **Waiting to go live:** the backlog batch, about 30 commits on
   `claude/great-sagan-6b17gi` after `5fe60c9`. One push publishes all of it.
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
@@ -57,10 +58,11 @@ Versions: `main.css?v=42` on every page, `admin.css?v=7`, `admin.js?v=5`.
 None of these have been published, so they don't need another bump before
 this push.
 
-Testing: two rounds of independent checks (every page at 320 to 1280px,
+Testing: three rounds of independent checks (every page at 320 to 1280px,
 light and dark, JavaScript off, print, large text, keyboard, the admin editor
-against a mock of GitHub, and contrast measurements). Problems they found were
-fixed and re-checked.
+against a mock of GitHub, and contrast measurements). Most problems they found
+were fixed and re-checked; the few small ones left are "Still" notes in
+`BACKLOG.md` (#13, #17, #19).
 
 After it's live:
 - The owner checks Home, Recruitment, Meet the Officers, Donate and the
@@ -168,8 +170,8 @@ Not yet approved; ask the owner before doing these.
   skipped by Netlify while credits were out).
 - **Oct 21:** GitHub default branch set to `main`; `CLAUDE.md` became
   `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan. The
-  owner asked for all 32 open backlog items to be fixed; done and tested on
-  the working branch, waiting to publish.
+  owner asked for all 32 open backlog items to be fixed; 30 fixed and tested
+  on the working branch, waiting to publish (#22 and #26 need the board).
 
 ## How to check work
 

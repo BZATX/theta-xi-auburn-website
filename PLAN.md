@@ -67,7 +67,7 @@ current state, what's waiting to go live, and short-term to-dos, see
 - [x] **Accessible colors** (Sept 30 to Oct 9, 2026): deeper orange
       buttons; small text links changed from dark orange to brand blue
       (measured 4.74:1 or better in light mode, 5.32:1 in dark). The phone
-      menu fix is waiting to publish; see HANDOFF.md for what's still open.
+      menu colors went live Oct 21; see HANDOFF.md for what's still open.
 - [x] **Alumni event archive** (Oct 2026): "Past Alumni Events" on the
       Alumni page with a full-screen photo viewer; news posts can carry a
       photo set.
@@ -86,8 +86,7 @@ current state, what's waiting to go live, and short-term to-dos, see
       the house rendering and the employer logos came from, then credit or
       replace them.
 - [ ] **Admin panel catch-up:** let `/admin` edit a post's location, photos
-      and category; update its hints, which still mention a "Members page",
-      a "Service page" and a "Notable Alumni page".
+      and category. (Its hints were corrected in the Oct 2026 backlog batch.)
 
 ## Possible future additions
 

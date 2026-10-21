@@ -4,6 +4,7 @@
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
   const ROOT = document.body.dataset.root || "";
+  document.documentElement.classList.add("js"); // css/main.css's print rules check this
 
   /* ---------------- Photos further down the page ----------------
      Background photos below the first screen are written as
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!src) return;
     const img = new Image();
     img.onload = () => el.classList.add("bg-ready");
+    img.onerror = () => el.classList.add("bg-failed"); // a broken path doesn't hold up the printout
     img.src = src;
   };
   const bgObserver = new IntersectionObserver(
@@ -149,6 +151,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   if (phoneMenu.addEventListener) phoneMenu.addEventListener("change", onMenuBreakpoint);
   else if (phoneMenu.addListener) phoneMenu.addListener(onMenuBreakpoint);
+  // The browser may drop focus from the menu button as it disappears, before
+  // the event above arrives. Catch that too and move focus to the logo.
+  if (toggle) toggle.addEventListener("blur", (e) => {
+    if (e.relatedTarget || phoneMenu.matches) return;
+    if (drawerOpen()) setDrawer(false, { focusToggle: false });
+    setTimeout(() => {
+      if (!document.activeElement || document.activeElement === document.body) navbar.querySelector(".brand")?.focus();
+    });
+  });
 
   /* Explore dropdown. Only the "open" class shows it (no CSS hover), so
      aria-expanded always matches what is on screen.
@@ -425,7 +436,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!data.posts.length) return;
       igMount.innerHTML = data.posts
         .map((url) => {
-          const clean = esc(String(url).split("?")[0]);
+          // Only real Instagram post addresses become embeds and links.
+          const link = cleanLink(url);
+          if (!link || !/^https:\/\/(www\.)?instagram\.com\//i.test(link.href)) return "";
+          const clean = esc(link.href.split("?")[0]);
           return `
         <blockquote class="instagram-media" data-instgrm-permalink="${clean}" data-instgrm-version="14">
           <a href="${clean}" target="_blank" rel="noopener">View this post from @authetaxi on Instagram</a>
@@ -703,6 +717,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const showStatus = (ok, msg) => {
         status.className = `form-status ${ok ? "success" : "error"}`;
         status.textContent = msg;
+        // Sent with Enter from a field higher up: bring the message into view.
+        const box = status.getBoundingClientRect();
+        if (box.top < 0 || box.bottom > window.innerHeight) status.scrollIntoView({ block: "nearest" });
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
         // Disabling the button while sending drops keyboard focus to the page;
