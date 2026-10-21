@@ -4,8 +4,9 @@ These rules apply to every AI tool used on this site (Claude Code, Cursor,
 Grok or anything else). `CLAUDE.md` just points here.
 
 Read `README.md` (how the site works) and `HANDOFF.md` (current state and open
-items) before making changes. `BACKLOG.md` lists ideas from the Oct 1, 2026
-site scan that were never approved; don't work on them unless the owner asks.
+items) before making changes. `BACKLOG.md` lists what's left from the Oct 1,
+2026 site scan. Items not marked fixed aren't approved; don't work on them
+unless the owner asks.
 
 ## Who you're working with
 
@@ -61,9 +62,10 @@ require a single writer per task).
   (`css/main.css`), two scripts (`js/layout.js`, `js/main.js`), and JSON in
   `data/`. Keep it that way.
 - **Navbar and footer live only in `js/layout.js`.** Never edit them page by
-  page. The one exception: each page has a short `<noscript>` link list for
-  visitors with JavaScript off. When a page is added, renamed or removed,
-  update that list on every page too.
+  page. The one exception: each page has a short `<noscript>` menu and
+  footer line (address, email, Privacy, Accessibility) for visitors with
+  JavaScript off. When a page is added, renamed or removed, or the address or
+  email changes, update those on every page too.
 - **Bump the stylesheet version** (`main.css?v=N`) on every page,
   including `admin/index.html`, whenever `css/main.css` changes: ideally in
   the same commit, and always before the next push to `main`. (`admin.css`

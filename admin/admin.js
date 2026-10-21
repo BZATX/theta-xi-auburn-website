@@ -223,7 +223,7 @@
     if (err.status === 0) return "Couldn't reach GitHub. Check your internet connection and try again. Nothing was saved.";
     if (isRateLimit(err)) return "GitHub is limiting requests for a few minutes. Wait a little, then try again. Nothing was saved.";
     if (err.status === 403 || err.status === 404)
-      return `GitHub didn't let this key save. Check that the key's Resource owner is BZATX (not your own account), that <code>${REPO}</code> is selected, that its Contents permission is set to Read and write, and that a BZATX owner has approved it.${githubSaid(err)}`;
+      return `GitHub didn't let this token save. Check that the token's Resource owner is BZATX (not your own account), that <code>${REPO}</code> is selected, that its Contents permission is set to Read and write, and that a BZATX owner has approved it.${githubSaid(err)}`;
     return `Nothing was saved.${githubSaid(err)}`;
   }
 
@@ -241,16 +241,16 @@
 
   function loginErrorMessage(err, usingSavedKey) {
     if (err.code === "no-write")
-      return `This key works, but its GitHub account isn't allowed to save changes to the site. Ask a BZATX owner to add you to the BZATX organization with Write access to <code>${REPO}</code>, then try again.`;
+      return `This token works, but its GitHub account isn't allowed to save changes to the site. Ask a BZATX owner to add you to the BZATX organization with Write access to <code>${REPO}</code>, then try again.`;
     if (err.status === 401)
       return usingSavedKey
-        ? "GitHub no longer accepts your saved key. It may have expired or been deleted. Make a new one (steps below) and paste it here."
-        : "GitHub didn't accept this key. It may be mistyped, expired or deleted. Check it, or make a new one (steps below).";
+        ? "GitHub no longer accepts your saved token. It may have expired or been deleted. Make a new one (steps below) and paste it here."
+        : "GitHub didn't accept this token. It may be mistyped, expired or deleted. Check it, or make a new one (steps below).";
     if (err.status === 0)
-      return `Couldn't reach GitHub. Check your internet connection${usingSavedKey ? ", then click Connect to try your saved key again" : " and try again"}.`;
+      return `Couldn't reach GitHub. Check your internet connection${usingSavedKey ? ", then click Connect to try your saved token again" : " and try again"}.`;
     if (isRateLimit(err)) return "GitHub is limiting requests for a few minutes. Wait a little, then try again.";
     if (err.status === 403 || err.status === 404)
-      return `This key can't open the site's files. Check that its Resource owner is BZATX and that <code>${REPO}</code> is selected. If you made it recently, a BZATX owner may still need to approve it.${githubSaid(err)}`;
+      return `This token can't open the site's files. Check that its Resource owner is BZATX and that <code>${REPO}</code> is selected. If you made it recently, a BZATX owner may still need to approve it.${githubSaid(err)}`;
     return `Couldn't connect.${githubSaid(err)}`;
   }
 
@@ -308,7 +308,7 @@
     showStatus(
       loginStatus,
       "error",
-      "GitHub stopped accepting your key. It may have expired or been deleted. Paste a new key to carry on. Your unsaved changes are kept as long as you don't close or reload this page."
+      "GitHub stopped accepting your token. It may have expired or been deleted. Paste a new token to carry on. Your unsaved changes are kept as long as you don't close or reload this page."
     );
     $("#token-input").focus();
   }
@@ -378,7 +378,7 @@
         <div class="image-field-controls">
           <input type="text" class="form-control" id="${id}" data-field="${name}" value="${v}" placeholder="assets/images/uploads/…"${req}>
           <div>
-            <button type="button" class="btn btn-glass btn-sm upload-btn" data-target="${name}"${uploadingNow ? " disabled" : ""}>${uploadingNow ? "Uploading…" : "Upload photo"}</button>
+            <button type="button" class="btn btn-glass btn-sm upload-btn" data-target="${name}" aria-disabled="${uploadingNow}">${uploadingNow ? "Uploading…" : "Upload photo"}</button>
             <input type="file" accept="image/*" data-upload-for="${name}" hidden>
           </div>
         </div>
@@ -516,6 +516,7 @@
 
     const uploadBtn = e.target.closest(".upload-btn");
     if (uploadBtn) {
+      if (uploadBtn.getAttribute("aria-disabled") === "true") return; // still uploading
       sectionBody.querySelector(`input[data-upload-for="${uploadBtn.dataset.target}"]`).click();
       return;
     }
@@ -566,7 +567,7 @@
     const btn = sectionBody.querySelector(`.upload-btn[data-target="${CSS.escape(name)}"]`);
     if (btn) {
       const busy = isUploading(id, item, key);
-      btn.disabled = busy;
+      btn.setAttribute("aria-disabled", String(busy)); // not "disabled", which would drop keyboard focus
       btn.textContent = busy ? "Uploading…" : "Upload photo";
     }
     const input = sectionBody.querySelector(`[data-field="${CSS.escape(name)}"]`);
@@ -605,12 +606,12 @@
         toast(`Photo uploaded for “${cfg.itemName(item)}”. Click Save & Publish on that tab to use it.`, "success");
       } else {
         uploadProblem(
-          `The photo finished uploading, but its card (“${esc(cfg.itemName(item))}”) was deleted or the tab was reloaded since, so the photo wasn't added. Upload it again on the right card.`
+          `The photo finished uploading, but its card (“${esc(cfg.itemName(item))}” on ${esc(cfg.title)}) was deleted or the tab was reloaded since, so the photo wasn't added. Upload it again on the right card.`
         );
       }
     } catch (err) {
       if (err.status === 401) keyRejected();
-      else uploadProblem(`The photo upload failed. ${err.status === undefined ? esc(err.message) : explainError(err)}`);
+      else uploadProblem(`The photo for “${esc(cfg.itemName(item))}” (${esc(cfg.title)}) didn't upload. ${err.status === undefined ? esc(err.message) : explainError(err)}`);
     } finally {
       uploadItems.delete(uploadId);
       refreshUploadButton(id, item, key);
@@ -618,11 +619,15 @@
   });
 
   // An upload problem replaces the "Uploading photo…" note and scrolls the
-  // message (above the cards) into view, since the visitor may be far below it.
+  // message (above the cards) into view, since the visitor may be far below
+  // it. Not while they're typing in a box, which would pull the page away
+  // from what they're typing; the note tells them where to look.
   function uploadProblem(html) {
     toast("The photo wasn't added. See the message above the cards.", "error");
     showStatus(saveStatus, "error", html);
-    saveStatus.scrollIntoView({ block: "center", behavior: "smooth" });
+    if (!document.activeElement || !document.activeElement.matches("input, textarea, select")) {
+      saveStatus.scrollIntoView({ block: "center" }); // smooth unless reduced motion is on (css/main.css)
+    }
   }
 
   // Downscale to a JPEG no larger than maxPx on its longest side, on a white
@@ -761,6 +766,8 @@
     } finally {
       btn.disabled = false;
       btn.textContent = "Save & Publish";
+      // Disabling the button while saving drops keyboard focus; put it back.
+      if (!document.activeElement || document.activeElement === document.body) btn.focus({ preventScroll: true });
     }
   });
 

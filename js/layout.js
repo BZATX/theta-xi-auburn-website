@@ -3,9 +3,10 @@
    Edit links here ONCE and every page updates.
    `data-root` on <body> is "" for index.html, "../" for /pages and "/"
    for 404.html.
-   Each page also has a plain-text copy of the main links in a <noscript>
-   block, for visitors with JavaScript turned off. If you add, rename or
-   remove a page here, update those blocks too.
+   Each page also has a plain-text copy of the main links and a short footer
+   line (address, email, Privacy, Accessibility) in <noscript> blocks, for
+   visitors with JavaScript turned off. If you add, rename or remove a page
+   here, or change the address or email, update those blocks too.
    ============================================================ */
 (function () {
   const ROOT = document.body.dataset.root || "";

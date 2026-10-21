@@ -6,9 +6,10 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 ## At a glance
 
-- **Website work is complete for now.** The owner confirmed the Oct 21
-  publish on the live site, and the Board Dashboard row "Publish held
-  website changes" is marked Complete.
+- **Backlog fixes are waiting to publish.** On Oct 21 the owner asked for all
+  32 open items in `BACKLOG.md` to be fixed. They're done and tested on the
+  working branch (see "Waiting to go live" below) and go live with the next
+  push to `main`, once the owner says "push to main".
 - **Live site:** the site content published Oct 21, 2026 (`main` at
   `d0ff607`). Later commits on `main` that only change docs carry
   `[skip netlify]`, so they don't publish anything or use credits.
@@ -16,7 +17,8 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing.
+- **Waiting to go live:** the backlog batch, about 20 commits on
+  `claude/great-sagan-6b17gi` after `5fe60c9`. One push publishes all of it.
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -38,6 +40,38 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 | `837e3c8` | Phone menu: the current page and hovered items are blue instead of bright orange (which failed contrast at about 2.6 to 3:1), and the menu background is a little more solid so the blue passes over dark photos. Officer email links are blue and stay blue on hover. |
 | `abcec2c` | Phone menu: the current page's marker bar uses the deeper orange so it stands out (5.1:1 or better). |
 | `43ba463` | This file, `CLAUDE.md` (now `AGENTS.md`), corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
+
+## Waiting to go live (backlog batch, Oct 21, 2026)
+
+`BACKLOG.md` → "Fixed, waiting to publish" lists each item. In short: faster
+photo loading and smaller images; print settings; Windows High Contrast,
+keyboard, screen-reader and large-text fixes; menus that open and close
+reliably; separate Call and Text links; no-JavaScript menu, footer and
+photos; "couldn't load" notes when a data file fails; form autofill and GPA
+checks; darker example text in form fields (4.5:1); page titles,
+descriptions and link previews; a content security policy (test mode on
+public pages, enforced on `/admin`); and many admin editor fixes (sign-in
+safety, checks before saving, clearer errors, dark mode, uploads).
+
+Versions: `main.css?v=42` on every page, `admin.css?v=7`, `admin.js?v=5`.
+None of these have been published, so they don't need another bump before
+this push.
+
+Testing: two rounds of independent checks (every page at 320 to 1280px,
+light and dark, JavaScript off, print, large text, keyboard, the admin editor
+against a mock of GitHub, and contrast measurements). Problems they found were
+fixed and re-checked.
+
+After it's live:
+- The owner checks Home, Recruitment, Meet the Officers, Donate and the
+  admin login on a phone and a laptop.
+- Security policy (#30): someone opens the Social and Brotherhood pages in a
+  desktop browser with the developer console open and looks for "Content
+  Security Policy" warnings. If there are none, the public policy can be
+  switched from test mode to enforced in `_headers` (a small change for the
+  next batch).
+- Board tasks that came out of this batch are in `BACKLOG.md` under "Waiting
+  on the owner or board" (#22 BZATX editors, #26 photo credit).
 
 ### Publishing checklist
 
@@ -80,24 +114,20 @@ Not yet approved; ask the owner before doing these.
 - **Form stars:** the required-field stars (\*) on the Rush and Update Info
   forms are still dark orange. They pass contrast, so changing them is only
   a matter of looks. Owner's call.
-- **Screen readers and the menu:** the current page isn't announced to screen
-  readers (no `aria-current="page"`). Small fix in `js/layout.js`: add it
-  wherever a current-page link gets `active` (desktop menu, Explore
-  dropdown, phone menu), but not on the Explore toggle, which is also marked
-  `active` when a page inside it is open.
 - **White menu text over top photos:** on a few pages (About, Accessibility,
   Brotherhood) the desktop menu's white text over the top photo measured
   about 4.4:1, just under 4.5:1, before you scroll. Found Oct 10; not fixed.
 - **Admin panel catch-up:** `/admin` can't set a post's location, photos or
-  category, and its hints mention pages that no longer exist. Its saves and
-  photo uploads each go straight to `main` and use Netlify credits.
+  category (its hints were fixed in the backlog batch). Its saves and photo
+  uploads each go straight to `main` and use Netlify credits.
 - **Old reunion photo:** the photo from the removed reunion banner (in git
   history at `acd6ccf^:assets/images/dynamic/alumni-reunion-beer-hog.jpg`)
   shows a different venue. Drive has a "2024 Birmingham Alumni Reunion"
   folder; if it's that event, it could become a second archive entry.
 - **Photo sources:** see PLAN.md (several photos have no recorded source).
-- **Older scan items:** the Oct 1 site health scan's remaining items are
-  listed in `BACKLOG.md`, with their status as of Oct 21. None are approved.
+- **Older scan items:** the rest of the Oct 1 site scan (partly done items
+  and ones waiting on the owner or board) is in `BACKLOG.md`. Those aren't
+  approved.
 
 ## Decisions already made (don't reopen)
 
@@ -137,7 +167,9 @@ Not yet approved; ask the owner before doing these.
   docs refresh and stylesheet v41. Published Oct 21 (the Oct 20 push was
   skipped by Netlify while credits were out).
 - **Oct 21:** GitHub default branch set to `main`; `CLAUDE.md` became
-  `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan.
+  `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan. The
+  owner asked for all 32 open backlog items to be fixed; done and tested on
+  the working branch, waiting to publish.
 
 ## How to check work
 

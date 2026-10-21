@@ -11,6 +11,7 @@
 
 .admin-header {
   display: flex;
+  flex-wrap: wrap; /* on the smallest phones the buttons drop below the logo */
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -201,7 +202,7 @@
   transform: translateX(-50%) translateY(20px);
   z-index: 2000;
   padding: 0.9rem 1.6rem;
-  border-radius: 999px;
+  border-radius: 1rem;
   font-weight: 600;
   font-size: 0.95rem;
   color: #fff;
@@ -214,6 +215,7 @@
   visibility: hidden;
   transition: var(--transition);
   max-width: 90vw;
+  width: max-content; /* long messages use the screen width instead of a tall narrow capsule */
   text-align: center;
 }
 .toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
@@ -237,9 +239,13 @@
   .image-thumb { background-color: rgba(255, 255, 255, 0.06); }
   .token-help code { background: rgba(255, 255, 255, 0.1); }
   .admin-items .form-control[aria-invalid="true"] { border-color: #ff8a8a; }
+  .admin-item label { color: #a9b8cb; } /* solid, so it stays above 4.5:1 over the blue glow on phones */
 }
 
 /* Windows high-contrast mode: keep the open tab visible */
 @media (forced-colors: active) {
   .admin-tab.active { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
 }
+
+/* An upload button that's busy (aria-disabled keeps keyboard focus on it) */
+.upload-btn[aria-disabled="true"] { opacity: 0.6; cursor: progress; }

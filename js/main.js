@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
      background-image. The "bg-on" class shows them (css/main.css), and it's
      added only when the visitor scrolls near, so the top photo gets the
      connection first. With JavaScript off, css/main.css shows them all.
-     Watching starts once the page has loaded (by then the officer, news and
-     Instagram sections have filled in and pushed lower photos down), or at
+     Watching starts once the page has loaded and the officer, news and
+     other data sections have filled in (pushing lower photos down), or at
      the visitor's first scroll if that comes sooner. "bg-ready" marks a
      photo that has finished loading; a printout leaves out the others
      rather than printing empty boxes. */
@@ -43,9 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (scope instanceof Node) { if (!watchingBgs) return; } else { watchingBgs = true; scope = document; }
     scope.querySelectorAll("[data-bg]:not(.bg-on)").forEach((el) => bgObserver.observe(el));
   };
-  if (document.readyState === "complete") watchBgs();
+  const dataLoads = []; // data files being fetched (see loadData)
+  const startWatching = () => Promise.allSettled(dataLoads).then(() => watchBgs());
+  if (document.readyState === "complete") startWatching();
   else {
-    window.addEventListener("load", () => watchBgs(), { once: true });
+    window.addEventListener("load", startWatching, { once: true });
     window.addEventListener("scroll", () => watchBgs(), { once: true, passive: true });
   }
   // Start the rest downloading, so a second printout has every photo.
@@ -100,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       focusFirst();
       setTimeout(focusFirst, 60);
     } else {
-      const focusWasInside = drawer.contains(document.activeElement);
+      const focusWasInside = drawer.contains(document.activeElement) || document.activeElement === toggle;
       drawer.setAttribute("inert", "");
       drawer.setAttribute("aria-hidden", "true");
       // Focus goes back to the menu button. When the window has just widened
@@ -139,7 +141,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close the phone menu when the window widens to the desktop menu (a tablet
   // turned sideways, a browser window resized). Same breakpoint as css/main.css.
   const phoneMenu = window.matchMedia("(max-width: 64em)");
-  const onMenuBreakpoint = () => { if (!phoneMenu.matches) setDrawer(false, { focusToggle: false }); };
+  const onMenuBreakpoint = () => {
+    if (phoneMenu.matches) return;
+    if (drawerOpen()) setDrawer(false, { focusToggle: false });
+    // The menu button disappears at desktop width; don't leave focus on it.
+    else if (document.activeElement === toggle) navbar.querySelector(".brand")?.focus();
+  };
   if (phoneMenu.addEventListener) phoneMenu.addEventListener("change", onMenuBreakpoint);
   else if (phoneMenu.addListener) phoneMenu.addListener(onMenuBreakpoint);
 
@@ -362,7 +369,12 @@ document.addEventListener("DOMContentLoaded", () => {
     mount.innerHTML = `<p class="load-error">${message}</p>`;
   };
 
-  async function loadData(name) {
+  function loadData(name) {
+    const loading = fetchData(name);
+    dataLoads.push(loading);
+    return loading;
+  }
+  async function fetchData(name) {
     try {
       const res = await fetch(`${ROOT}data/${name}.json`, { cache: "no-cache" });
       if (!res.ok) throw new Error(res.statusText);
@@ -434,10 +446,12 @@ document.addEventListener("DOMContentLoaded", () => {
   /* Exec board / member bios */
   // "Call or text (913) 300-1872" with separate Call (dialer) and Text
   // (Messages) links. US numbers; a leading 1 is accepted but not required.
+  // The number stays on one line when it fits (inline-block), and still
+  // wraps inside itself with very large text rather than running off.
   const phoneLinks = (phone) => {
     const digits = String(phone).replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
     const num = esc(phone);
-    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> ${num}</p>`;
+    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> <span style="display:inline-block">${num}</span></p>`;
   };
   const memberMount = document.querySelector("[data-members]");
   if (memberMount) {
@@ -498,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // A post's photo list, without blank entries.
   const postPhotos = (p) =>
-    Array.isArray(p.photos) ? p.photos.map((s) => String(s == null ? "" : s).trim()).filter(Boolean) : [];
+    Array.isArray(p.photos) ? p.photos.map((s) => String(s == null ? "" : s).trim()).filter((s) => s && resolveImg(s)) : [];
 
   /* Journal posts. data-journal="3" limits the count; data-journal-category="alumni"
      shows only posts with that category (the Alumni page's event archive). */
@@ -640,13 +654,14 @@ document.addEventListener("DOMContentLoaded", () => {
         showLoadError(galleryMount, `These photos couldn't load. Please refresh the page, or email ${mailLink("thetaxibz@gmail.com")}.`);
         return;
       }
-      // Skip entries with no photo file (they'd load the page itself as an image).
-      const photos = data.photos.filter((p) => p && String(p.src || "").trim() && (!filter || p.category === filter));
+      // Skip entries with no usable photo file (a blank one would load the page itself as an image).
+      const src = (p) => String((p && p.src) || "").trim();
+      const photos = data.photos.filter((p) => src(p) && resolveImg(src(p)) && (!filter || p.category === filter));
       galleryMount.innerHTML = photos
         .map(
           (p, i) => `
         <figure class="gallery-item reveal d${(i % 4) + 1}">
-          <img src="${esc(resolveImg(p.src))}" alt="${p.caption ? "" : "Chapter photo"}" loading="lazy">
+          <img src="${esc(resolveImg(src(p)))}" alt="${p.caption ? "" : "Chapter photo"}" loading="lazy">
           ${p.caption ? `<figcaption class="gallery-caption">${esc(p.caption)}</figcaption>` : ""}
         </figure>`
         )

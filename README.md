@@ -114,8 +114,9 @@ To change the chapter email, address or social links, edit `js/layout.js`
 (the `SOCIALS` list and the footer), the structured data near the top of
 `index.html`, the pages that list them (the recruitment chair's phone and
 email in `pages/recruitment.html`, the email in `pages/scholarships.html`),
-and `data/members.json` (officer emails and the recruitment chair's phone,
-shown on Meet the Officers and the home page).
+`data/members.json` (officer emails and the recruitment chair's phone,
+shown on Meet the Officers and the home page), and the short no-JavaScript
+footer line (address and email) near the bottom of every page.
 
 **Photos on the Philanthropy page** are not in `gallery.json`. The Taxi Bash
 and Habitat photos in the page body are set in `pages/philanthropy.html`. The
@@ -150,8 +151,10 @@ How photos are written into the pages, so they load quickly:
   `data-bg style="--bg:url('/assets/images/…')"` (a path starting with `/`)
   instead of `background-image`. They download only when the visitor scrolls
   near them; with JavaScript off they show straight away. The home page's
-  photo cards use smaller `-card` copies of the full-size photos. Reference them from the JSON with a repo-relative path such
-as `assets/images/events/2026-alumni-reunion-1.jpg`. The `/admin` panel saves
+  photo cards use smaller `-card` copies of the full-size photos.
+
+Reference photos from the JSON with a repo-relative path such as
+`assets/images/events/2026-alumni-reunion-1.jpg`. The `/admin` panel saves
 its uploads to `assets/images/uploads/`, which it creates on first use.
 
 The browser-tab icons, home-screen icons, `site.webmanifest` and the link
@@ -167,7 +170,7 @@ pages/*.html      The other 16 pages (about, recruitment, leadership = Meet the
                   Officers, journal = Social, alumni, donate, history, …)
 css/main.css      The whole design system (colors and fonts are variables at the top)
 js/layout.js      Navbar and footer for every page. Edit nav links HERE, then
-                  update the short no-JavaScript link list on each page
+                  update the short no-JavaScript menu and footer line on each page
 js/main.js        Menus and animations, JSON rendering, the photo viewer,
                   and both forms (rush-interest, alumni-update)
 data/             Content JSON (see above)
@@ -184,7 +187,9 @@ Conventions that keep the site easy to maintain:
   `admin/index.html`). Bump `N` on every page whenever `css/main.css`
   changes, so visitors' browsers fetch the new styles.
 - The navbar and footer exist only in `js/layout.js`; never edit them page by
-  page.
+  page. The exception is the short `<noscript>` menu and footer line on each
+  page, shown only when JavaScript is off; keep those in step with
+  `js/layout.js`.
 - Values from the JSON files are escaped with `esc()` in `js/main.js` before
   they go into the page. Keep doing that.
 - Text colors must reach WCAG AA contrast (4.5:1 for normal text) in light and
@@ -234,12 +239,12 @@ hidden from search engines.
   5. If GitHub says the token needs approval, a BZATX owner approves it
      under BZATX → Settings → Personal access tokens → Pending requests.
 
-  At login the panel checks that the key's account can save to the site
+  At login the panel checks that the token's account can save to the site
   and says what's wrong if it can't. Undergraduates are not added to the
   organization, so the panel, like the repo, is board-only.
-- The key is kept only until the browser tab is closed, unless "Keep me
-  signed in on this personal device" is ticked. Leave it unticked on shared
-  or chapter-house computers.
+- The token is kept only in that browser tab, unless "Keep me signed in on
+  this personal device" is ticked. On shared or chapter-house computers,
+  leave it unticked and click Log Out when finished.
 
 ---
 
