@@ -268,6 +268,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* Exec board / member bios */
+  // "Call or text (913) 300-1872" with separate Call (dialer) and Text
+  // (Messages) links. US numbers; a leading 1 is accepted but not required.
+  const phoneLinks = (phone) => {
+    const digits = String(phone).replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
+    const num = esc(phone);
+    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> <span style="white-space:nowrap">${num}</span></p>`;
+  };
   const memberMount = document.querySelector("[data-members]");
   if (memberMount) {
     const limit = parseInt(memberMount.dataset.members, 10) || Infinity;
@@ -285,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ${m.major || m.hometown ? `<p class="member-meta">${esc([m.major, m.hometown].filter(Boolean).join(" · "))}</p>` : ""}
             ${m.bio ? `<p class="member-bio">${esc(m.bio)}</p>` : ""}
             ${m.email ? `<a class="member-contact" href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ""}
-            ${m.phone ? `<a class="member-contact" href="sms:+1${esc(String(m.phone).replace(/\D/g, ""))}">Call or text ${esc(m.phone)}</a>` : ""}
+            ${m.phone ? phoneLinks(m.phone) : ""}
           </div>
         </article>`
         )
@@ -464,10 +471,22 @@ document.addEventListener("DOMContentLoaded", () => {
      Forms marked data-ajax-submit post back to the site; Netlify records the
      submission and emails it to the address configured in the dashboard.
      (Netlify strips data-netlify from the published HTML, so it can't be the
-     hook.) Per-form messages come from data-success / data-error attributes. */
+     hook.) Per-form messages come from data-success / data-error attributes.
+     The .form-status box is one polite live region (role="status") that stays
+     in the page, empty until a message arrives, so screen readers announce
+     both the thank-you and the error message. */
   document.querySelectorAll("form[data-ajax-submit]").forEach((form) => {
     const status = form.querySelector(".form-status");
     if (!status) return;
+
+    // A field with a pattern can carry a plain-English message
+    // (data-invalid-msg) that replaces the browser's generic one.
+    form.querySelectorAll("[data-invalid-msg]").forEach((field) => {
+      const check = () => field.setCustomValidity(field.validity.patternMismatch ? field.dataset.invalidMsg : "");
+      field.addEventListener("input", check);
+      check();
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const submitBtn = form.querySelector('button[type="submit"]');
@@ -475,12 +494,11 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = true;
       submitBtn.textContent = "Submitting…";
       status.className = "form-status";
+      status.textContent = "";
 
       const formData = new FormData(form);
       const showStatus = (ok, msg) => {
         status.className = `form-status ${ok ? "success" : "error"}`;
-        // Errors announce assertively; success politely.
-        status.setAttribute("role", ok ? "status" : "alert");
         status.textContent = msg;
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;

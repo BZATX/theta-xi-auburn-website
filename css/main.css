@@ -1052,6 +1052,8 @@ main.hero-only::after {
   font-style: normal;
   color: var(--azure-text);
 }
+/* The cite text is the same blue as its links, so underline the links */
+.quote-band cite a { text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* Members */
 .member-grid {
@@ -1099,6 +1101,10 @@ main.hero-only::after {
 .member-bio { font-size: 0.92rem; color: var(--text-mid); }
 .member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); }
 .member-contact:hover { color: var(--azure-text); text-decoration: underline; }
+/* "Call or text (number)": separate Call (dialer) and Text (Messages) links */
+.member-phone { display: block; color: var(--text-mid); }
+.member-phone:hover { color: var(--text-mid); text-decoration: none; }
+.member-phone a, .member-phone a:hover { color: var(--azure-text); font-weight: 600; text-decoration: underline; text-underline-offset: 0.15em; padding: 0.35em 0; } /* padding: taller tap area, same layout */
 
 /* Homepage officer preview: on phones the full cards ran ~1 screen each and
    ate 28% of the page. Go 2-across with just the face, name, and role — the
@@ -1488,8 +1494,9 @@ html.lightbox-open { overflow: hidden; }
 }
 textarea.form-control { min-height: 130px; resize: vertical; }
 
+/* The message box stays in the page (empty and zero-height until a message
+   arrives) so screen readers are already listening when it is filled. */
 .form-status {
-  display: none;
   margin-top: 1.4rem;
   padding: 1rem 1.2rem;
   border-radius: var(--radius-sm);
@@ -1497,14 +1504,13 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   text-align: center;
   border: 1px solid transparent;
 }
+.form-status:empty { margin: 0; padding: 0; border: 0; }
 .form-status.success {
-  display: block;
   color: #1b5e20;
   background: rgba(220, 245, 225, 0.85);
   border-color: rgba(60, 160, 90, 0.4);
 }
 .form-status.error {
-  display: block;
   color: #b02a2a;
   background: rgba(253, 232, 232, 0.9);
   border-color: rgba(220, 100, 100, 0.45);
