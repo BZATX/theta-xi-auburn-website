@@ -520,12 +520,8 @@ main { display: block; }
   background: rgba(3, 36, 77, 0.06);
   border-color: rgba(13, 42, 80, 0.14);
 }
-.navbar.scrolled .nav-toggle span,
-.nav-toggle.open span { background: var(--navy); }
-.nav-toggle.open {
-  background: rgba(238, 244, 251, 0.72);
-  border-color: rgba(13, 42, 80, 0.16);
-}
+/* The open menu always has the scrolled navbar, so this covers the X too */
+.navbar.scrolled .nav-toggle span { background: var(--navy); }
 .nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -914,9 +910,9 @@ main.hero-only::after {
 .card-link .arrow { display: inline-block; transition: var(--transition-fast); }
 /* Inline links within prose — sentence case, unlike the uppercase .card-link CTA */
 .text-link { color: var(--azure-text); font-weight: 600; }
-.text-link:hover { text-decoration: underline; }
 /* Links keep their blue on hover (the arrow slides / underline appears instead) */
-.card-link:hover, .text-link:hover { color: var(--azure-text); }
+.text-link:hover { color: var(--azure-text); text-decoration: underline; }
+.card-link:hover { color: var(--azure-text); }
 
 /* Instagram embeds (Journal) */
 .ig-grid {
@@ -1049,7 +1045,6 @@ main.hero-only::after {
   letter-spacing: 0.25em;
   text-transform: uppercase;
   font-family: var(--font-ui);
-  font-style: normal;
   color: var(--azure-text);
 }
 
@@ -1345,6 +1340,8 @@ html.lightbox-open { overflow: hidden; }
   transition: transform 0.8s var(--ease-smooth);
 }
 .gallery-item:hover img { transform: scale(1.07); }
+/* Always shown (like the photo captions beside the text), so phone and
+   keyboard users see it too; it used to appear only on mouse hover */
 .gallery-item .gallery-caption {
   position: absolute;
   left: 0.7rem; right: 0.7rem; bottom: 0.7rem;
@@ -1356,11 +1353,7 @@ html.lightbox-open { overflow: hidden; }
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: var(--transition);
 }
-.gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
 
 /* CTA banner — keeps the navy photo treatment for contrast */
 .cta-banner {
@@ -1488,7 +1481,9 @@ html.lightbox-open { overflow: hidden; }
 }
 .form-control::placeholder { color: rgba(58, 77, 102, 0.45); }
 .form-control:focus {
-  outline: none;
+  /* invisible here; Windows High Contrast draws it, since it drops the glow */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   border-color: var(--azure);
   box-shadow: 0 0 0 4px rgba(0, 114, 206, 0.16);
   background: rgba(255, 255, 255, 0.75);
@@ -1718,21 +1713,33 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 
 /* ============================================================
    SCROLL REVEAL
+   The slide-up uses `translate`, not `transform`, so cards that fade in
+   still lift on hover. will-change is dropped once an element is in:
+   left on, it stopped the frosted blur on glass inside it (the home
+   page's top buttons).
    ============================================================ */
 .reveal {
+  --reveal-delay: 0s;
   opacity: 0;
-  transform: translateY(34px);
-  transition: opacity 0.9s var(--ease-smooth), transform 0.9s var(--ease-smooth);
-  will-change: opacity, transform;
+  translate: 0 34px;
+  transition:
+    opacity 0.9s var(--ease-smooth) var(--reveal-delay),
+    translate 0.9s var(--ease-smooth) var(--reveal-delay),
+    /* the cards' own hover effects, which this list would otherwise switch off */
+    transform 0.45s var(--ease-smooth),
+    background 0.45s var(--ease-smooth),
+    border-color 0.45s var(--ease-smooth),
+    box-shadow 0.45s var(--ease-smooth);
 }
+.reveal:not(.in) { will-change: opacity, translate; }
 .reveal.in {
   opacity: 1;
-  transform: translateY(0);
+  translate: none;
 }
-.reveal.d1 { transition-delay: 0.1s; }
-.reveal.d2 { transition-delay: 0.2s; }
-.reveal.d3 { transition-delay: 0.3s; }
-.reveal.d4 { transition-delay: 0.4s; }
+.reveal.d1 { --reveal-delay: 0.1s; }
+.reveal.d2 { --reveal-delay: 0.2s; }
+.reveal.d3 { --reveal-delay: 0.3s; }
+.reveal.d4 { --reveal-delay: 0.4s; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1741,7 +1748,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; translate: none; }
 }
 
 /* ============================================================
@@ -1799,8 +1806,11 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 :focus-visible {
   outline: 3px solid #0060b0;
   outline-offset: 3px;
-  border-radius: 4px;
 }
+/* Rounds the ring on things with square corners (plain links). :where()
+   adds no weight, so form fields and buttons keep their own corners when
+   focused instead of all switching to 4px. */
+:where(:focus-visible) { border-radius: 4px; }
 /* On dark photos and the navy footer the blue ring is hard to see: use white */
 .hero :focus-visible, .page-hero :focus-visible, .cta-banner :focus-visible,
 .site-footer :focus-visible, .navbar:not(.scrolled) :focus-visible { outline-color: #fff; }
@@ -1825,7 +1835,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 /* Safety net: if JavaScript never runs, reveal-on-scroll content would be
    stuck at opacity:0. Show it outright when scripting is unavailable. */
 @media (scripting: none) {
-  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal { opacity: 1 !important; translate: none !important; }
 }
 
 /* Skip-to-content link (appears on first Tab press) */
@@ -1982,6 +1992,97 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   /* Back-to-top button lifts off the dark background */
   .to-top { background: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255, 255, 255, 0.18); }
   .to-top:hover { background: rgba(255, 255, 255, 0.16); }
+}
+
+/* ============================================================
+   WINDOWS HIGH CONTRAST (forced colors)
+   High Contrast swaps the site's colours for the user's own and drops
+   shapes drawn only with a background colour. These redraw them in the
+   user's system colours. Kept after dark mode, which High Contrast's dark
+   themes also turn on.
+   ============================================================ */
+@media (forced-colors: active) {
+  /* Phone menu lines and the close X */
+  .nav-toggle span,
+  .navbar.scrolled .nav-toggle span { forced-color-adjust: none; background: ButtonText; }
+  /* Hover and "you are here" marker bars in the menus */
+  .nav-link::after,
+  .dropdown-panel a::before,
+  .mobile-drawer .drawer-group > a:not(.btn)::before,
+  .mobile-drawer .drawer-group > a.active::before { forced-color-adjust: none; background: Highlight; }
+  /* Checklist ticks and the History timeline line */
+  .check-list li::before,
+  .timeline::before { forced-color-adjust: none; background: CanvasText; }
+  /* Stat dividers are the stats box showing through 1px gaps between cells */
+  .stats-grid,
+  .stats-strip .stats-grid { forced-color-adjust: none; background: CanvasText; border-color: CanvasText; }
+  .stat-cell,
+  .stats-strip .stat-cell { forced-color-adjust: auto; background: Canvas; }
+  /* Back-to-top circle */
+  .to-top { border: 2px solid ButtonText; }
+  /* Focused form fields: High Contrast drops the blue glow */
+  .form-control:focus { outline-color: Highlight; }
+}
+
+/* ============================================================
+   PRINT
+   Shows everything that fades in, leaves out the menus, the back-to-top
+   button and the background photos, and prints all text black on white
+   (hero and footer text is white on screen).
+   ============================================================ */
+@media print {
+  :root { color-scheme: light; }
+  *, *::before, *::after {
+    color: #000 !important;
+    background-color: transparent !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition: none !important; /* no fading from screen colours mid-print */
+  }
+  html, body { background: #fff !important; }
+  .bg-ambient, .navbar, .mobile-drawer, .drawer-scrim, .skip-link, .to-top,
+  .hero-bg, .hero-veil, .cta-bg, .cta-banner::after,
+  .audience-card .card-bg, .audience-card::after,
+  .page-hero-mark-wrap::before,
+  main > .hero + *::before, main > .page-hero + *::before, main.hero-only::after {
+    display: none !important;
+  }
+  .reveal { opacity: 1 !important; translate: none !important; }
+
+  /* Without their photos the tops of pages don't need a screen's height */
+  .hero, .page-hero { min-height: 0 !important; padding: 1.5rem 0 !important; }
+  main > .hero + *, main > .page-hero + * { margin-top: 0 !important; }
+  .section { padding: 2rem 0 !important; }
+  .stats-strip .stats-grid { top: 0; margin-bottom: 0; }
+  .audience-card { min-height: 0; }
+  .site-footer { margin-top: 1rem; padding: 1.5rem 0 0 !important; }
+
+  /* Dark fills (footer, buttons) are dropped; buttons keep an outline */
+  .site-footer, .btn, .hero h1 .accent { background-image: none !important; }
+  .btn { border: 1px solid #000 !important; }
+  .text-link { text-decoration: underline; }
+  .hero-crest { filter: none; }
+  .page-hero-mark { filter: brightness(0); } /* the white Donate logo prints black */
+  /* Photos that are part of the content (officers, the house) and the
+     checklist ticks print even with the browser's "background graphics" off */
+  .split-media .media-bg, .member-photo, .alumni-photo, .journal-cover,
+  .logo-tile--photo .photo, .check-list li::before {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .split-media .media-caption, .gallery-item .gallery-caption { background-color: #fff !important; }
+
+  .glass-card, .stat-cell, .timeline-item, .gallery-item, .split-media,
+  .visit-card, .quote-band, .cta-banner, .logo-tile { break-inside: avoid; }
+
+  /* Counting stats: print the real number, not the counter (js/main.js) */
+  .count-final {
+    position: static; width: auto; height: auto; margin: 0;
+    overflow: visible; clip: auto; white-space: normal;
+  }
+  .count-final + [data-count] { display: none; }
 }
 
 /* Philanthropy hero — art-directed. The Taxi Bash group photo is too wide
