@@ -36,7 +36,7 @@
   const nav = `
   <nav class="navbar" id="navbar" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="${link("index.html")}" class="brand" aria-label="Auburn Theta Xi home">
+      <a href="${link("index.html")}" class="brand" aria-label="Theta Xi, Beta Zeta, Auburn: home">
         <img src="${link("assets/images/system/crest traditional.png")}" alt="Theta Xi crest">
         <span class="brand-text">
           <span class="brand-name">THETA XI</span>
