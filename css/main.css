@@ -1052,6 +1052,8 @@ main.hero-only::after {
   font-style: normal;
   color: var(--azure-text);
 }
+/* The cite text is the same blue as its links, so underline the links */
+.quote-band cite a { text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* Members */
 .member-grid {
@@ -1099,6 +1101,10 @@ main.hero-only::after {
 .member-bio { font-size: 0.92rem; color: var(--text-mid); }
 .member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); }
 .member-contact:hover { color: var(--azure-text); text-decoration: underline; }
+/* "Call or text (number)": separate Call (dialer) and Text (Messages) links */
+.member-phone { display: block; color: var(--text-mid); }
+.member-phone:hover { color: var(--text-mid); text-decoration: none; }
+.member-phone a, .member-phone a:hover { color: var(--azure-text); font-weight: 600; text-decoration: underline; text-underline-offset: 0.15em; padding: 0.35em 0; } /* padding: taller tap area, same layout */
 
 /* Homepage officer preview: on phones the full cards ran ~1 screen each and
    ate 28% of the page. Go 2-across with just the face, name, and role — the

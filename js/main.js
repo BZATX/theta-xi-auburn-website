@@ -241,6 +241,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* Exec board / member bios */
+  // "Call or text (913) 300-1872" with separate Call (dialer) and Text
+  // (Messages) links. US numbers; a leading 1 is accepted but not required.
+  const phoneLinks = (phone) => {
+    const digits = String(phone).replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
+    const num = esc(phone);
+    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> <span style="white-space:nowrap">${num}</span></p>`;
+  };
   const memberMount = document.querySelector("[data-members]");
   if (memberMount) {
     const limit = parseInt(memberMount.dataset.members, 10) || Infinity;
@@ -258,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ${m.major || m.hometown ? `<p class="member-meta">${esc([m.major, m.hometown].filter(Boolean).join(" · "))}</p>` : ""}
             ${m.bio ? `<p class="member-bio">${esc(m.bio)}</p>` : ""}
             ${m.email ? `<a class="member-contact" href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ""}
-            ${m.phone ? `<a class="member-contact" href="sms:+1${esc(String(m.phone).replace(/\D/g, ""))}">Call or text ${esc(m.phone)}</a>` : ""}
+            ${m.phone ? phoneLinks(m.phone) : ""}
           </div>
         </article>`
         )
