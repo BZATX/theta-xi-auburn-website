@@ -25,10 +25,9 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** only doc updates on `claude/great-sagan-6b17gi`
-  (this file and `BACKLOG.md`). They can go out with the next publish, or be
-  pushed alone with `[skip netlify]`. The last site publish (Oct 21,
-  evening) removed the retired `/admin` page (`admin/` folder, its
+- **Waiting to go live:** nothing. (Doc updates after the last site
+  publish went to `main` with `[skip netlify]`.) The last site publish
+  (Oct 21, evening) removed the retired `/admin` page (`admin/` folder, its
   `_headers` rules and the `robots.txt` note); the owner confirmed `/admin`
   now shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
