@@ -8,9 +8,10 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 - **Backlog fixes pushed to `main` on Oct 21 (evening).** The owner asked
   for all 32 open items in `BACKLOG.md` to be fixed and said "push to main"
-  after reviewing screenshots. 30 are fixed (see "Last publish" below); #26
-  still needs the board (see `BACKLOG.md`). The owner still needs to confirm
-  the live pages and that Netlify published the deploy.
+  after reviewing screenshots. 30 are fixed (see "Last publish" below); #22
+  no longer applies and the owner dropped #26 (see `BACKLOG.md`). The owner
+  still needs to confirm the live pages and that Netlify published the
+  deploy.
 - **Who manages the site:** Ben Waters (Alumni Relations governor) and Shaun,
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
@@ -67,8 +68,6 @@ Still to do now that it's pushed:
   Security Policy" warnings. If there are none, the public policy can be
   switched from test mode to enforced in `_headers` (a small change for the
   next batch).
-- Board task that came out of this batch: #26, the photo credit, in
-  `BACKLOG.md` under "Waiting on the owner or board".
 
 ## Previous publish (Oct 21, 2026, morning)
 
@@ -138,6 +137,8 @@ Not yet approved; ask the owner before doing these.
 
 - The `/admin` browser editor is decommissioned (Oct 21, 2026). The site is
   managed by Ben Waters and Shaun through AI coding assistants and GitHub.
+- No photo credit for Eric O'Neill's notable-alumni photo (backlog #26,
+  dropped by the owner Oct 21, 2026).
 - Keep "72+ years". Keep the refounding references as they are; people with
   questions can ask the chapter.
 - Don't mention "Auburn first" students or the "Path to the Plains".
@@ -176,7 +177,8 @@ Not yet approved; ask the owner before doing these.
 - **Oct 21:** GitHub default branch set to `main`; `CLAUDE.md` became
   `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan. The
   owner asked for all 32 open backlog items to be fixed; 30 fixed, tested
-  and pushed to `main` that evening (#22 and #26 need the board).
+  and pushed to `main` that evening (#22 no longer applies; the owner
+  dropped #26).
 
 ## How to check work
 

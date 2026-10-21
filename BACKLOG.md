@@ -14,8 +14,8 @@ working on it, follow the rules in `AGENTS.md`, and update this file when an
 item is done or turned down. Line numbers can drift; search for the text if a
 line doesn't match.
 
-Status on Oct 21: 30 fixed and published, 0 open, 7 partly done, 9 waiting on
-the owner or board, 9 done, 1 turned down, 1 no longer applies.
+Status on Oct 21: 30 fixed and published, 0 open, 7 partly done, 8 waiting on
+the owner or board, 9 done, 2 turned down, 1 no longer applies.
 
 ## Waiting on the owner or board
 
@@ -30,13 +30,6 @@ confirm. Some have a small code change that follows.
   - Where: Drive: Alumni Relations / Alumni Database & Contact Updates /
     "Alumni Inbox Monitor - Operating Runbook - Current" ·
     pages/update-info.html · README.md:218-236
-- **#26 Eric O'Neill's photo comes from Wikimedia Commons and is shown without the required credit** (needs the owner or board)
-  Still no credit for Eric O'Neill's photo. Someone needs the photographer's
-  name and the license from the Wikimedia Commons page
-  (commons.wikimedia.org, File:Eric O'Neill 2019.jpg), or a photo from
-  O'Neill himself; then a small credit line goes under the photo and in the
-  README.
-  - Where: data/alumni.json:22 · js/main.js:278-283 · README.md:262-275
 - **#43 'Add to home screen' uses the housing corporation's name, not 'Auburn Theta Xi'** (needs the owner or board)
   The owner needs to decide whether the home-screen name should be 'Auburn
   Theta Xi' or stay 'Beta Zeta Association of Theta Xi'. After that, rename
@@ -324,11 +317,13 @@ small follow-up.
 - #7 Retention and graduation stats on the Recruitment page have no source we could find (done)
 - #8 Recruitment page gets the IFC timing wrong and leaves out an eligibility rule (done)
 - #22 Admin login instructions don't work now that the site belongs to the BZATX organization (no longer applies: /admin decommissioned Oct 21)
+- #26 Eric O'Neill's photo comes from Wikimedia Commons and is shown without the required credit (turned down by the owner)
 - #28 README and PLAN docs are out of date, and PLAN wrongly says the Habitat photos are AI-generated (done)
 - #50 Remove the alumni reunion section after Oct 3 (done)
 - #53 Chapter news is almost a year old (done)
 
-Notes: #4, the owner said the scholarship figures are correct as they are. #8,
-the timing was fixed, and the owner chose not to add the Path to the Plains /
+Notes: #26, the owner dropped the Eric O'Neill photo credit on Oct 21, 2026.
+#4, the owner said the scholarship figures are correct as they are. #8, the
+timing was fixed, and the owner chose not to add the Path to the Plains /
 Auburn First eligibility line. #1, the owner cancelled the follow-up test form
 on Oct 21.
