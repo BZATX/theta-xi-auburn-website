@@ -38,7 +38,7 @@ current state, what's waiting to go live, and short-term to-dos, see
       uploads commit straight to `main`.
 - [x] **Decision:** content updates go through the alumni board. The chapter
       sends headshots, bios and photos to the board, and a board member
-      applies them in a Claude Code session (see README). Undergraduates
+      applies them with an AI coding assistant (see README). Undergraduates
       are not repo collaborators; `/admin` is a board-only backup.
 - [x] Site copied into a new repository owned by the `BZATX` GitHub
       organization (Sept 22, 2026). Earlier history is in the old

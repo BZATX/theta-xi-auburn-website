@@ -11,7 +11,10 @@ the Netlify plan's credits limit how often you can publish (see below).
 - **Hosting:** Netlify publishes the `main` branch. A push to `main` is live
   within a couple of minutes.
 - **Current state and open items:** see [`HANDOFF.md`](HANDOFF.md).
-- **Rules for Claude sessions:** see [`CLAUDE.md`](CLAUDE.md).
+- **Rules for AI assistants (Claude, Cursor, Grok):** see
+  [`AGENTS.md`](AGENTS.md). `CLAUDE.md` points there.
+- **Unapproved ideas from the Oct 1, 2026 site scan:** see
+  [`BACKLOG.md`](BACKLOG.md).
 
 ---
 
@@ -21,13 +24,15 @@ Undergraduate officers do **not** edit the website. Instead:
 
 1. **The chapter sends content to the alumni board** (officer headshots, bios,
    event photos, news) by email, text or Slack.
-2. **A board member opens a Claude Code session** on this repository
-   (claude.ai/code, or the Claude Code app with the repo cloned).
-3. **They describe the change in plain English.** Claude edits the files on
-   the development branch and shows screenshots of the result.
-4. **When the board member approves ("push to main"), Claude publishes it.**
-   Netlify deploys automatically; check the live site a couple of minutes
-   later.
+2. **A board member opens an AI coding assistant** on this repository:
+   Claude Code (claude.ai/code or the app), or Cursor or Grok as an
+   experiment. Use one tool at a time; each works on its own branch (see
+   `AGENTS.md`).
+3. **They describe the change in plain English.** The assistant edits the
+   files on its branch and shows screenshots of the result.
+4. **When the board member approves ("push to main"), the assistant
+   publishes it.** Netlify deploys automatically; check the live site a
+   couple of minutes later.
 
 ### Publishing costs Netlify credits
 
@@ -36,8 +41,10 @@ The Netlify account is on a credit-based plan. Each publish of `main` (a
 after a run of small pushes. Previews of other branches don't use credits.
 So:
 
-- Collect approved changes on the development branch and publish them
-  together, not one at a time.
+- Collect approved changes on a working branch and publish them together,
+  not one at a time.
+- If Netlify skips a deploy, check the credits, then use Netlify → Deploys →
+  Trigger deploy → Deploy site instead of pushing again.
 - Saving in the `/admin` panel publishes immediately, and so does each photo
   upload there (it is its own commit to `main`), so each one uses credits.
   Adding a post with a new photo costs two publishes.
@@ -56,28 +63,30 @@ So:
 
 > "Remove Jake Doe from the exec board and move the Treasurer to the top."
 
-Be specific about names, dates and spelling; Claude will do exactly what you
-say.
+Be specific about names, dates and spelling; the assistant will do exactly
+what you say.
 
 ### Getting photos onto the site
 
-**Photos pasted into a Claude chat can't be added to the site.** Claude can
-see them but can't save the image file. Deliver the actual files instead:
+**Photos pasted into an AI chat can't be added to the site.** The assistant
+can see them but can't save the image file. Deliver the actual files instead:
 
 1. Put the photos in Google Drive, in the **`Website Pictures`** folder
    (inside the `Website` folder of the alumni account's Drive), or post them
    in Slack.
-2. Tell Claude where they are. Descriptive file names help.
-3. Claude pulls them through the Drive or Slack connector, crops and resizes
-   them (phone screenshots usually need black bars removed), and adds them
-   under `assets/images/`.
+2. Tell the assistant where they are. Descriptive file names help.
+3. The assistant pulls them through its Drive or Slack connection, if it has
+   one, crops and resizes them (phone screenshots usually need black bars
+   removed), and adds them under `assets/images/`. A tool running on your
+   own computer (Cursor) needs the files downloaded into the repo folder.
 
 ### What the next webmaster needs (one-time handoff)
 
 - **Admin access to this GitHub repository** (it belongs to the `BZATX`
   organization; an owner adds you).
 - **Access to the Netlify account** that deploys it.
-- A Claude account with Claude Code access.
+- An AI coding assistant with access to the repository (Claude Code has
+  been used so far).
 
 The board's Google Drive holds the fuller handoff record: Alumni Relations /
 Website & Digital Infrastructure / "Website Operations & Ownership Handoff -
@@ -166,7 +175,7 @@ Conventions that keep the site easy to maintain:
 - Text colors must reach WCAG AA contrast (4.5:1 for normal text) in light and
   dark mode. Small links use the `--azure-text` blue; orange is for buttons
   and accents (plus the light-orange hover on footer links, which sit on
-  navy). See `CLAUDE.md` for details.
+  navy). See `AGENTS.md` for details.
 - Preview locally with `python3 -m http.server 8765` from the repo root (a
   server is required; opening the files directly can't load the JSON).
 
@@ -174,8 +183,8 @@ Conventions that keep the site easy to maintain:
 
 ## The `/admin` panel (optional backup editor)
 
-`admin/index.html` is a browser tool for small edits without a Claude
-session, such as fixing a typo from a phone. No page links to it: open
+`admin/index.html` is a browser tool for small edits without an AI
+assistant, such as fixing a typo from a phone. No page links to it: open
 `/admin/` directly. Its login screen is headed "Chapter Login", and it is
 hidden from search engines.
 
@@ -188,7 +197,7 @@ hidden from search engines.
   changes nothing on the site.
 - **Every save and every photo upload commits straight to `main`**, so each
   one goes live immediately, skips any preview, and uses Netlify credits.
-  If someone saves here while other changes wait on the development branch,
+  If someone saves here while other changes wait on a working branch,
   merge `main` into that branch before publishing it.
 - It only works for repository collaborators holding a fine-grained GitHub
   token (instructions are on its login screen). Undergraduates are not added

@@ -2,22 +2,31 @@
 
 **Last updated: Oct 21, 2026.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
-US Eastern time.
+US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 ## At a glance
 
-- **Live site:** `main` at `d0ff607`, published Oct 21, 2026. The owner
-  confirmed the changes on the live site. (The Claude session can't reach
-  auburnthetaxi.com, so the owner does the live check after each publish.)
-- **Waiting to go live:** nothing that changes the site. Updates to this file
-  sit on the development branch and go out with the next publish.
+- **Website work is complete for now.** The owner confirmed the Oct 21
+  publish on the live site, and the Board Dashboard row "Publish held
+  website changes" is marked Complete.
+- **Live site:** the site content published Oct 21, 2026 (`main` at
+  `d0ff607`). Later commits on `main` that only change docs carry
+  `[skip netlify]`, so they don't publish anything or use credits.
+- **Branches:** Netlify's production branch is `main`, and since Oct 21
+  GitHub's default branch is `main` too. Claude's working branch is
+  `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
+  `grok/…`). Only one tool works on the site at a time.
+- **Waiting to go live:** nothing.
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
-  skipped by Netlify because the credits hadn't reset yet; after they reset,
-  a second push on Oct 21 published. Each push to `main` is a paid
+  skipped by Netlify because the credits hadn't reset; they reset sometime
+  between 7 PM Oct 20 and 8:42 AM Oct 21, and a second push on Oct 21
+  published. Each push to `main` that changes the site is a paid
   "production deploy"; previews of other branches are free. Publish in
   batches. If a deploy is skipped, check credits first, then use Netlify →
   Deploys → Trigger deploy → Deploy site rather than pushing again.
+- **Live checks:** Claude's cloud sessions can't reach auburnthetaxi.com, so
+  the owner checks the live pages after a publish.
 
 ## Last publish (Oct 21, 2026)
 
@@ -28,44 +37,41 @@ US Eastern time.
 | `70fc306` | Removes the "Welcome, New Associate Members" news post. It used an alumni tailgate photo as a stand-in; there is no photo of the new member class. |
 | `837e3c8` | Phone menu: the current page and hovered items are blue instead of bright orange (which failed contrast at about 2.6 to 3:1), and the menu background is a little more solid so the blue passes over dark photos. Officer email links are blue and stay blue on hover. |
 | `abcec2c` | Phone menu: the current page's marker bar uses the deeper orange so it stands out (5.1:1 or better). |
-| `43ba463` | This file, `CLAUDE.md`, corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
+| `43ba463` | This file, `CLAUDE.md` (now `AGENTS.md`), corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
 
 ### Publishing checklist
 
 1. Confirm the Netlify account has credits (Netlify dashboard → billing).
 2. Check that `main` hasn't moved:
-   `git log --oneline origin/claude/great-sagan-6b17gi..origin/main` should
-   print nothing. If it prints commits (someone saved in `/admin`), merge
-   `origin/main` into the development branch first.
+   `git log --oneline origin/<your-branch>..origin/main` should print
+   nothing. If it prints commits (someone saved in `/admin`, or another
+   tool published), merge `origin/main` into your branch first.
 3. Review what's waiting with the owner
-   (`git log --oneline origin/main..origin/claude/great-sagan-6b17gi`), then
-   push the development branch to `main` once.
-4. A few minutes later, check the changed pages on the live site, on a phone
-   and a laptop.
+   (`git log --oneline origin/main..origin/<your-branch>`), then push your
+   branch to `main` once, after the owner says "push to main".
+4. A few minutes later, the owner checks the changed pages on the live
+   site, on a phone and a laptop. If a deploy shows "skipped" in Netlify,
+   see the credits note above.
 5. If a page looks unstyled or old, refresh once; the stylesheet version
    bump should handle returning visitors.
 6. Update this file.
 
 ## Things only a person can do
 
-- **Switch GitHub's default branch to `main`.** It is still
-  `claude/great-sagan-6b17gi` (GitHub → repository Settings → General →
-  Default branch). Netlify publishes `main` regardless, but people browsing
-  the repo see the development branch first.
 - **Netlify and domain ownership.** The site was copied into a new
   repository owned by the `BZATX` organization on Sept 22, 2026 (`2f2473c`;
-  earlier history is in the old `theta-xi-auburn-website-archive` repo).
-  Whether the Netlify site and the domain are under board-controlled
-  accounts with successor access is not recorded here. The migration
-  worklist is in the Drive handoff doc in Alumni Relations / Website &
-  Digital Infrastructure, titled "Website Operations & Ownership Handoff,
-  Current State".
+  earlier history is in the old `theta-xi-auburn-website-archive` repo,
+  which is private and doesn't affect the site). Whether the Netlify site
+  and the domain are under board-controlled accounts with successor access
+  is not recorded here. The migration worklist is in the Drive handoff doc
+  in Alumni Relations / Website & Digital Infrastructure, titled "Website
+  Operations & Ownership Handoff, Current State".
 - **Reunion photos in Drive.** The Board Dashboard asks for Rev's four Oct 3
   reunion photos (posted in the board Slack channel on Oct 9) to be saved in
   Drive under Alumni Relations / Alumni Events & Communications. They can't
   be uploaded through Claude's Drive connector; drag them in by hand.
-- **Send one test rush form** after the next publish to confirm the email
-  still arrives at `thetaxibz@gmail.com`.
+- Done Oct 21: GitHub's default branch switched to `main`. The owner
+  cancelled the planned test rush form.
 
 ## Open items and options
 
@@ -90,9 +96,8 @@ Not yet approved; ask the owner before doing these.
   shows a different venue. Drive has a "2024 Birmingham Alumni Reunion"
   folder; if it's that event, it could become a second archive entry.
 - **Photo sources:** see PLAN.md (several photos have no recorded source).
-- **Older scan items:** about 40 lower-priority items from the Oct 1 site
-  health scan were never approved. The scan lives in the owner's Claude
-  account as an artifact.
+- **Older scan items:** the Oct 1 site health scan's remaining items are
+  listed in `BACKLOG.md`, with their status as of Oct 21. None are approved.
 
 ## Decisions already made (don't reopen)
 
@@ -115,7 +120,7 @@ Not yet approved; ask the owner before doing these.
 - The three landing-page redesign concepts (Oct 2026) were turned down; the
   home page stays as it is.
 
-## Recent history (Sept 22 to Oct 11, 2026)
+## Recent history (Sept 22 to Oct 21, 2026)
 
 - **Sept 22:** site moved into `BZATX/theta-xi-auburn-website` (`2f2473c`);
   Beta Zeta house-mark icons and branding (`0c716eb`).
@@ -128,15 +133,19 @@ Not yet approved; ask the owner before doing these.
 - **Oct 9:** reunion banner removed (`acd6ccf`); Past Alumni Events archive
   and photo viewer (`931bc76`, `fe65a73`); small links changed to blue
   (`d496d10`). Netlify credits ran out.
-- **Oct 9 to 11 (not live):** new-member post removed; phone menu and email
-  colors; docs refresh and stylesheet v41.
+- **Oct 9 to 11:** new-member post removed; phone menu and email colors;
+  docs refresh and stylesheet v41. Published Oct 21 (the Oct 20 push was
+  skipped by Netlify while credits were out).
+- **Oct 21:** GitHub default branch set to `main`; `CLAUDE.md` became
+  `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan.
 
 ## How to check work
 
 - Local preview: `python3 -m http.server 8765` from the repo root.
-- Browser tests: Playwright with Chromium at `/opt/pw-browsers/chromium`.
-  Check every page at 390px and 1280px wide, light and dark mode, for console
-  errors and sideways scrolling.
+- Browser tests: in Claude's cloud sessions, Playwright with Chromium at
+  `/opt/pw-browsers/chromium`; on a local machine, a normal browser's phone
+  view and dark mode. Check every page at 390px and 1280px wide, light and
+  dark mode, for console errors and sideways scrolling.
 - Contrast: measure text against the real background behind it (hide the
   text, screenshot the area, compare against the darkest or lightest pixels).
   Check hover and current-page states too.
