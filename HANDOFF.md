@@ -13,8 +13,8 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   the live pages and that Netlify published the deploy.
 - **Who manages the site:** Ben Waters (Alumni Relations governor) and Shaun,
   through AI coding assistants and GitHub. The `/admin` browser editor was
-  decommissioned in Oct 2026 (owner, Oct 21); removing its files from the
-  site is waiting to go live (below).
+  decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
+  from the site in a third publish that evening.
 - **Live site:** the backlog batch, pushed Oct 21, 2026 (`main` at the
   commit that adds this note; the batch runs from `5fe60c9`). Later
   commits on `main` that only change docs should carry `[skip netlify]`, so
@@ -23,11 +23,10 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** removal of the retired `/admin` page (`admin/`
-  folder, its `_headers` rules and the `robots.txt` note) and doc updates
-  for the new setup, on `claude/great-sagan-6b17gi`. Needs the owner's "push
-  to main"; it can wait and go out with the next site change to save
-  credits.
+- **Waiting to go live:** nothing. The last publish (Oct 21, evening)
+  removed the retired `/admin` page (`admin/` folder, its `_headers` rules
+  and the `robots.txt` note); the owner should confirm that `/admin` now
+  shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
