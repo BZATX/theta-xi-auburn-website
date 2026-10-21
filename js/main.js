@@ -5,6 +5,33 @@
 document.addEventListener("DOMContentLoaded", () => {
   const ROOT = document.body.dataset.root || "";
 
+  /* ---------------- Photos further down the page ----------------
+     Background photos below the first screen are written as data-bg="path"
+     instead of an inline background-image, so they download only when the
+     visitor scrolls near them and the top photo gets the connection first.
+     Watching starts once the page has loaded (by then the officer, news and
+     Instagram sections have filled in and pushed lower photos down), or at
+     the visitor's first scroll if that comes sooner. */
+  const showBg = (el) => {
+    if (el.style.backgroundImage) return;
+    el.style.backgroundImage = `url("${el.dataset.bg.replace(/["\\]/g, "\\$&")}")`;
+  };
+  const bgObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { showBg(entry.target); obs.unobserve(entry.target); }
+      });
+    },
+    { rootMargin: "500px 0px" }
+  );
+  const watchBgs = () => document.querySelectorAll("[data-bg]").forEach((el) => bgObserver.observe(el));
+  if (document.readyState === "complete") watchBgs();
+  else {
+    window.addEventListener("load", watchBgs, { once: true });
+    window.addEventListener("scroll", watchBgs, { once: true, passive: true });
+  }
+  window.addEventListener("beforeprint", () => document.querySelectorAll("[data-bg]").forEach(showBg));
+
   /* ---------------- Navbar ---------------- */
   const navbar = document.getElementById("navbar");
   const toggle = document.getElementById("nav-toggle");
