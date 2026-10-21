@@ -388,8 +388,6 @@ main { display: block; }
      left a small orange nub behind for a moment when moving between links. */
 }
 .nav-link:hover::after, .nav-link.active::after,
-.has-dropdown:hover > .nav-link::after,
-.has-dropdown:focus-within > .nav-link::after,
 .has-dropdown.open > .nav-link::after {
   transform: scaleX(1);
   transition: transform 0.25s var(--ease-smooth); /* grows in */
@@ -446,15 +444,13 @@ main { display: block; }
   visibility: hidden;
   transition: opacity 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth), visibility 0.3s;
 }
-.has-dropdown:hover .dropdown-panel,
-.has-dropdown:focus-within .dropdown-panel,
+/* Open only through the "open" class set by js/main.js (hover, tap and
+   keyboard), so the panel and what screen readers hear always agree. */
 .has-dropdown.open .dropdown-panel {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
-.has-dropdown:hover > .nav-link .caret,
-.has-dropdown:focus-within > .nav-link .caret,
 .has-dropdown.open > .nav-link .caret {
   transform: rotate(225deg) translateY(-2px);
 }

@@ -1,11 +1,21 @@
 /* ============================================================
    Shared layout (navbar + footer) injected on every page.
    Edit links here ONCE and every page updates.
-   `data-root` on <body> is "" for index.html and "../" for /pages.
+   `data-root` on <body> is "" for index.html, "../" for /pages and "/"
+   for 404.html.
+   Each page also has a plain-text copy of the main links in a <noscript>
+   block, for visitors with JavaScript turned off. If you add, rename or
+   remove a page here, update those blocks too.
    ============================================================ */
 (function () {
   const ROOT = document.body.dataset.root || "";
-  const page = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  // Home links go to the site root, not index.html: "./" on the home page,
+  // "../" from /pages and "/" on the 404 page.
+  const HOME = ROOT || "./";
+  // Which page is this? Netlify also serves /pages/about without ".html", so
+  // names are compared without it. The 404 page highlights nothing.
+  const pageName = (p) => (p.replace(/\/+$/, "").split("/").pop() || "").toLowerCase().replace(/\.html$/, "");
+  const page = ROOT === "" ? "index" : ROOT === "../" ? pageName(location.pathname) : "";
 
   const SOCIALS = {
     instagram: "https://www.instagram.com/authetaxi/",
@@ -28,7 +38,7 @@
   ];
 
   const link = (href) => ROOT + href;
-  const isActive = (href) => href.split("/").pop().toLowerCase() === page;
+  const isActive = (href) => pageName(href) === page;
   const activeClass = (href) => (isActive(href) ? " active" : "");
   const exploreActive = exploreLinks.some((l) => isActive(l.href));
 
@@ -36,7 +46,7 @@
   const nav = `
   <nav class="navbar" id="navbar" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="${link("index.html")}" class="brand" aria-label="Auburn Theta Xi home">
+      <a href="${HOME}" class="brand" aria-label="Auburn Theta Xi home">
         <img src="${link("assets/images/system/crest traditional.png")}" alt="Theta Xi crest">
         <span class="brand-text">
           <span class="brand-name">THETA XI</span>
@@ -45,9 +55,9 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="${link("index.html")}" class="nav-link${activeClass("index.html")}">Home</a></li>
+        <li><a href="${HOME}" class="nav-link${activeClass("index.html")}">Home</a></li>
         <li class="has-dropdown">
-          <a href="${link("pages/about.html")}" class="nav-link dropdown-toggle${exploreActive ? " active" : ""}" aria-haspopup="true" aria-expanded="false" aria-controls="explore-menu">Explore <span class="caret" aria-hidden="true"></span></a>
+          <a href="${link("pages/about.html")}" class="nav-link dropdown-toggle${exploreActive ? " active" : ""}" aria-expanded="false" aria-controls="explore-menu">Explore <span class="caret" aria-hidden="true"></span></a>
           <div class="dropdown-panel" id="explore-menu">
             ${exploreLinks.map((l) => `<a href="${link(l.href)}"${isActive(l.href) ? ' class="active"' : ""}>${l.label}</a>`).join("")}
           </div>
@@ -71,7 +81,7 @@
   <div class="drawer-scrim" id="drawer-scrim"></div>
   <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true" inert>
     <div class="drawer-group">
-      <a href="${link("index.html")}" class="${isActive("index.html") ? "active" : ""}">Home</a>
+      <a href="${HOME}" class="${isActive("index.html") ? "active" : ""}">Home</a>
       <p class="drawer-label">Explore</p>
       ${exploreLinks.map((l) => `<a href="${link(l.href)}" class="${isActive(l.href) ? "active" : ""}">${l.label}</a>`).join("")}
       <p class="drawer-label">Chapter</p>

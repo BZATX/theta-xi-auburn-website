@@ -19,96 +19,139 @@ document.addEventListener("DOMContentLoaded", () => {
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  // The element that had focus before the drawer opened, so we can restore it.
-  let drawerReturnFocus = null;
+  const drawerOpen = () => !!drawer && drawer.classList.contains("open");
   const drawerFocusables = () =>
     drawer ? [...drawer.querySelectorAll('a[href], button:not([disabled])')] : [];
+  // While the phone menu is open, the page behind it is hidden from screen
+  // readers and taken out of the keyboard order.
+  const pageBehind = () =>
+    [document.querySelector("main"), document.querySelector(".site-footer"),
+     document.querySelector(".skip-link"), document.querySelector(".to-top")].filter(Boolean);
 
-  function setDrawer(open) {
-    if (!toggle || !drawer || !scrim) return;
+  function setDrawer(open, { focusToggle = true } = {}) {
+    if (!toggle || !drawer || !scrim || open === drawerOpen()) return;
     toggle.classList.toggle("open", open);
     drawer.classList.toggle("open", open);
     scrim.classList.toggle("show", open);
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     document.body.style.overflow = open ? "hidden" : "";
+    pageBehind().forEach((el) => {
+      if (open) { el.setAttribute("inert", ""); el.setAttribute("aria-hidden", "true"); }
+      else { el.removeAttribute("inert"); el.removeAttribute("aria-hidden"); }
+    });
     // Keep the off-screen drawer out of the tab order / accessibility tree
     // when closed — otherwise keyboard users tab into an invisible menu.
     if (open) {
       drawer.removeAttribute("inert");
       drawer.removeAttribute("aria-hidden");
-      drawerReturnFocus = document.activeElement;
-      // Defer briefly so the toggle's own click-focus settles first, then
-      // move focus into the now-visible drawer (a same-tick focus is overridden).
-      const first = drawerFocusables()[0];
-      if (first) setTimeout(() => { if (drawerOpen()) first.focus(); }, 60);
+      // Move focus to the first link in the menu now, and check again once
+      // the tap or click that opened it has finished.
+      const focusFirst = () => {
+        const first = drawerFocusables()[0];
+        if (drawerOpen() && first && !drawer.contains(document.activeElement)) first.focus({ preventScroll: true });
+      };
+      focusFirst();
+      setTimeout(focusFirst, 60);
     } else {
+      const focusWasInside = drawer.contains(document.activeElement);
       drawer.setAttribute("inert", "");
       drawer.setAttribute("aria-hidden", "true");
-      if (drawerReturnFocus && typeof drawerReturnFocus.focus === "function") {
-        drawerReturnFocus.focus();
-      } else if (toggle) {
-        toggle.focus();
-      }
-      drawerReturnFocus = null;
+      // Focus goes back to the menu button. When the window has just widened
+      // to desktop size the button is hidden, so focus is simply released.
+      if (focusToggle) toggle.focus();
+      else if (focusWasInside) document.activeElement.blur();
     }
     onScroll();
   }
-  const drawerOpen = () => drawer && drawer.classList.contains("open");
   if (toggle) toggle.addEventListener("click", () => setDrawer(!drawerOpen()));
   if (scrim) scrim.addEventListener("click", () => setDrawer(false));
 
-  // Escape closes the drawer no matter where focus is; Tab is trapped inside it.
+  // Escape closes the drawer no matter where focus is. Tab and Shift+Tab loop
+  // through the close (X) button and the links in the drawer.
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && drawerOpen()) setDrawer(false);
+    if (!drawerOpen()) return;
+    if (e.key === "Escape") { setDrawer(false); return; }
+    if (e.key !== "Tab") return;
+    const items = [toggle, ...drawerFocusables()];
+    const first = items[0];
+    const last = items[items.length - 1];
+    const at = items.indexOf(document.activeElement);
+    if (at === -1) {
+      e.preventDefault(); (e.shiftKey ? last : first).focus();
+    } else if (e.shiftKey && at === 0) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && at === items.length - 1) {
+      e.preventDefault(); first.focus();
+    }
   });
-  if (drawer) {
-    drawer.addEventListener("keydown", (e) => {
-      if (e.key !== "Tab") return;
-      const items = drawerFocusables();
-      if (!items.length) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); first.focus();
-      }
-    });
-  }
 
-  /* Explore dropdown — keep aria-expanded in sync for screen readers and
-     support touch-tap, keyboard focus, click-away, and Escape. */
+  // Close the phone menu when the window widens to the desktop menu (a tablet
+  // turned sideways, a browser window resized). Same breakpoint as css/main.css.
+  const phoneMenu = window.matchMedia("(max-width: 64em)");
+  const onMenuBreakpoint = () => { if (!phoneMenu.matches) setDrawer(false, { focusToggle: false }); };
+  if (phoneMenu.addEventListener) phoneMenu.addEventListener("change", onMenuBreakpoint);
+  else if (phoneMenu.addListener) phoneMenu.addListener(onMenuBreakpoint);
+
+  /* Explore dropdown. Only the "open" class shows it (no CSS hover), so
+     aria-expanded always matches what is on screen.
+     Mouse: opens on hover and closes when the pointer leaves; clicking
+     Explore goes to About Us. Touch and pen: a tap opens it and a second tap
+     closes it. Keyboard: opens when focus moves into it. Escape closes it
+     from anywhere inside and puts focus back on Explore. */
   document.querySelectorAll(".has-dropdown").forEach((li) => {
     const t = li.querySelector(".dropdown-toggle");
     if (!t) return;
+    let pointerAt = 0;   // last press inside the menu (any pointer)
+    let touchAt = 0;     // last press by finger or pen
+    let closeTimer = null;
+    let quietFocus = false; // focus moved back to Explore by Escape: don't reopen
+    const isOpen = () => li.classList.contains("open");
     const setOpen = (open) => {
+      clearTimeout(closeTimer);
       li.classList.toggle("open", open);
       t.setAttribute("aria-expanded", String(open));
     };
-    // Touch devices toggle on tap (no hover); keep the link nav on other devices.
+    const keyboardFocusInside = () => {
+      try { return !!li.querySelector(":focus-visible"); } catch (err) { return li.contains(document.activeElement); }
+    };
+    li.addEventListener("pointerdown", (e) => {
+      pointerAt = Date.now();
+      if (e.pointerType !== "mouse") touchAt = pointerAt;
+    });
+    li.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") setOpen(true); });
+    li.addEventListener("pointerleave", (e) => {
+      if (e.pointerType !== "mouse" || keyboardFocusInside()) return;
+      clearTimeout(closeTimer);
+      // A short pause, so the pointer can cross the gap between Explore and the panel.
+      closeTimer = setTimeout(() => setOpen(false), 200);
+    });
     t.addEventListener("click", (e) => {
-      if (window.matchMedia("(hover: none)").matches) {
-        e.preventDefault();
-        setOpen(!li.classList.contains("open"));
-      }
+      const tapped = Date.now() - touchAt < 1000 || window.matchMedia("(hover: none)").matches;
+      if (!tapped) return; // mouse click or Enter: follow the link to About Us
+      e.preventDefault();
+      setOpen(!isOpen());
     });
-    // Keyboard focus opens the panel (CSS :focus-within also reveals it).
-    li.addEventListener("focusin", () => setOpen(true));
+    // Keyboard focus opens the panel; a click or tap is handled above.
+    li.addEventListener("focusin", () => {
+      if (!quietFocus && Date.now() - pointerAt > 1000) setOpen(true);
+    });
     li.addEventListener("focusout", (e) => {
-      if (!li.contains(e.relatedTarget)) setOpen(false);
+      if (li.contains(e.relatedTarget)) return;
+      let hovered = false;
+      try { hovered = li.matches(":hover") && !window.matchMedia("(hover: none)").matches; } catch (err) { /* old browser */ }
+      if (!hovered) setOpen(false);
     });
-    t.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { setOpen(false); t.focus(); }
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || !isOpen()) return;
+      const focusInside = li.contains(document.activeElement);
+      quietFocus = true;
+      setOpen(false);
+      if (focusInside) t.focus();
+      quietFocus = false;
     });
-  });
-  document.addEventListener("click", (e) => {
-    document.querySelectorAll(".has-dropdown.open").forEach((li) => {
-      if (!li.contains(e.target)) {
-        li.classList.remove("open");
-        const t = li.querySelector(".dropdown-toggle");
-        if (t) t.setAttribute("aria-expanded", "false");
-      }
+    document.addEventListener("click", (e) => {
+      if (isOpen() && !li.contains(e.target)) setOpen(false);
     });
   });
 
