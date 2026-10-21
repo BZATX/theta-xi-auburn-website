@@ -188,10 +188,10 @@ assistant, such as fixing a typo from a phone. No page links to it: open
 `/admin/` directly. Its login screen is headed "Chapter Login", and it is
 hidden from search engines.
 
-- It edits `members.json`, `gallery.json`, `journal.json`, `alumni.json` and
-  `chapter.json`, and uploads photos. It can't edit `instagram.json`, or the
-  newer fields (a post's `location`, `photos` and `category`, or an officer's
-  `phone`), though saving keeps them.
+- It edits `members.json` (including an officer's optional `phone`),
+  `gallery.json`, `journal.json`, `alumni.json` and `chapter.json`, and
+  uploads photos. It can't edit `instagram.json`, or a post's newer fields
+  (`location`, `photos` and `category`), though saving keeps them.
 - Its Chapter Info tab shows the address, email and social links from
   `chapter.json`, but the site doesn't use them, so editing them there
   changes nothing on the site.
@@ -199,9 +199,32 @@ hidden from search engines.
   one goes live immediately, skips any preview, and uses Netlify credits.
   If someone saves here while other changes wait on a working branch,
   merge `main` into that branch before publishing it.
-- It only works for repository collaborators holding a fine-grained GitHub
-  token (instructions are on its login screen). Undergraduates are not added
-  as collaborators, so the panel, like the repo, is board-only.
+- Save & Publish saves only the tab that is open. Tabs with unsaved changes
+  are marked with a dot, and the page asks before you log out or leave with
+  unsaved work. It won't publish a card with an empty required field (marked
+  `*`) or an empty stat, and a photo stays with the card it was uploaded
+  for. Uploads are saved as JPEGs on a white background, at most 1200px for
+  headshots and news covers and 1600px for gallery photos.
+- If someone else saved the same tab after you opened it, GitHub refuses the
+  save; the panel says so and offers to load the latest version.
+- **Who can use it.** Each editor needs a GitHub account that is a member of
+  the `BZATX` organization (not an outside collaborator) with Write access
+  to `theta-xi-auburn-website`, and a fine-grained token made like this
+  (the same steps are on the login screen):
+  1. GitHub → Settings → Developer settings → Personal access tokens →
+     Fine-grained tokens → Generate new token.
+  2. Resource owner: `BZATX`. Expiration: short, such as 30 days.
+  3. Repository access: Only select repositories → `theta-xi-auburn-website`.
+  4. Permissions: Contents → Read and write. Nothing else.
+  5. If GitHub says the token needs approval, a BZATX owner approves it
+     under BZATX → Settings → Personal access tokens → Pending requests.
+
+  At login the panel checks that the key's account can save to the site
+  and says what's wrong if it can't. Undergraduates are not added to the
+  organization, so the panel, like the repo, is board-only.
+- The key is kept only until the browser tab is closed, unless "Keep me
+  signed in on this personal device" is ticked. Leave it unticked on shared
+  or chapter-house computers.
 
 ---
 
