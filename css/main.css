@@ -94,6 +94,7 @@ body {
   color: var(--text-mid);
   background-color: var(--bg-mid);
   overflow-x: hidden;
+  overflow-wrap: break-word; /* a word too long for its line (large text settings) wraps instead of running off */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -131,6 +132,7 @@ h1, h2, h3, h4 {
   line-height: 1.18;
   letter-spacing: 0;
   font-weight: 600;
+  overflow-wrap: anywhere; /* with very large text a long word wraps, even in a two-column layout */
 }
 
 .container {
@@ -388,8 +390,6 @@ main { display: block; }
      left a small orange nub behind for a moment when moving between links. */
 }
 .nav-link:hover::after, .nav-link.active::after,
-.has-dropdown:hover > .nav-link::after,
-.has-dropdown:focus-within > .nav-link::after,
 .has-dropdown.open > .nav-link::after {
   transform: scaleX(1);
   transition: transform 0.25s var(--ease-smooth); /* grows in */
@@ -446,15 +446,13 @@ main { display: block; }
   visibility: hidden;
   transition: opacity 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth), visibility 0.3s;
 }
-.has-dropdown:hover .dropdown-panel,
-.has-dropdown:focus-within .dropdown-panel,
+/* Open only through the "open" class set by js/main.js (hover, tap and
+   keyboard), so the panel and what screen readers hear always agree. */
 .has-dropdown.open .dropdown-panel {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
-.has-dropdown:hover > .nav-link .caret,
-.has-dropdown:focus-within > .nav-link .caret,
 .has-dropdown.open > .nav-link .caret {
   transform: rotate(225deg) translateY(-2px);
 }
@@ -500,6 +498,7 @@ main { display: block; }
   gap: 6px;
   width: 46px;
   height: 46px;
+  flex-shrink: 0; /* keeps its size with large text instead of shrinking to a sliver */
   padding: 0 11px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.16);
@@ -614,7 +613,7 @@ main { display: block; }
   background-size: cover;
   background-position: center;
   transform: scale(1.04);
-  animation: heroDrift 22s ease-in-out infinite alternate;
+  animation: heroDrift 22s ease-in-out forwards; /* plays once, then holds */
 }
 @keyframes heroDrift {
   from { transform: scale(1.04) translateY(0); }
@@ -1067,14 +1066,16 @@ main.hero-only::after {
   overflow: hidden;
   cursor: default;
   /* Flex sizing keeps an incomplete last row centered under the row above.
-     Mobile: fill; tablet: 3-up; desktop: 4-up. */
-  flex: 1 1 240px;
-  max-width: 360px;
+     Mobile: fill; tablet: 3-up; desktop: 4-up. Sizes are in rem/em (240px,
+     360px, 780px and 1024px at the default text size) so that with larger
+     text there are fewer, wider cards and long words still fit. */
+  flex: 1 1 15rem;
+  max-width: 22.5rem;
 }
-@media (min-width: 780px) {
+@media (min-width: 48.75em) {
   .member-card { flex-basis: calc(33.333% - 1rem); max-width: calc(33.333% - 1rem); }
 }
-@media (min-width: 1024px) {
+@media (min-width: 64em) {
   .member-card { flex-basis: calc(25% - 1.125rem); max-width: calc(25% - 1.125rem); }
 }
 .member-photo {
@@ -1099,7 +1100,7 @@ main.hero-only::after {
 }
 .member-meta { font-size: 0.85rem; color: var(--text-low); margin-bottom: 0.7rem; }
 .member-bio { font-size: 0.92rem; color: var(--text-mid); }
-.member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); }
+.member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); overflow-wrap: anywhere; } /* long email addresses wrap with large text */
 .member-contact:hover { color: var(--azure-text); text-decoration: underline; }
 /* "Call or text (number)": separate Call (dialer) and Text (Messages) links */
 .member-phone { display: block; color: var(--text-mid); }
@@ -1429,11 +1430,15 @@ html.lightbox-open { overflow: hidden; }
   object-fit: contain;
   transition: var(--transition);
 }
+/* Name-only tiles: less side padding, so the name has room with large text */
+.logo-tile--text { padding-left: 0.5rem; padding-right: 0.5rem; }
 .logo-tile span {
   font-family: var(--font-ui);
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.01em;
+  text-align: center;
+  overflow-wrap: anywhere; /* wraps inside the tile with large text */
   color: var(--navy);
   transition: var(--transition);
 }
@@ -1442,8 +1447,9 @@ html.lightbox-open { overflow: hidden; }
   border-color: var(--glass-border-hi);
   box-shadow: 0 18px 40px rgba(13, 42, 80, 0.16);
 }
-@media (max-width: 900px) { .logo-wall { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 520px) { .logo-wall { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } }
+/* 900px and 520px at the default text size; fewer columns with larger text */
+@media (max-width: 56.25em) { .logo-wall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 32.5em) { .logo-wall { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } }
 
 /* Donate cards */
 .donate-grid {
@@ -1741,6 +1747,7 @@ textarea.form-control { min-height: 130px; resize: vertical; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .hero-bg { animation: none; } /* top photos stay still */
 }
 
 /* ============================================================
@@ -1763,6 +1770,21 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .audience-card { min-height: 340px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Very large text (about 150% or more on a phone): the header Rush button
+   no longer fits beside the logo and the menu button, so it hides there.
+   Rush stays in the menu. At normal text sizes this never applies. */
+@media (max-width: 15em) {
+  .nav-cta-mobile { display: none; }
+  .logo-wall { grid-template-columns: 1fr; } /* employer names fit without breaking mid-word */
+}
+/* Large text (about 125% or more on a phone): officer cards drop their outer
+   padding (the photo runs edge to edge, as on desktop) so the email and
+   "Recruitment Chairman" fit without breaking mid-word. */
+@media (max-width: 17.5em) {
+  .member-card.glass-card { padding: 0; }
+  .member-body { padding-left: 1rem; padding-right: 1rem; }
 }
 
 @media (max-width: 680px) {
@@ -1826,6 +1848,34 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 @media (scripting: none) {
   .reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* Plain text menu for visitors with JavaScript turned off. Each page has it
+   in a <noscript> block; with JavaScript on, js/layout.js builds the real
+   menu instead and this never shows. White on navy in both themes. */
+.noscript-nav {
+  position: relative;
+  z-index: 1001;
+  background: var(--navy);
+  padding: 0.9rem 1rem;
+  font-family: var(--font-ui);
+}
+.noscript-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+.noscript-nav a, .noscript-nav a:hover {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.noscript-nav a:hover { text-decoration-thickness: 2px; }
+.noscript-nav a[aria-current="page"] { text-decoration: none; }
+.noscript-nav :focus-visible { outline-color: #fff; }
 
 /* Skip-to-content link (appears on first Tab press) */
 .skip-link {
