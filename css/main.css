@@ -1828,6 +1828,34 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
 
+/* Plain text menu for visitors with JavaScript turned off. Each page has it
+   in a <noscript> block; with JavaScript on, js/layout.js builds the real
+   menu instead and this never shows. White on navy in both themes. */
+.noscript-nav {
+  position: relative;
+  z-index: 1001;
+  background: var(--navy);
+  padding: 0.9rem 1rem;
+  font-family: var(--font-ui);
+}
+.noscript-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+.noscript-nav a, .noscript-nav a:hover {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.noscript-nav a:hover { text-decoration-thickness: 2px; }
+.noscript-nav a[aria-current="page"] { text-decoration: none; }
+.noscript-nav :focus-visible { outline-color: #fff; }
+
 /* Skip-to-content link (appears on first Tab press) */
 .skip-link {
   position: fixed;
