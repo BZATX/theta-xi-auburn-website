@@ -229,10 +229,24 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     { threshold: 0.4 }
   );
+  // Screen readers and printouts get the real number from the start: it sits in
+  // a hidden copy just before the counter, and the counting copy is hidden from
+  // screen readers (css/main.css prints the real copy instead of the counter).
+  const setFinalCopy = (el) => {
+    let copy = el.previousElementSibling;
+    if (!copy || !copy.classList.contains("count-final")) {
+      copy = document.createElement("span");
+      copy.className = "sr-only count-final";
+      el.before(copy);
+      el.setAttribute("aria-hidden", "true");
+    }
+    copy.textContent = formatCount(el, parseFloat(el.dataset.count));
+  };
   // Each number counts once. Until it does it reads 0, so a half-visible number
   // never shows its final value and then snaps back to 0 to start counting.
   const observeCounts = (scope) =>
     (scope || document).querySelectorAll("[data-count]:not([data-counted])").forEach((el) => {
+      setFinalCopy(el);
       if (!reduceMotion()) el.textContent = formatCount(el, 0);
       countObserver.observe(el);
     });
@@ -264,6 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (value == null) return;
       if (el.dataset.count !== undefined) {
         el.dataset.count = value;
+        setFinalCopy(el);
         // Already finished counting before the data arrived: just show the value.
         // (Mid-count, the animation picks up the new target by itself.)
         if (el.dataset.counted === "done") el.textContent = formatCount(el, parseFloat(value));
@@ -490,7 +505,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.add("lightbox-open");
   }
 
-  /* Photo gallery */
+  /* Photo gallery. A photo with a caption gets empty alt text: the caption
+     describes it, and screen readers would otherwise read it twice. */
   const galleryMount = document.querySelector("[data-gallery]");
   if (galleryMount) {
     const filter = galleryMount.dataset.gallery; // optional category filter
@@ -501,7 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .map(
           (p, i) => `
         <figure class="gallery-item reveal d${(i % 4) + 1}">
-          <img src="${esc(resolveImg(p.src))}" alt="${esc(p.caption || "Chapter photo")}" loading="lazy">
+          <img src="${esc(resolveImg(p.src))}" alt="${p.caption ? "" : "Chapter photo"}" loading="lazy">
           ${p.caption ? `<figcaption class="gallery-caption">${esc(p.caption)}</figcaption>` : ""}
         </figure>`
         )
