@@ -6,20 +6,20 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 ## At a glance
 
-- **Backlog fixes are waiting to publish.** On Oct 21 the owner asked for all
-  32 open items in `BACKLOG.md` to be fixed. 30 are fixed and tested on the
-  working branch (see "Waiting to go live" below); #22 and #26 also need the
-  board (see `BACKLOG.md`). They go live with the next push to `main`, once
-  the owner says "push to main".
-- **Live site:** the site content published Oct 21, 2026 (`main` at
-  `d0ff607`). Later commits on `main` that only change docs carry
-  `[skip netlify]`, so they don't publish anything or use credits.
+- **Backlog fixes pushed to `main` on Oct 21 (evening).** The owner asked
+  for all 32 open items in `BACKLOG.md` to be fixed and said "push to main"
+  after reviewing screenshots. 30 are fixed (see "Last publish" below); #22
+  and #26 also need the board (see `BACKLOG.md`). The owner still needs to
+  confirm the live pages and that Netlify published the deploy.
+- **Live site:** the backlog batch, pushed Oct 21, 2026 (`main` at the
+  commit that adds this note; the batch runs from `5fe60c9`). Later
+  commits on `main` that only change docs should carry `[skip netlify]`, so
+  they don't publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** the backlog batch, about 30 commits on
-  `claude/great-sagan-6b17gi` after `5fe60c9`. One push publishes all of it.
+- **Waiting to go live:** nothing.
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -31,20 +31,9 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 - **Live checks:** Claude's cloud sessions can't reach auburnthetaxi.com, so
   the owner checks the live pages after a publish.
 
-## Last publish (Oct 21, 2026)
+## Last publish: backlog batch (Oct 21, 2026, evening)
 
-`main` moved from `d496d10` (Oct 9) to `d0ff607`. The site changes:
-
-| Commit | Change |
-| --- | --- |
-| `70fc306` | Removes the "Welcome, New Associate Members" news post. It used an alumni tailgate photo as a stand-in; there is no photo of the new member class. |
-| `837e3c8` | Phone menu: the current page and hovered items are blue instead of bright orange (which failed contrast at about 2.6 to 3:1), and the menu background is a little more solid so the blue passes over dark photos. Officer email links are blue and stay blue on hover. |
-| `abcec2c` | Phone menu: the current page's marker bar uses the deeper orange so it stands out (5.1:1 or better). |
-| `43ba463` | This file, `CLAUDE.md` (now `AGENTS.md`), corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
-
-## Waiting to go live (backlog batch, Oct 21, 2026)
-
-`BACKLOG.md` → "Fixed, waiting to publish" lists each item. In short: faster
+`BACKLOG.md` → "Fixed and published" lists each item. In short: faster
 photo loading and smaller images; print settings; Windows High Contrast,
 keyboard, screen-reader and large-text fixes; menus that open and close
 reliably; separate Call and Text links; no-JavaScript menu, footer and
@@ -55,18 +44,18 @@ public pages, enforced on `/admin`); and many admin editor fixes (sign-in
 safety, checks before saving, clearer errors, dark mode, uploads).
 
 Versions: `main.css?v=42` on every page, `admin.css?v=7`, `admin.js?v=5`.
-None of these have been published, so they don't need another bump before
-this push.
+The next change to any of these files needs the next number.
 
-Testing: three rounds of independent checks (every page at 320 to 1280px,
-light and dark, JavaScript off, print, large text, keyboard, the admin editor
-against a mock of GitHub, and contrast measurements). Most problems they found
-were fixed and re-checked; the few small ones left are "Still" notes in
-`BACKLOG.md` (#13, #17, #19).
+Testing: three rounds of independent checks before publishing (every page at
+320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,
+the admin editor against a mock of GitHub, and contrast measurements). Most
+problems they found were fixed and re-checked; the few small ones left are
+"Still" notes in `BACKLOG.md` (#13, #17, #19).
 
-After it's live:
-- The owner checks Home, Recruitment, Meet the Officers, Donate and the
-  admin login on a phone and a laptop.
+Still to do now that it's pushed:
+- The owner checks that Netlify published it (Deploys list) and looks at
+  Home, Recruitment, Meet the Officers, Donate and the admin login on a
+  phone and a laptop.
 - Security policy (#30): someone opens the Social and Brotherhood pages in a
   desktop browser with the developer console open and looks for "Content
   Security Policy" warnings. If there are none, the public policy can be
@@ -75,7 +64,18 @@ After it's live:
 - Board tasks that came out of this batch are in `BACKLOG.md` under "Waiting
   on the owner or board" (#22 BZATX editors, #26 photo credit).
 
-### Publishing checklist
+## Previous publish (Oct 21, 2026, morning)
+
+`main` moved from `d496d10` (Oct 9) to `d0ff607`. The site changes:
+
+| Commit | Change |
+| --- | --- |
+| `70fc306` | Removes the "Welcome, New Associate Members" news post. It used an alumni tailgate photo as a stand-in; there is no photo of the new member class. |
+| `837e3c8` | Phone menu: the current page and hovered items are blue instead of bright orange (which failed contrast at about 2.6 to 3:1), and the menu background is a little more solid so the blue passes over dark photos. Officer email links are blue and stay blue on hover. |
+| `abcec2c` | Phone menu: the current page's marker bar uses the deeper orange so it stands out (5.1:1 or better). |
+| `43ba463` | This file, `CLAUDE.md` (now `AGENTS.md`), corrected `README.md` and `PLAN.md`, and the stylesheet bump to 41 on every page that `837e3c8` and `abcec2c` left out, so visitors get the new menu colors. |
+
+## Publishing checklist
 
 1. Confirm the Netlify account has credits (Netlify dashboard → billing).
 2. Check that `main` hasn't moved:
@@ -170,8 +170,8 @@ Not yet approved; ask the owner before doing these.
   skipped by Netlify while credits were out).
 - **Oct 21:** GitHub default branch set to `main`; `CLAUDE.md` became
   `AGENTS.md` for any AI tool; `BACKLOG.md` added from the Oct 1 scan. The
-  owner asked for all 32 open backlog items to be fixed; 30 fixed and tested
-  on the working branch, waiting to publish (#22 and #26 need the board).
+  owner asked for all 32 open backlog items to be fixed; 30 fixed, tested
+  and pushed to `main` that evening (#22 and #26 need the board).
 
 ## How to check work
 
