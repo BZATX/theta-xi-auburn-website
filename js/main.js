@@ -1,6 +1,6 @@
 /* ============================================================
    AUBURN THETA XI — site behavior + dynamic content layer
-   Content lives in /data/*.json and is editable from /admin.
+   Content lives in /data/*.json.
    ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
   const ROOT = document.body.dataset.root || "";
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return url ? ` data-bg style="--bg:url('${esc(cssUrl(url))}')"` : "";
   };
 
-  /* Links typed into the JSON (or the /admin editor) are cleaned up before use:
+  /* Links typed into the JSON files are cleaned up before use:
      "www.example.com" or "example.com/page" gets https://, an email address gets
      mailto:, a site page such as "update-info.html" or "pages/donate.html" works
      from every page, and only links to other sites open in a new tab. Any other

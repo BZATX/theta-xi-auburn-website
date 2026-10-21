@@ -8,9 +8,13 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 - **Backlog fixes pushed to `main` on Oct 21 (evening).** The owner asked
   for all 32 open items in `BACKLOG.md` to be fixed and said "push to main"
-  after reviewing screenshots. 30 are fixed (see "Last publish" below); #22
-  and #26 also need the board (see `BACKLOG.md`). The owner still needs to
-  confirm the live pages and that Netlify published the deploy.
+  after reviewing screenshots. 30 are fixed (see "Last publish" below); #26
+  still needs the board (see `BACKLOG.md`). The owner still needs to confirm
+  the live pages and that Netlify published the deploy.
+- **Who manages the site:** Ben Waters (Alumni Relations governor) and Shaun,
+  through AI coding assistants and GitHub. The `/admin` browser editor was
+  decommissioned in Oct 2026 (owner, Oct 21); removing its files from the
+  site is waiting to go live (below).
 - **Live site:** the backlog batch, pushed Oct 21, 2026 (`main` at the
   commit that adds this note; the batch runs from `5fe60c9`). Later
   commits on `main` that only change docs should carry `[skip netlify]`, so
@@ -19,7 +23,11 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   GitHub's default branch is `main` too. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing.
+- **Waiting to go live:** removal of the retired `/admin` page (`admin/`
+  folder, its `_headers` rules and the `robots.txt` note) and doc updates
+  for the new setup, on `claude/great-sagan-6b17gi`. Needs the owner's "push
+  to main"; it can wait and go out with the next site change to save
+  credits.
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -40,11 +48,11 @@ reliably; separate Call and Text links; no-JavaScript menu, footer and
 photos; "couldn't load" notes when a data file fails; form autofill and GPA
 checks; darker example text in form fields (4.5:1); page titles,
 descriptions and link previews; a content security policy (test mode on
-public pages, enforced on `/admin`); and many admin editor fixes (sign-in
-safety, checks before saving, clearer errors, dark mode, uploads).
+public pages); and many fixes to the `/admin` editor, which was retired
+soon after (see below).
 
-Versions: `main.css?v=42` on every page, `admin.css?v=7`, `admin.js?v=5`.
-The next change to any of these files needs the next number.
+Versions: `main.css?v=42` on every page. The next change to `css/main.css`
+needs 43.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,
@@ -54,15 +62,14 @@ problems they found were fixed and re-checked; the few small ones left are
 
 Still to do now that it's pushed:
 - The owner checks that Netlify published it (Deploys list) and looks at
-  Home, Recruitment, Meet the Officers, Donate and the admin login on a
-  phone and a laptop.
+  Home, Recruitment, Meet the Officers and Donate on a phone and a laptop.
 - Security policy (#30): someone opens the Social and Brotherhood pages in a
   desktop browser with the developer console open and looks for "Content
   Security Policy" warnings. If there are none, the public policy can be
   switched from test mode to enforced in `_headers` (a small change for the
   next batch).
-- Board tasks that came out of this batch are in `BACKLOG.md` under "Waiting
-  on the owner or board" (#22 BZATX editors, #26 photo credit).
+- Board task that came out of this batch: #26, the photo credit, in
+  `BACKLOG.md` under "Waiting on the owner or board".
 
 ## Previous publish (Oct 21, 2026, morning)
 
@@ -80,8 +87,8 @@ Still to do now that it's pushed:
 1. Confirm the Netlify account has credits (Netlify dashboard → billing).
 2. Check that `main` hasn't moved:
    `git log --oneline origin/<your-branch>..origin/main` should print
-   nothing. If it prints commits (someone saved in `/admin`, or another
-   tool published), merge `origin/main` into your branch first.
+   nothing. If it prints commits (another tool or person published), merge
+   `origin/main` into your branch first.
 3. Review what's waiting with the owner
    (`git log --oneline origin/main..origin/<your-branch>`), then push your
    branch to `main` once, after the owner says "push to main".
@@ -119,9 +126,6 @@ Not yet approved; ask the owner before doing these.
 - **White menu text over top photos:** on a few pages (About, Accessibility,
   Brotherhood) the desktop menu's white text over the top photo measured
   about 4.4:1, just under 4.5:1, before you scroll. Found Oct 10; not fixed.
-- **Admin panel catch-up:** `/admin` can't set a post's location, photos or
-  category (its hints were fixed in the backlog batch). Its saves and photo
-  uploads each go straight to `main` and use Netlify credits.
 - **Old reunion photo:** the photo from the removed reunion banner (in git
   history at `acd6ccf^:assets/images/dynamic/alumni-reunion-beer-hog.jpg`)
   shows a different venue. Drive has a "2024 Birmingham Alumni Reunion"
@@ -133,6 +137,8 @@ Not yet approved; ask the owner before doing these.
 
 ## Decisions already made (don't reopen)
 
+- The `/admin` browser editor is decommissioned (Oct 21, 2026). The site is
+  managed by Ben Waters and Shaun through AI coding assistants and GitHub.
 - Keep "72+ years". Keep the refounding references as they are; people with
   questions can ask the chapter.
 - Don't mention "Auburn first" students or the "Path to the Plains".

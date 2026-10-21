@@ -1,11 +1,11 @@
 # Backlog: Oct 1, 2026 site scan
 
 On Oct 1, 2026, twelve separate checks went through the whole site (security,
-the admin editor, scripts, forms, links, search listings, facts,
-accessibility, layout, speed, a live browser test of every page, and the
-code's history), and every finding was re-checked by a second reviewer. This
-file lists what is left from that scan. Each item was checked again against
-the files on Oct 21, 2026.
+the admin editor (since decommissioned), scripts, forms, links, search
+listings, facts, accessibility, layout, speed, a live browser test of every
+page, and the code's history), and every finding was re-checked by a second
+reviewer. This file lists what is left from that scan. Each item was checked
+again against the files on Oct 21, 2026.
 
 On Oct 21, 2026 the owner asked for all the open items to be fixed. Those
 fixes were pushed to `main` that evening and are listed under "Fixed and
@@ -14,8 +14,8 @@ working on it, follow the rules in `AGENTS.md`, and update this file when an
 item is done or turned down. Line numbers can drift; search for the text if a
 line doesn't match.
 
-Status on Oct 21: 30 fixed and published, 0 open, 7 partly done, 10 waiting on
-the owner or board, 9 done, 1 turned down.
+Status on Oct 21: 30 fixed and published, 0 open, 7 partly done, 9 waiting on
+the owner or board, 9 done, 1 turned down, 1 no longer applies.
 
 ## Waiting on the owner or board
 
@@ -30,15 +30,6 @@ confirm. Some have a small code change that follows.
   - Where: Drive: Alumni Relations / Alumni Database & Contact Updates /
     "Alumni Inbox Monitor - Operating Runbook - Current" ·
     pages/update-info.html · README.md:218-236
-- **#22 Admin login instructions don't work now that the site belongs to the BZATX organization** (needs the owner or board)
-  The admin side is fixed and published Oct 21: the login page and README
-  give the BZATX token steps, login checks that the token can save, and
-  errors stay on screen and mention the Resource owner. Still needs the
-  board: add each board editor to the BZATX GitHub organization with Write
-  access, and approve their tokens (BZATX, Settings, Personal access tokens,
-  Pending requests).
-  - Where: admin/index.html:51-59 · admin/admin.js:111-116, 164-173, 360-405
-    · README.md:202-204
 - **#26 Eric O'Neill's photo comes from Wikimedia Commons and is shown without the required credit** (needs the owner or board)
   Still no credit for Eric O'Neill's photo. Someone needs the photographer's
   name and the license from the Wikimedia Commons page
@@ -117,27 +108,24 @@ for whoever edits the site next.
     navbar:not(.scrolled) rules (top menu over photos) ·
     pages/accessibility.html:52
 - **#23 Contact fields in the admin 'Chapter Info' tab change nothing on the site** (partly done)
-  The README says these fields do nothing and where contact details really
-  live, and the admin hint now says so too (published Oct 21). The editor
-  still shows the address, email, Instagram and Facebook fields, and
-  chapter.json still holds the unused contact and rush-chair fields. The
-  owner still needs to decide: remove the fields or connect them to the
-  site.
+  The /admin editor that showed these fields was decommissioned on Oct 21,
+  2026. data/chapter.json still holds contact and rush-chair fields that no
+  page uses. The owner still needs to decide: remove the fields, or connect
+  them to the site so contact details live in one place.
   - Why it matters: Someone updating contact details in the editor will
     believe it worked while the old details are still showing.
-  - Where: admin/admin.js:76-89 · data/chapter.json · js/layout.js:10-14,
-    120-123 · pages/recruitment.html:52, 204, 214 · README.md:109-118,
-    195-197
+  - Where: data/chapter.json · js/layout.js:10-14, 120-123 ·
+    pages/recruitment.html · README.md (Contact details)
 - **#24 Gallery photos tagged 'service', 'house' or 'other' never appear anywhere** (partly done)
-  The README and the admin hint are corrected (the hint fix was published
-  Oct 21). The editor still offers service, house and other tags that never
-  appear anywhere. The owner still needs to decide whether Philanthropy gets
-  its own gallery; otherwise the editor should offer only 'brotherhood'.
+  The /admin editor that offered these tags was decommissioned on Oct 21,
+  2026. Gallery photos tagged service, house or other still never appear.
+  The owner still needs to decide whether Philanthropy gets its own gallery;
+  otherwise only 'brotherhood' photos are worth adding to data/gallery.json.
   - Why it matters: The first person who follows the editor's hint or the
     README's example (adding Habitat photos to the 'service' gallery) will
     think the upload failed.
-  - Where: admin/admin.js:32-44 · pages/brotherhood.html:73 ·
-    pages/philanthropy.html · README.md:107, 120
+  - Where: data/gallery.json · pages/brotherhood.html:73 ·
+    pages/philanthropy.html
 - **#27 The 2025 tailgate photo is overused, and the uncropped version shows red cups and a cooler** (partly done)
   The New Associate Members post is gone, so the home news row shows the
   tailgate photo once. Still to do: the link previews for Alumni,
@@ -182,9 +170,11 @@ Polish and housekeeping.
 - **#51 Fix GitHub's default branch and protect the live branch** (partly done)
   The default branch is now main, and Netlify publishes main. Main still has
   no protection, so the owner needs to add a GitHub ruleset for main that
-  blocks deletion and force-pushes. It must not require reviews, because
-  /admin saves go straight to main. Don't delete claude/great-sagan-6b17gi:
-  it's still the active working branch.
+  blocks deletion and force-pushes. With /admin decommissioned, the ruleset
+  could also require pull requests, but that would change how the AI tools
+  publish (they push straight to main after "push to main"), so decide that
+  separately. Don't delete claude/great-sagan-6b17gi: it's still the active
+  working branch.
   - Why it matters: It causes 'my change didn't go live' confusion now, and
     leaves the live site one mistake away from being overwritten.
   - Where: GitHub: BZATX/theta-xi-auburn-website → Settings → Rules →
@@ -200,7 +190,8 @@ small follow-up.
 - **#9 Admin login stays saved on whatever computer it was used on** (fixed, published Oct 21)
   "Keep me signed in" is unticked by default and labelled for personal
   devices only. Unticked, the token is kept only in that browser tab. The
-  setup steps ask for a short expiration.
+  setup steps ask for a short expiration. The /admin page itself was
+  decommissioned soon after (Oct 21, 2026), so this no longer matters.
 - **#11 In Windows High Contrast mode, the phone menu icon and form focus disappear** (fixed, published Oct 21)
   High Contrast mode now shows the phone menu lines and X, the current-page
   marker, checklist ticks, the History timeline, stat dividers, the
@@ -261,23 +252,29 @@ small follow-up.
 - **#25 Admin editor can publish blank cards, misplace photos, or silently skip edits** (fixed, published Oct 21)
   The editor won't publish blank cards or empty stats, ties each photo
   upload to the card it was started for, marks tabs with unsaved changes,
-  warns before leaving, and loads fresh data each time.
+  warns before leaving, and loads fresh data each time. The /admin page
+  itself was decommissioned soon after (Oct 21, 2026), so this no longer
+  matters.
 - **#30 Add an extra layer of browser security** (fixed, published Oct 21)
-  A content security policy is in place: enforced on /admin, and in test
-  mode on the public pages. The outdated X-XSS-Protection header was
-  removed. Still to do after publishing: open the Social and Brotherhood
-  pages on the live site, check the browser console for policy warnings (the
-  Instagram posts are the likely ones), then switch the public policy from
-  test mode to enforced in `_headers`.
+  A content security policy is in place: in test mode on the public pages
+  (it was also enforced on the /admin page, now decommissioned). The
+  outdated X-XSS-Protection header was removed. Still to do after
+  publishing: open the Social and Brotherhood pages on the live site, check
+  the browser console for policy warnings (the Instagram posts are the
+  likely ones), then switch the public policy from test mode to enforced in
+  `_headers`.
 - **#32 Admin login and save errors are confusing** (fixed, published Oct 21)
   Admin login and save errors are in plain English, the editor logs out only
   when GitHub rejects the token, and it explains what to do when someone
-  else saved first.
+  else saved first. The /admin page itself was decommissioned soon after
+  (Oct 21, 2026), so this no longer matters.
 - **#33 Admin editor is hard to read in dark mode** (fixed, published Oct 21)
-  The admin editor is readable in dark mode.
+  The admin editor is readable in dark mode. The /admin page itself was
+  decommissioned soon after (Oct 21, 2026), so this no longer matters.
 - **#34 Admin photo uploads: black boxes behind logos, and larger files than needed** (fixed, published Oct 21)
   Admin photo uploads are saved as JPEGs on white (no black boxes behind
-  logos) and capped at 1600px (1200px for headshots).
+  logos) and capped at 1600px (1200px for headshots). The /admin page itself
+  was decommissioned soon after (Oct 21, 2026), so this no longer matters.
 - **#35 Home links and current-page highlighting** (fixed, published Oct 21)
   Home links point to the site root, and the current page is highlighted
   with or without ".html" in the address and announced to screen readers.
@@ -314,8 +311,8 @@ small follow-up.
   The card lift, the frosted blur behind the home buttons, the rounded form
   fields and the fade-in effects all work.
 - **#48 Housekeeping: icons, caching, admin search rule and ignored files** (fixed, published Oct 21)
-  favicon.ico added, caching rules set, /admin kept out of search results
-  the right way, more files ignored, and the two unused icons removed.
+  favicon.ico added, caching rules set, more files ignored, and the two
+  unused icons removed.
 
 ## Done or turned down
 
@@ -326,6 +323,7 @@ small follow-up.
 - #6 Jimmy Rane is listed as CEO, but he stepped down in October 2025 (done)
 - #7 Retention and graduation stats on the Recruitment page have no source we could find (done)
 - #8 Recruitment page gets the IFC timing wrong and leaves out an eligibility rule (done)
+- #22 Admin login instructions don't work now that the site belongs to the BZATX organization (no longer applies: /admin decommissioned Oct 21)
 - #28 README and PLAN docs are out of date, and PLAN wrongly says the Habitat photos are AI-generated (done)
 - #50 Remove the alumni reunion section after Oct 3 (done)
 - #53 Chapter news is almost a year old (done)

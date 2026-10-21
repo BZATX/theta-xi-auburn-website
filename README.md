@@ -13,8 +13,11 @@ the Netlify plan's credits limit how often you can publish (see below).
 - **Current state and open items:** see [`HANDOFF.md`](HANDOFF.md).
 - **Rules for AI assistants (Claude, Cursor, Grok):** see
   [`AGENTS.md`](AGENTS.md). `CLAUDE.md` points there.
-- **Unapproved ideas from the Oct 1, 2026 site scan:** see
+- **What's left from the Oct 1, 2026 site scan:** see
   [`BACKLOG.md`](BACKLOG.md).
+- **Who runs it:** Ben Waters and Shaun, through AI coding assistants and
+  GitHub. The old `/admin` browser editor was retired in Oct 2026; every
+  change goes through this repository.
 
 ---
 
@@ -45,9 +48,6 @@ So:
   not one at a time.
 - If Netlify skips a deploy, check the credits, then use Netlify → Deploys →
   Trigger deploy → Deploy site instead of pushing again.
-- Saving in the `/admin` panel publishes immediately, and so does each photo
-  upload there (it is its own commit to `main`), so each one uses credits.
-  Adding a post with a new photo costs two publishes.
 
 ### Example requests that work well
 
@@ -154,8 +154,7 @@ How photos are written into the pages, so they load quickly:
   photo cards use smaller `-card` copies of the full-size photos.
 
 Reference photos from the JSON with a repo-relative path such as
-`assets/images/events/2026-alumni-reunion-1.jpg`. The `/admin` panel saves
-its uploads to `assets/images/uploads/`, which it creates on first use.
+`assets/images/events/2026-alumni-reunion-1.jpg`.
 
 The browser-tab icons, home-screen icons, `site.webmanifest` and the link
 preview image (`og-image.png`) sit at the top level of the repo, copied from
@@ -174,18 +173,17 @@ js/layout.js      Navbar and footer for every page. Edit nav links HERE, then
 js/main.js        Menus and animations, JSON rendering, the photo viewer,
                   and both forms (rush-interest, alumni-update)
 data/             Content JSON (see above)
-admin/            Optional browser editor (see below)
 _redirects        Forwards old addresses (e.g. join.html → recruitment.html)
-_headers          Security headers, a test-mode content policy for the public
-                  pages, an enforced one for /admin, and caching rules
+_headers          Security headers, a test-mode content policy for the
+                  pages, and caching rules
 robots.txt, sitemap.xml, site.webmanifest, icons, og-image.png
 ```
 
 Conventions that keep the site easy to maintain:
 
-- Every page loads `css/main.css?v=N` (currently 42, including
-  `admin/index.html`). Bump `N` on every page whenever `css/main.css`
-  changes, so visitors' browsers fetch the new styles.
+- Every page loads `css/main.css?v=N` (currently 42). Bump `N` on every page
+  whenever `css/main.css` changes, so visitors' browsers fetch the new
+  styles.
 - The navbar and footer exist only in `js/layout.js`; never edit them page by
   page. The exception is the short `<noscript>` menu and footer line on each
   page, shown only when JavaScript is off; keep those in step with
@@ -198,53 +196,6 @@ Conventions that keep the site easy to maintain:
   navy). See `AGENTS.md` for details.
 - Preview locally with `python3 -m http.server 8765` from the repo root (a
   server is required; opening the files directly can't load the JSON).
-
----
-
-## The `/admin` panel (optional backup editor)
-
-`admin/index.html` is a browser tool for small edits without an AI
-assistant, such as fixing a typo from a phone. No page links to it: open
-`/admin/` directly. Its login screen is headed "Chapter Login", and it is
-hidden from search engines.
-
-- It edits `members.json` (including an officer's optional `phone`),
-  `gallery.json`, `journal.json`, `alumni.json` and `chapter.json`, and
-  uploads photos. It can't edit `instagram.json`, or a post's newer fields
-  (`location`, `photos` and `category`), though saving keeps them.
-- Its Chapter Info tab shows the address, email and social links from
-  `chapter.json`, but the site doesn't use them, so editing them there
-  changes nothing on the site.
-- **Every save and every photo upload commits straight to `main`**, so each
-  one goes live immediately, skips any preview, and uses Netlify credits.
-  If someone saves here while other changes wait on a working branch,
-  merge `main` into that branch before publishing it.
-- Save & Publish saves only the tab that is open. Tabs with unsaved changes
-  are marked with a dot, and the page asks before you log out or leave with
-  unsaved work. It won't publish a card with an empty required field (marked
-  `*`) or an empty stat, and a photo stays with the card it was uploaded
-  for. Uploads are saved as JPEGs on a white background, at most 1200px for
-  headshots and news covers and 1600px for gallery photos.
-- If someone else saved the same tab after you opened it, GitHub refuses the
-  save; the panel says so and offers to load the latest version.
-- **Who can use it.** Each editor needs a GitHub account that is a member of
-  the `BZATX` organization (not an outside collaborator) with Write access
-  to `theta-xi-auburn-website`, and a fine-grained token made like this
-  (the same steps are on the login screen):
-  1. GitHub → Settings → Developer settings → Personal access tokens →
-     Fine-grained tokens → Generate new token.
-  2. Resource owner: `BZATX`. Expiration: short, such as 30 days.
-  3. Repository access: Only select repositories → `theta-xi-auburn-website`.
-  4. Permissions: Contents → Read and write. Nothing else.
-  5. If GitHub says the token needs approval, a BZATX owner approves it
-     under BZATX → Settings → Personal access tokens → Pending requests.
-
-  At login the panel checks that the token's account can save to the site
-  and says what's wrong if it can't. Undergraduates are not added to the
-  organization, so the panel, like the repo, is board-only.
-- The token is kept only in that browser tab, unless "Keep me signed in on
-  this personal device" is ticked. On shared or chapter-house computers,
-  leave it unticked and click Log Out when finished.
 
 ---
 

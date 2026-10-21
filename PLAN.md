@@ -34,12 +34,13 @@ current state, what's waiting to go live, and short-term to-dos, see
 
 - [x] Content moved to `data/*.json`: officers, notable alumni, news posts,
       photo gallery, home stats, Instagram picks.
-- [x] `/admin` browser editor with GitHub-token login; edits and photo
-      uploads commit straight to `main`.
+- [x] `/admin` browser editor with GitHub-token login (Sept 2026). Retired
+      in Oct 2026: the site is managed by Ben Waters and Shaun through AI
+      coding assistants and GitHub.
 - [x] **Decision:** content updates go through the alumni board. The chapter
       sends headshots, bios and photos to the board, and a board member
       applies them with an AI coding assistant (see README). Undergraduates
-      are not repo collaborators; `/admin` is a board-only backup.
+      are not repo collaborators.
 - [x] Site copied into a new repository owned by the `BZATX` GitHub
       organization (Sept 22, 2026). Earlier history is in the old
       `theta-xi-auburn-website-archive` repository.
@@ -85,8 +86,6 @@ current state, what's waiting to go live, and short-term to-dos, see
       portraits, the Founding Fathers composite (`dynamic/FoundingFathers.jpg`),
       the house rendering and the employer logos came from, then credit or
       replace them.
-- [ ] **Admin panel catch-up:** let `/admin` edit a post's location, photos
-      and category. (Its hints were corrected in the Oct 2026 backlog batch.)
 
 ## Possible future additions
 

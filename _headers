@@ -16,8 +16,7 @@
 # can be enforced by renaming the header to Content-Security-Policy.
 # Keep these four copies identical. Netlify matches the address asked for, so
 # the "page not found" page shown at a mistyped address gets none of these;
-# when enforcing, consider one /* rule instead (the /admin/* rule below still
-# adds its stricter policy).
+# when enforcing, consider one /* rule instead.
 /
   Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 /index.html
@@ -26,14 +25,6 @@
   Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 /pages/*
   Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
-
-# The admin editor holds a GitHub key, so its policy is enforced: scripts only
-# from this site, and the only outside address it may send data to is GitHub's
-# API. X-Robots-Tag keeps it out of search results (robots.txt leaves it
-# crawlable so search engines can see this).
-/admin/*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-src 'none'; frame-ancestors 'none'; manifest-src 'self'
-  X-Robots-Tag: noindex, nofollow
 
 # Caching. Browsers may keep photos and other images for a day. The
 # stylesheet is linked as main.css?v=N and N changes with every edit, so it

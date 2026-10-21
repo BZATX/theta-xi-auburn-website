@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
 
-# /admin/ is left crawlable on purpose: search engines have to be able to read
-# its "noindex" tag (and the X-Robots-Tag header in _headers) to keep it out
-# of results. Blocking it here would hide that tag from them.
-
 Sitemap: https://www.auburnthetaxi.com/sitemap.xml

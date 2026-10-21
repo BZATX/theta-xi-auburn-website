@@ -10,8 +10,10 @@ unless the owner asks.
 
 ## Who you're working with
 
-The site is run by the Beta Zeta alumni board. The usual requester is the
-Alumni Relations governor. They are not a developer.
+The site is run by the Beta Zeta alumni board. It's managed by Ben Waters
+(the Alumni Relations governor, the usual requester) and Shaun, through AI
+coding assistants and GitHub. Neither is a developer. There is no browser
+editor any more: the `/admin` page was retired in Oct 2026.
 
 - Write replies in plain English, short, with no technical jargon. Explain
   what changed and what they need to do, not how the code works.
@@ -66,10 +68,9 @@ require a single writer per task).
   footer line (address, email, Privacy, Accessibility) for visitors with
   JavaScript off. When a page is added, renamed or removed, or the address or
   email changes, update those on every page too.
-- **Bump the stylesheet version** (`main.css?v=N`) on every page,
-  including `admin/index.html`, whenever `css/main.css` changes: ideally in
-  the same commit, and always before the next push to `main`. (`admin.css`
-  and `admin.js` have their own versions.)
+- **Bump the stylesheet version** (`main.css?v=N`) on every page whenever
+  `css/main.css` changes: ideally in the same commit, and always before the
+  next push to `main`.
 - **Escape JSON values** with `esc()` before putting them into HTML in
   `js/main.js`.
 - **Forms** are found by `data-ajax-submit` (Netlify strips `data-netlify`
