@@ -102,7 +102,7 @@ JSON that the pages read when they load.
 
 | File | What it holds | Where it shows |
 | --- | --- | --- |
-| `data/members.json` | Exec board: name, role, major, hometown, photo, bio, email, optional phone (shown as a "Call or text" link) | Meet the Officers page (`pages/leadership.html`), and the first 4 on the home page |
+| `data/members.json` | Exec board: name, role, major, hometown, photo, bio, email, optional phone (shown as separate "Call" and "text" links) | Meet the Officers page (`pages/leadership.html`), and the first 4 on the home page |
 | `data/journal.json` | News posts: title, date (YYYY-MM-DD), cover, excerpt, link. Optional: `location`; `photos` (a list of image paths; adds a "View photos" button that opens a photo viewer); `category` (`alumni` also lists the post under Past Alumni Events on the Alumni page) | Social page (`pages/journal.html`), the newest 3 on the home page, and `alumni` posts on the Alumni page |
 | `data/gallery.json` | Photos with a caption and a category | Brotherhood page only (category `brotherhood`). No page shows other categories. |
 | `data/alumni.json` | Notable alumni cards | Alumni page, "Notable Alumni" section |
@@ -133,7 +133,7 @@ stylesheet version.
 | `backgrounds/` | Large top-of-page photos |
 | `concepts/` | House concept rendering (Donate page) |
 | `employers/` | Alumni employer logos (Why Theta Xi page) |
-| `system/` | Crest and the Zeffy QR code (plus two old icons nothing uses) |
+| `system/` | Crest and the Zeffy QR code |
 | `brand/` | The Beta Zeta house logos in SVG and PNG; see its README and use them as supplied |
 
 Resize photos to at most 1800px and save as JPEG (aim for a few hundred KB)
@@ -153,19 +153,21 @@ index.html        Home page
 pages/*.html      The other 16 pages (about, recruitment, leadership = Meet the
                   Officers, journal = Social, alumni, donate, history, …)
 css/main.css      The whole design system (colors and fonts are variables at the top)
-js/layout.js      Navbar and footer for every page. Edit nav links HERE, once.
+js/layout.js      Navbar and footer for every page. Edit nav links HERE, then
+                  update the short no-JavaScript link list on each page
 js/main.js        Menus and animations, JSON rendering, the photo viewer,
                   and both forms (rush-interest, alumni-update)
 data/             Content JSON (see above)
 admin/            Optional browser editor (see below)
 _redirects        Forwards old addresses (e.g. join.html → recruitment.html)
-_headers          Security headers
+_headers          Security headers, a test-mode content policy for the public
+                  pages, an enforced one for /admin, and caching rules
 robots.txt, sitemap.xml, site.webmanifest, icons, og-image.png
 ```
 
 Conventions that keep the site easy to maintain:
 
-- Every page loads `css/main.css?v=N` (currently 41, including
+- Every page loads `css/main.css?v=N` (currently 42, including
   `admin/index.html`). Bump `N` on every page whenever `css/main.css`
   changes, so visitors' browsers fetch the new styles.
 - The navbar and footer exist only in `js/layout.js`; never edit them page by

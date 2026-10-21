@@ -82,7 +82,7 @@ current state, what's waiting to go live, and short-term to-dos, see
       small code change.
 - [ ] **Photo sources:** confirm where `auburn-sign.jpg`,
       `jordan-hare-stadium.jpg`, `jordan-hare-dusk.jpg`, the alumni
-      portraits, the Founding Fathers composite (`dynamic/FoundingFathers.png`),
+      portraits, the Founding Fathers composite (`dynamic/FoundingFathers.jpg`),
       the house rendering and the employer logos came from, then credit or
       replace them.
 - [ ] **Admin panel catch-up:** let `/admin` edit a post's location, photos

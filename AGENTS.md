@@ -61,7 +61,9 @@ require a single writer per task).
   (`css/main.css`), two scripts (`js/layout.js`, `js/main.js`), and JSON in
   `data/`. Keep it that way.
 - **Navbar and footer live only in `js/layout.js`.** Never edit them page by
-  page.
+  page. The one exception: each page has a short `<noscript>` link list for
+  visitors with JavaScript off. When a page is added, renamed or removed,
+  update that list on every page too.
 - **Bump the stylesheet version** (`main.css?v=N`) on every page,
   including `admin/index.html`, whenever `css/main.css` changes: ideally in
   the same commit, and always before the next push to `main`. (`admin.css`
