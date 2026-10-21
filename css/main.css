@@ -94,6 +94,7 @@ body {
   color: var(--text-mid);
   background-color: var(--bg-mid);
   overflow-x: hidden;
+  overflow-wrap: break-word; /* a word too long for its line (large text settings) wraps instead of running off */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -131,6 +132,7 @@ h1, h2, h3, h4 {
   line-height: 1.18;
   letter-spacing: 0;
   font-weight: 600;
+  overflow-wrap: anywhere; /* with very large text a long word wraps, even in a two-column layout */
 }
 
 .container {
@@ -496,6 +498,7 @@ main { display: block; }
   gap: 6px;
   width: 46px;
   height: 46px;
+  flex-shrink: 0; /* keeps its size with large text instead of shrinking to a sliver */
   padding: 0 11px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.16);
@@ -1061,14 +1064,16 @@ main.hero-only::after {
   overflow: hidden;
   cursor: default;
   /* Flex sizing keeps an incomplete last row centered under the row above.
-     Mobile: fill; tablet: 3-up; desktop: 4-up. */
-  flex: 1 1 240px;
-  max-width: 360px;
+     Mobile: fill; tablet: 3-up; desktop: 4-up. Sizes are in rem/em (240px,
+     360px, 780px and 1024px at the default text size) so that with larger
+     text there are fewer, wider cards and long words still fit. */
+  flex: 1 1 15rem;
+  max-width: 22.5rem;
 }
-@media (min-width: 780px) {
+@media (min-width: 48.75em) {
   .member-card { flex-basis: calc(33.333% - 1rem); max-width: calc(33.333% - 1rem); }
 }
-@media (min-width: 1024px) {
+@media (min-width: 64em) {
   .member-card { flex-basis: calc(25% - 1.125rem); max-width: calc(25% - 1.125rem); }
 }
 .member-photo {
@@ -1093,7 +1098,7 @@ main.hero-only::after {
 }
 .member-meta { font-size: 0.85rem; color: var(--text-low); margin-bottom: 0.7rem; }
 .member-bio { font-size: 0.92rem; color: var(--text-mid); }
-.member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); }
+.member-contact { font-size: 0.88rem; margin-top: 0.8rem; display: inline-block; color: var(--azure-text); overflow-wrap: anywhere; } /* long email addresses wrap with large text */
 .member-contact:hover { color: var(--azure-text); text-decoration: underline; }
 
 /* Homepage officer preview: on phones the full cards ran ~1 screen each and
@@ -1416,11 +1421,15 @@ html.lightbox-open { overflow: hidden; }
   object-fit: contain;
   transition: var(--transition);
 }
+/* Name-only tiles: less side padding, so the name has room with large text */
+.logo-tile--text { padding-left: 0.5rem; padding-right: 0.5rem; }
 .logo-tile span {
   font-family: var(--font-ui);
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.01em;
+  text-align: center;
+  overflow-wrap: anywhere; /* wraps inside the tile with large text */
   color: var(--navy);
   transition: var(--transition);
 }
@@ -1439,8 +1448,9 @@ html.lightbox-open { overflow: hidden; }
   transition: var(--transition);
 }
 .logo-tile--photo:hover .photo { transform: scale(1.05); }
-@media (max-width: 900px) { .logo-wall { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 520px) { .logo-wall { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } }
+/* 900px and 520px at the default text size; fewer columns with larger text */
+@media (max-width: 56.25em) { .logo-wall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 32.5em) { .logo-wall { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; } }
 
 /* Donate cards */
 .donate-grid {
@@ -1760,6 +1770,21 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .audience-card { min-height: 340px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Very large text (about 150% or more on a phone): the header Rush button
+   no longer fits beside the logo and the menu button, so it hides there.
+   Rush stays in the menu. At normal text sizes this never applies. */
+@media (max-width: 15em) {
+  .nav-cta-mobile { display: none; }
+  .logo-wall { grid-template-columns: 1fr; } /* employer names fit without breaking mid-word */
+}
+/* Large text (about 125% or more on a phone): officer cards drop their outer
+   padding (the photo runs edge to edge, as on desktop) so the email and
+   "Recruitment Chairman" fit without breaking mid-word. */
+@media (max-width: 17.5em) {
+  .member-card.glass-card { padding: 0; }
+  .member-body { padding-left: 1rem; padding-right: 1rem; }
 }
 
 @media (max-width: 680px) {
