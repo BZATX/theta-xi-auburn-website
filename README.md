@@ -137,7 +137,20 @@ stylesheet version.
 | `brand/` | The Beta Zeta house logos in SVG and PNG; see its README and use them as supplied |
 
 Resize photos to at most 1800px and save as JPEG (aim for a few hundred KB)
-before committing. Reference them from the JSON with a repo-relative path such
+before committing.
+
+How photos are written into the pages, so they load quickly:
+
+- **Top-of-page photo:** each page's `<head>` has a
+  `<link rel="preload" as="image">` naming its top photo, so it downloads
+  first. When you change a page's top photo, change that line too (the
+  Philanthropy page has two, one for phones and one for wider screens, which
+  must match `.hero-bg--taxibash` in `css/main.css`).
+- **Photos further down a page** are written as
+  `data-bg style="--bg:url('/assets/images/…')"` (a path starting with `/`)
+  instead of `background-image`. They download only when the visitor scrolls
+  near them; with JavaScript off they show straight away. The home page's
+  photo cards use smaller `-card` copies of the full-size photos. Reference them from the JSON with a repo-relative path such
 as `assets/images/events/2026-alumni-reunion-1.jpg`. The `/admin` panel saves
 its uploads to `assets/images/uploads/`, which it creates on first use.
 

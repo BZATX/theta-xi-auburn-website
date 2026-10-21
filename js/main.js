@@ -6,15 +6,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const ROOT = document.body.dataset.root || "";
 
   /* ---------------- Photos further down the page ----------------
-     Background photos below the first screen are written as data-bg="path"
-     instead of an inline background-image, so they download only when the
-     visitor scrolls near them and the top photo gets the connection first.
+     Background photos below the first screen are written as
+     data-bg style="--bg:url('/assets/…')" instead of an inline
+     background-image. The "bg-on" class shows them (css/main.css), and it's
+     added only when the visitor scrolls near, so the top photo gets the
+     connection first. With JavaScript off, css/main.css shows them all.
      Watching starts once the page has loaded (by then the officer, news and
      Instagram sections have filled in and pushed lower photos down), or at
-     the visitor's first scroll if that comes sooner. */
+     the visitor's first scroll if that comes sooner. "bg-ready" marks a
+     photo that has finished loading; a printout leaves out the others
+     rather than printing empty boxes. */
+  const bgUrl = (el) => {
+    const m = /url\(\s*(['"]?)(.*?)\1\s*\)/.exec(el.style.getPropertyValue("--bg"));
+    return m ? m[2] : "";
+  };
   const showBg = (el) => {
-    if (el.style.backgroundImage) return;
-    el.style.backgroundImage = `url("${el.dataset.bg.replace(/["\\]/g, "\\$&")}")`;
+    if (el.classList.contains("bg-on")) return;
+    el.classList.add("bg-on");
+    const src = bgUrl(el);
+    if (!src) return;
+    const img = new Image();
+    img.onload = () => el.classList.add("bg-ready");
+    img.src = src;
   };
   const bgObserver = new IntersectionObserver(
     (entries, obs) => {
@@ -24,12 +37,18 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     { rootMargin: "500px 0px" }
   );
-  const watchBgs = () => document.querySelectorAll("[data-bg]").forEach((el) => bgObserver.observe(el));
+  let watchingBgs = false;
+  // Also called for cards added from the data files after watching has started.
+  const watchBgs = (scope) => {
+    if (scope instanceof Node) { if (!watchingBgs) return; } else { watchingBgs = true; scope = document; }
+    scope.querySelectorAll("[data-bg]:not(.bg-on)").forEach((el) => bgObserver.observe(el));
+  };
   if (document.readyState === "complete") watchBgs();
   else {
-    window.addEventListener("load", watchBgs, { once: true });
-    window.addEventListener("scroll", watchBgs, { once: true, passive: true });
+    window.addEventListener("load", () => watchBgs(), { once: true });
+    window.addEventListener("scroll", () => watchBgs(), { once: true, passive: true });
   }
+  // Start the rest downloading, so a second printout has every photo.
   window.addEventListener("beforeprint", () => document.querySelectorAll("[data-bg]").forEach(showBg));
 
   /* ---------------- Navbar ---------------- */
@@ -85,9 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
       drawer.setAttribute("inert", "");
       drawer.setAttribute("aria-hidden", "true");
       // Focus goes back to the menu button. When the window has just widened
-      // to desktop size the button is hidden, so focus is simply released.
+      // to desktop size the button is hidden, so focus goes to the logo link,
+      // the start of the desktop menu.
       if (focusToggle) toggle.focus();
-      else if (focusWasInside) document.activeElement.blur();
+      else if (focusWasInside) {
+        const brand = navbar && navbar.querySelector(".brand");
+        if (brand) brand.focus(); else document.activeElement.blur();
+      }
     }
     onScroll();
   }
@@ -129,6 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".has-dropdown").forEach((li) => {
     const t = li.querySelector(".dropdown-toggle");
     if (!t) return;
+    // A closed panel's links leave the tab order at once, even while it fades out.
+    const panel = li.querySelector(".dropdown-panel");
+    if (panel) panel.inert = true;
     let pointerAt = 0;   // last press inside the menu (any pointer)
     let touchAt = 0;     // last press by finger or pen
     let closeTimer = null;
@@ -138,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(closeTimer);
       li.classList.toggle("open", open);
       t.setAttribute("aria-expanded", String(open));
+      if (panel) panel.inert = !open;
     };
     const keyboardFocusInside = () => {
       try { return !!li.querySelector(":focus-visible"); } catch (err) { return li.contains(document.activeElement); }
@@ -265,22 +292,34 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/%(?![0-9a-f]{2})/gi, "%25")
       .replace(/["'()\\\s]/g, (c) => ({ "'": "%27", "(": "%28", ")": "%29" })[c] || encodeURIComponent(c));
   // Repo-relative paths ("assets/images/…") get the page's ROOT; full addresses
-  // and site-absolute paths ("/assets/…") are used as typed.
-  const resolveImg = (p) => (/^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(p || "") ? p : ROOT + (p || ""));
-  // style="…" for a card's photo box, or nothing when there's no photo, so the
-  // box shows its plain placeholder tint instead of loading the page as an image.
+  // and site-absolute paths ("/assets/…") are used as typed. The result is a
+  // full address, so it means the same thing inside css/main.css's var(--bg).
+  const resolveImg = (p) => {
+    const path = /^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(p || "") ? p : ROOT + (p || "");
+    try {
+      const url = new URL(path, location.href);
+      return /^https?:$/.test(url.protocol) ? url.href : "";
+    } catch (e) { return ""; }
+  };
+  // Attributes for a card's photo box: a photo that loads when scrolled near
+  // (see "Photos further down the page" above), or nothing when there's no
+  // photo, so the box shows its plain placeholder tint instead of loading the
+  // page as an image.
   const bgImage = (p) => {
     const path = String(p == null ? "" : p).trim();
-    return path ? ` style="background-image:url('${esc(cssUrl(resolveImg(path)))}')"` : "";
+    const url = path && resolveImg(path);
+    return url ? ` data-bg style="--bg:url('${esc(cssUrl(url))}')"` : "";
   };
 
   /* Links typed into the JSON (or the /admin editor) are cleaned up before use:
      "www.example.com" or "example.com/page" gets https://, an email address gets
      mailto:, a site page such as "update-info.html" or "pages/donate.html" works
      from every page, and only links to other sites open in a new tab. Any other
-     scheme (javascript: and the like) is dropped. */
+     scheme (javascript: and the like) is dropped. Tabs, line breaks and other
+     control characters are removed first, as browsers ignore them in links
+     ("java<tab>script:" would otherwise slip through as a site page). */
   function cleanLink(raw) {
-    let href = String(raw == null ? "" : raw).trim();
+    let href = String(raw == null ? "" : raw).replace(/[\u0000-\u001F\u007F]/g, "").trim();
     if (!href) return null;
     const host = href.split(/[/?#]/)[0];
     if (/^[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?$/i.test(host) && !/\.(html?|pdf|jpe?g|png|gif|webp|svg|json|txt)$/i.test(host)) {
@@ -300,6 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const inPages = !path.includes("/") && /\.html?$/i.test(path) && !/^(index|404)\.html?$/i.test(path);
         href = ROOT + (inPages ? "pages/" : "") + href;
       }
+      // Whatever the page makes of it must still be an ordinary web address.
+      try { if (!/^https?:$/.test(new URL(href, location.href).protocol)) return null; } catch (e) { return null; }
       return { href, newTab: false };
     }
     let url;
@@ -396,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const phoneLinks = (phone) => {
     const digits = String(phone).replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
     const num = esc(phone);
-    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> <span style="white-space:nowrap">${num}</span></p>`;
+    return `<p class="member-contact member-phone"><a href="tel:+1${digits}" aria-label="Call ${num}">Call</a> or <a href="sms:+1${digits}" aria-label="Text ${num}">text</a> ${num}</p>`;
   };
   const memberMount = document.querySelector("[data-members]");
   if (memberMount) {
@@ -424,6 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
       observeReveals(memberMount);
+      watchBgs(memberMount);
     });
   }
 
@@ -450,8 +492,13 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
       observeReveals(alumniMount);
+      watchBgs(alumniMount);
     });
   }
+
+  // A post's photo list, without blank entries.
+  const postPhotos = (p) =>
+    Array.isArray(p.photos) ? p.photos.map((s) => String(s == null ? "" : s).trim()).filter(Boolean) : [];
 
   /* Journal posts. data-journal="3" limits the count; data-journal-category="alumni"
      shows only posts with that category (the Alumni page's event archive). */
@@ -475,7 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const date = p.date
             ? new Date(p.date + "T12:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
             : "";
-          const photos = Array.isArray(p.photos) ? p.photos.filter(Boolean) : [];
+          const photos = postPhotos(p);
           const cover = bgImage(p.cover);
           return `
         <article class="glass-card journal-card reveal d${(i % 3) + 1}">
@@ -495,12 +542,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const btn = card.querySelector(".journal-photos-btn");
         if (!btn) return;
         const post = posts[i];
-        const open = () => openLightbox(post.photos.filter(Boolean), post.title, btn);
+        const open = () => openLightbox(postPhotos(post), post.title, btn);
         btn.addEventListener("click", open);
         card.querySelector(".journal-cover")?.addEventListener("click", open);
       });
       if (!posts.length && section) section.hidden = true;
       observeReveals(journalMount);
+      watchBgs(journalMount);
     });
   });
 
@@ -642,6 +690,9 @@ document.addEventListener("DOMContentLoaded", () => {
         status.textContent = msg;
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
+        // Disabling the button while sending drops keyboard focus to the page;
+        // put it back on the button so the visitor is still at the form.
+        if (!document.activeElement || document.activeElement === document.body) submitBtn.focus({ preventScroll: true });
       };
 
       // Honeypot: silently "succeed" for bots

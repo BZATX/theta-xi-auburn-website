@@ -20,6 +20,9 @@
 /* main.css styles the subtitle for the navbar over a photo (near-white);
    here it sits on the plain page background */
 .admin-header .brand-sub { color: var(--text-mid); text-shadow: none; }
+/* main.css turns links orange on hover, which is too faint here */
+.admin-header .brand:hover { color: var(--text-hi); }
+.admin-header .brand:hover .brand-name { text-decoration: underline; text-underline-offset: 0.2em; }
 .admin-header-actions { display: flex; gap: 0.6rem; }
 
 .btn-sm { padding: 0.55rem 1.2rem; font-size: 0.78rem; }

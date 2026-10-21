@@ -271,7 +271,7 @@
               <div class="form-group">
                 <label for="rf-gpa">GPA (high school, or Auburn GPA if already enrolled) <span class="req" aria-hidden="true">*</span></label>
                 <input type="text" id="rf-gpa" name="gpa" class="form-control" placeholder="3.8" inputmode="decimal" autocomplete="off"
-                       pattern="[0-4]([.,][0-9]{1,3})?|5([.,]0{1,3})?" data-invalid-msg="Enter your GPA as a number from 0 to 5, such as 3.8." required>
+                       pattern="\s*([0-4]([.,][0-9]{1,3})?|5([.,]0{1,3})?)\s*" data-invalid-msg="Enter your GPA as a number from 0 to 5, such as 3.8." required>
               </div>
               <div class="form-group full">
                 <label for="rf-interest">Why are you interested in joining Theta Xi?</label>
@@ -320,7 +320,13 @@
     </section>
   </main>
 
-  <div id="site-footer"></div>
+  <div id="site-footer">
+    <noscript>
+      <footer class="noscript-nav noscript-footer">
+        <p>Theta Xi, Beta Zeta Chapter &middot; 835 West Magnolia Ave, Auburn, AL 36832 &middot; <a href="mailto:thetaxibz@gmail.com">thetaxibz@gmail.com</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="accessibility.html">Accessibility</a></p>
+      </footer>
+    </noscript>
+  </div>
   <script src="../js/layout.js"></script>
   <script src="../js/main.js"></script>
 </body>

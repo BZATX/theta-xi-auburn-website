@@ -14,7 +14,10 @@
 # the Instagram embeds and their script, the Google Maps embeds, and the
 # inline styles the pages use. Once the live site's console stays clean, it
 # can be enforced by renaming the header to Content-Security-Policy.
-# Keep these four copies identical.
+# Keep these four copies identical. Netlify matches the address asked for, so
+# the "page not found" page shown at a mistyped address gets none of these;
+# when enforcing, consider one /* rule instead (the /admin/* rule below still
+# adds its stricter policy).
 /
   Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 /index.html

@@ -22,7 +22,7 @@
       file: "data/members.json",
       arrayKey: "members",
       title: "Exec Board & Bios",
-      hint: "These cards appear on the Meet the Officers page, and the first four also show on the home page. Keep bios to two or three sentences.",
+      hint: "These cards appear on the Meet the Officers page, and the first four also show on the home page. Keep bios to two or three sentences. The Recruitment page lists the recruitment chairman's name and phone number separately; ask the webmaster to change those.",
       itemName: (it) => it.name || "New member",
       newItem: { name: "", role: "", major: "", hometown: "", photo: "", bio: "", email: "", phone: "" },
       fields: [
@@ -53,7 +53,7 @@
       file: "data/journal.json",
       arrayKey: "posts",
       title: "Journal Posts",
-      hint: "Posts show on the Social page, newest date first. The three newest also appear on the home page.",
+      hint: "Posts show on the Social page, newest date first. The three newest also appear on the home page. Posts the webmaster marks as alumni events also show on the Alumni page.",
       itemName: (it) => it.title || "New post",
       newItem: { title: "", date: new Date().toISOString().slice(0, 10), cover: "", excerpt: "", link: "" },
       fields: [
@@ -83,7 +83,7 @@
     chapter: {
       file: "data/chapter.json",
       title: "Chapter Info",
-      hint: "Stats shown on the home page, plus chapter contact details.",
+      hint: "Stats shown on the home page. The contact fields below aren't shown anywhere on the site yet; contact details are changed in the pages themselves (ask the webmaster).",
       objectFields: [
         { key: "address", label: "House address" },
         { key: "email", label: "Chapter email" },
@@ -223,7 +223,7 @@
     if (err.status === 0) return "Couldn't reach GitHub. Check your internet connection and try again. Nothing was saved.";
     if (isRateLimit(err)) return "GitHub is limiting requests for a few minutes. Wait a little, then try again. Nothing was saved.";
     if (err.status === 403 || err.status === 404)
-      return `GitHub didn't let this key save. Check that the key's Contents permission is set to Read and write, and that a BZATX owner has approved it.${githubSaid(err)}`;
+      return `GitHub didn't let this key save. Check that the key's Resource owner is BZATX (not your own account), that <code>${REPO}</code> is selected, that its Contents permission is set to Read and write, and that a BZATX owner has approved it.${githubSaid(err)}`;
     return `Nothing was saved.${githubSaid(err)}`;
   }
 
@@ -318,7 +318,7 @@
   $("#logout-btn").addEventListener("click", () => {
     if (dirty.size || uploadItems.size) {
       const what = dirty.size ? `unsaved changes on: ${unsavedNames().join(", ")}` : "a photo still uploading";
-      if (!confirm(`You have ${what}. Log out anyway and lose them?`)) return;
+      if (!confirm(`You have ${what}. Log out anyway and lose ${dirty.size ? "them" : "it"}?`)) return;
     }
     forgetKey();
     leaving = true;
@@ -540,6 +540,7 @@
       return;
     }
     markDirty(currentSection);
+    clearProblems();
     renderSection(currentSection);
     if (focusAfter) document.querySelector(focusAfter)?.focus();
   });
@@ -549,6 +550,7 @@
     if (!cfg.arrayKey || !cache[currentSection]) return;
     cache[currentSection].data[cfg.arrayKey].unshift({ ...cfg.newItem });
     markDirty(currentSection);
+    clearProblems();
     renderSection(currentSection);
     sectionBody.querySelector(".admin-item [data-field]")?.focus();
   });
@@ -602,20 +604,26 @@
         markDirty(id);
         toast(`Photo uploaded for “${cfg.itemName(item)}”. Click Save & Publish on that tab to use it.`, "success");
       } else {
-        showStatus(
-          saveStatus,
-          "error",
-          `The photo finished uploading, but the card it was for (“${esc(cfg.itemName(item))}”) is no longer in the list, so it wasn't added anywhere. Upload it again on the right card.`
+        uploadProblem(
+          `The photo finished uploading, but its card (“${esc(cfg.itemName(item))}”) was deleted or the tab was reloaded since, so the photo wasn't added. Upload it again on the right card.`
         );
       }
     } catch (err) {
       if (err.status === 401) keyRejected();
-      else showStatus(saveStatus, "error", `The photo upload failed. ${err.status === undefined ? esc(err.message) : explainError(err)}`);
+      else uploadProblem(`The photo upload failed. ${err.status === undefined ? esc(err.message) : explainError(err)}`);
     } finally {
       uploadItems.delete(uploadId);
       refreshUploadButton(id, item, key);
     }
   });
+
+  // An upload problem replaces the "Uploading photo…" note and scrolls the
+  // message (above the cards) into view, since the visitor may be far below it.
+  function uploadProblem(html) {
+    toast("The photo wasn't added. See the message above the cards.", "error");
+    showStatus(saveStatus, "error", html);
+    saveStatus.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
 
   // Downscale to a JPEG no larger than maxPx on its longest side, on a white
   // background (JPEG has no transparency, so see-through logos would turn black).
@@ -648,12 +656,13 @@
     const text = value == null ? "" : String(value).trim();
     if (f.type === "number") {
       if (typeof value !== "number" || !Number.isFinite(value)) return `${f.label} needs a number.`;
+      if (!Number.isInteger(value) || value < 0) return `${f.label} needs a whole number, 0 or more.`;
       return "";
     }
     if (f.required && !text) return `${plainLabel(f.label)} is empty.`;
     if (f.type === "email" && text && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text))
       return `${plainLabel(f.label)} doesn't look like an email address.`;
-    if (f.type === "tel" && text && text.replace(/\D/g, "").length !== 10)
+    if (f.type === "tel" && text && text.replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "").length !== 10)
       return `${plainLabel(f.label)} needs a 10-digit number, like (334) 555-0100.`;
     return "";
   }
@@ -676,6 +685,12 @@
       });
     });
     return problems;
+  }
+
+  // Adding, deleting or moving a card renumbers the cards, so an old "fix
+  // these first" list would point at the wrong ones. Clear it; Save checks again.
+  function clearProblems() {
+    if (saveStatus.querySelector("[data-focus]")) showStatus(saveStatus, "", "");
   }
 
   function showProblems(problems) {

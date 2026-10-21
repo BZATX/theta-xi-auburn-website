@@ -40,6 +40,8 @@
   const link = (href) => ROOT + href;
   const isActive = (href) => pageName(href) === page;
   const activeClass = (href) => (isActive(href) ? " active" : "");
+  // Screen readers announce the current page's link as "current page".
+  const current = (href) => (isActive(href) ? ' aria-current="page"' : "");
   const exploreActive = exploreLinks.some((l) => isActive(l.href));
 
   /* ---------- NAVBAR ---------- */
@@ -55,17 +57,17 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="${HOME}" class="nav-link${activeClass("index.html")}">Home</a></li>
+        <li><a href="${HOME}" class="nav-link${activeClass("index.html")}"${current("index.html")}>Home</a></li>
         <li class="has-dropdown">
           <a href="${link("pages/about.html")}" class="nav-link dropdown-toggle${exploreActive ? " active" : ""}" aria-expanded="false" aria-controls="explore-menu">Explore <span class="caret" aria-hidden="true"></span></a>
           <div class="dropdown-panel" id="explore-menu">
-            ${exploreLinks.map((l) => `<a href="${link(l.href)}"${isActive(l.href) ? ' class="active"' : ""}>${l.label}</a>`).join("")}
+            ${exploreLinks.map((l) => `<a href="${link(l.href)}"${isActive(l.href) ? ' class="active"' : ""}${current(l.href)}>${l.label}</a>`).join("")}
           </div>
         </li>
-        <li><a href="${link("pages/scholarships.html")}" class="nav-link${activeClass("pages/scholarships.html")}">Scholarships</a></li>
-        <li><a href="${link("pages/journal.html")}" class="nav-link${activeClass("pages/journal.html")}">Social</a></li>
-        <li><a href="${link("pages/alumni.html")}" class="nav-link${activeClass("pages/alumni.html")}">Alumni</a></li>
-        <li><a href="${link("pages/donate.html")}" class="nav-link${activeClass("pages/donate.html")}">Donate</a></li>
+        <li><a href="${link("pages/scholarships.html")}" class="nav-link${activeClass("pages/scholarships.html")}"${current("pages/scholarships.html")}>Scholarships</a></li>
+        <li><a href="${link("pages/journal.html")}" class="nav-link${activeClass("pages/journal.html")}"${current("pages/journal.html")}>Social</a></li>
+        <li><a href="${link("pages/alumni.html")}" class="nav-link${activeClass("pages/alumni.html")}"${current("pages/alumni.html")}>Alumni</a></li>
+        <li><a href="${link("pages/donate.html")}" class="nav-link${activeClass("pages/donate.html")}"${current("pages/donate.html")}>Donate</a></li>
         <li><a href="${link("pages/recruitment.html")}" class="btn btn-primary nav-cta">Rush</a></li>
         <li><a href="${SOCIALS.instagram}" class="nav-social" target="_blank" rel="noopener" aria-label="Instagram @authetaxi">${igIcon}</a></li>
       </ul>
@@ -81,14 +83,14 @@
   <div class="drawer-scrim" id="drawer-scrim"></div>
   <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true" inert>
     <div class="drawer-group">
-      <a href="${HOME}" class="${isActive("index.html") ? "active" : ""}">Home</a>
+      <a href="${HOME}" class="${isActive("index.html") ? "active" : ""}"${current("index.html")}>Home</a>
       <p class="drawer-label">Explore</p>
-      ${exploreLinks.map((l) => `<a href="${link(l.href)}" class="${isActive(l.href) ? "active" : ""}">${l.label}</a>`).join("")}
+      ${exploreLinks.map((l) => `<a href="${link(l.href)}" class="${isActive(l.href) ? "active" : ""}"${current(l.href)}>${l.label}</a>`).join("")}
       <p class="drawer-label">Chapter</p>
-      <a href="${link("pages/scholarships.html")}" class="${isActive("pages/scholarships.html") ? "active" : ""}">Scholarships</a>
-      <a href="${link("pages/journal.html")}" class="${isActive("pages/journal.html") ? "active" : ""}">Social</a>
-      <a href="${link("pages/alumni.html")}" class="${isActive("pages/alumni.html") ? "active" : ""}">Alumni</a>
-      <a href="${link("pages/donate.html")}" class="${isActive("pages/donate.html") ? "active" : ""}">Donate</a>
+      <a href="${link("pages/scholarships.html")}" class="${isActive("pages/scholarships.html") ? "active" : ""}"${current("pages/scholarships.html")}>Scholarships</a>
+      <a href="${link("pages/journal.html")}" class="${isActive("pages/journal.html") ? "active" : ""}"${current("pages/journal.html")}>Social</a>
+      <a href="${link("pages/alumni.html")}" class="${isActive("pages/alumni.html") ? "active" : ""}"${current("pages/alumni.html")}>Alumni</a>
+      <a href="${link("pages/donate.html")}" class="${isActive("pages/donate.html") ? "active" : ""}"${current("pages/donate.html")}>Donate</a>
       <a href="${link("pages/recruitment.html")}" class="btn btn-primary">Rush Theta Xi</a>
       <div class="drawer-social">
         <a href="${SOCIALS.instagram}" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram @authetaxi">${igIcon}</a>
