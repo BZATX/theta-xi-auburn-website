@@ -916,7 +916,9 @@ main.hero-only::after {
 
 /* Instagram embeds (Journal) */
 .ig-grid {
-  /* 2×2 on desktop — four embeds balance instead of leaving an orphan tile */
+  /* 2×2 on desktop — four embeds balance instead of leaving an orphan tile.
+     The height is reserved before the posts arrive, so the news below
+     doesn't jump. Two rows on a laptop, four stacked on a phone. */
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
@@ -924,17 +926,23 @@ main.hero-only::after {
   justify-items: center;
   max-width: 1140px;
   margin: 0 auto;
+  min-height: calc(2 * 600px + 1.5rem);
 }
 @media (max-width: 700px) {
-  .ig-grid { grid-template-columns: 1fr; }
+  .ig-grid {
+    grid-template-columns: 1fr;
+    min-height: calc(4 * 600px + 3 * 1.5rem);
+  }
 }
 .ig-grid .instagram-media {
-  /* override Instagram's inline min/max so embeds fit the grid on small screens */
+  /* override Instagram's inline min/max so embeds fit the grid on small screens.
+     The reserved height is the space an embed usually takes, so the page
+     doesn't jump when Instagram fills the box. */
   width: 100% !important;
   min-width: 0 !important;
   max-width: 540px !important;
   margin: 0 !important;
-  min-height: 420px;
+  min-height: 600px;
   border-radius: var(--radius-md);
   background: rgba(244, 248, 253, 0.6);
   border: 1px solid rgba(13, 42, 80, 0.10);
@@ -1418,9 +1426,18 @@ html.lightbox-open { overflow: hidden; }
    js/main.js adds "bg-on" when the visitor scrolls near one. With JavaScript
    off they all show straight away. */
 [data-bg].bg-on { background-image: var(--bg); }
+/* Phones use the smaller copy when one is named (--bg-sm). */
+@media (max-width: 640px) {
+  [data-bg].bg-on { background-image: var(--bg-sm, var(--bg)); }
+}
 @media (scripting: none) {
   [data-bg] { background-image: var(--bg); }
+  img[data-src] { display: none !important; }
 }
+@media (scripting: none) and (max-width: 640px) {
+  [data-bg] { background-image: var(--bg-sm, var(--bg)); }
+}
+img[data-src]:not([src]) { background-color: rgba(0, 114, 206, 0.06); }
 .cta-banner::after {
   content: "";
   position: absolute;
@@ -1767,8 +1784,8 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   opacity: 0;
   translate: 0 34px;
   transition:
-    opacity 0.9s var(--ease-smooth) var(--reveal-delay),
-    translate 0.9s var(--ease-smooth) var(--reveal-delay),
+    opacity 0.3s var(--ease-smooth) var(--reveal-delay),
+    translate 0.3s var(--ease-smooth) var(--reveal-delay),
     /* the cards' own hover effects, which this list would otherwise switch off */
     transform 0.45s var(--ease-smooth),
     background 0.45s var(--ease-smooth),
@@ -1780,10 +1797,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   opacity: 1;
   translate: none;
 }
-.reveal.d1 { --reveal-delay: 0.1s; }
-.reveal.d2 { --reveal-delay: 0.2s; }
-.reveal.d3 { --reveal-delay: 0.3s; }
-.reveal.d4 { --reveal-delay: 0.4s; }
+.reveal.d1 { --reveal-delay: 0.05s; }
+.reveal.d2 { --reveal-delay: 0.1s; }
+.reveal.d3 { --reveal-delay: 0.15s; }
+.reveal.d4 { --reveal-delay: 0.2s; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -2227,10 +2244,29 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .count-final + [data-count] { display: none; }
 }
 
+/* Full-width photos. Laptops keep the 1800px file. Phones, at the same
+   640px cutoff as the Taxi Bash hero, get a 1200px copy. These classes
+   replace an inline background so the phone file can win. */
+.photo-house { background-image: url("../assets/images/backgrounds/House Pic Daytime.jpg"); }
+.photo-sign { background-image: url("../assets/images/backgrounds/auburn-sign.jpg"); }
+.photo-tailgate { background-image: url("../assets/images/backgrounds/alumni_tailgate_2025_wide.JPG"); }
+.photo-dusk {
+  background-image: url("../assets/images/backgrounds/jordan-hare-dusk.jpg");
+  background-position: center 32%;
+}
+.photo-hargis { background-image: url("../assets/images/backgrounds/loc_hargis_hall.jpg"); }
+@media (max-width: 640px) {
+  .photo-house { background-image: url("../assets/images/backgrounds/House Pic Daytime-1200.jpg"); }
+  .photo-sign { background-image: url("../assets/images/backgrounds/auburn-sign-1200.jpg"); }
+  .photo-tailgate { background-image: url("../assets/images/backgrounds/alumni_tailgate_2025_wide-1200.jpg"); }
+  .photo-dusk { background-image: url("../assets/images/backgrounds/jordan-hare-dusk-1200.jpg"); }
+  .photo-hargis { background-image: url("../assets/images/backgrounds/loc_hargis_hall-1200.jpg"); }
+}
+
 /* Philanthropy hero — art-directed. The Taxi Bash group photo is too wide
    to fit a portrait phone hero without clipping someone at the edge, so
    phones get a 4:5 crop framed cleanly on the crew and car; desktop keeps
-   the full landscape. */
+   the full landscape. The phone file is already 1080px wide. */
 .hero-bg--taxibash {
   background-image: url('../assets/images/dynamic/taxi-bash-group.jpg');
   background-position: center 55%;

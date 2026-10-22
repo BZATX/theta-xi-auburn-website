@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 21, 2026.** Update this file at the end of any work
+**Last updated: Oct 22, 2026.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -27,11 +27,14 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** a doc update on `claude/great-sagan-6b17gi`
-  (this note and `BACKLOG.md` #51), to go to `main` with `[skip netlify]`. The last site publish
-  (Oct 21, evening) removed the retired `/admin` page (`admin/` folder, its
-  `_headers` rules and the `robots.txt` note); the owner confirmed `/admin`
-  now shows "Page not found".
+- **Waiting to go live:** photo-speed work on `claude/great-sagan-6b17gi`
+  (Oct 22). This is a site change, so it waits for the owner's "push to
+  main" and will use a Netlify credit. Do not put `[skip netlify]` on that
+  push. The same branch still has the earlier doc note (`BACKLOG.md` #51,
+  main protected by a ruleset). The last site publish (Oct 21, evening)
+  removed the retired `/admin` page (`admin/` folder, its `_headers` rules
+  and the `robots.txt` note); the owner confirmed `/admin` now shows
+  "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -55,8 +58,9 @@ descriptions and link previews; a content security policy (test mode on
 public pages); and many fixes to the `/admin` editor, which was retired
 soon after (see below).
 
-Versions: `main.css?v=42` on every page. The next change to `css/main.css`
-needs 43.
+Versions on the live site: `main.css?v=42` on every page. The Oct 22
+photo batch on `claude/great-sagan-6b17gi` moves that to 43. The next
+change to `css/main.css` after this batch needs 44.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,
@@ -161,6 +165,26 @@ Not yet approved; ask the owner before doing these.
   caption said 10/02).
 - The three landing-page redesign concepts (Oct 2026) were turned down; the
   home page stays as it is.
+
+## Oct 22, 2026: smaller photos, top photo first (not live yet)
+
+On `claude/great-sagan-6b17gi`, waiting for the owner's "push to main".
+
+Phones get a 1200px JPEG for the full-width top photos (house, Auburn
+sign, tailgate, Jordan-Hare dusk, Hargis Hall). Laptops keep the 1800px
+file. The Taxi Bash top photo already had its own 1080px phone crop, so
+that one was left as it is. The three home cards and the tailgate news
+cover are about 800px wide. The full-size tailgate photo is still what
+opens when someone taps "View photos".
+
+On Philanthropy, Parents, Scholarship, and Brotherhood, photos below the
+first screen wait until the top photo has finished. The card fade-in is
+0.3 seconds (it was 0.9). People who ask for less motion still see the
+cards right away. The Journal and Brotherhood Instagram area holds its
+height (four boxes on a phone, two rows on a laptop, each about 600px)
+so the page below it doesn't jump when the posts fill in.
+
+Stylesheet is `main.css?v=43` on every page.
 
 ## Recent history (Sept 22 to Oct 21, 2026)
 

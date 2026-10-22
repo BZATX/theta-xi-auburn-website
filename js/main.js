@@ -17,9 +17,18 @@ document.addEventListener("DOMContentLoaded", () => {
      the visitor's first scroll if that comes sooner. "bg-ready" marks a
      photo that has finished loading; a printout leaves out the others
      rather than printing empty boxes. */
-  const bgUrl = (el) => {
-    const m = /url\(\s*(['"]?)(.*?)\1\s*\)/.exec(el.style.getPropertyValue("--bg"));
+  const cssUrlValue = (raw) => {
+    const m = /url\(\s*(['"]?)(.*?)\1\s*\)/.exec(raw || "");
     return m ? m[2] : "";
+  };
+  const phoneScreen = () => window.matchMedia("(max-width: 640px)").matches;
+  // --bg is the laptop file. --bg-sm, when set, is the phone copy.
+  const bgUrl = (el) => {
+    if (phoneScreen()) {
+      const small = cssUrlValue(el.style.getPropertyValue("--bg-sm"));
+      if (small) return small;
+    }
+    return cssUrlValue(el.style.getPropertyValue("--bg"));
   };
   const showBg = (el) => {
     if (el.classList.contains("bg-on")) return;
@@ -31,10 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
     img.onerror = () => el.classList.add("bg-failed"); // a broken path doesn't hold up the printout
     img.src = src;
   };
+  // Content photos below the first screen are <img loading="lazy"> with
+  // data-src instead of src, so they are not requested until the top photo
+  // has finished (or the visitor scrolls). data-src-sm is the phone copy.
+  const lazySrc = (img) => (phoneScreen() && img.dataset.srcSm) ? img.dataset.srcSm : (img.dataset.src || "");
+  const showLazyImg = (img) => {
+    if (img.getAttribute("src")) return;
+    const src = lazySrc(img);
+    if (src) img.src = src;
+  };
   const bgObserver = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) { showBg(entry.target); obs.unobserve(entry.target); }
+        if (entry.isIntersecting) {
+          if (entry.target.matches("img[data-src]")) showLazyImg(entry.target);
+          else showBg(entry.target);
+          obs.unobserve(entry.target);
+        }
       });
     },
     { rootMargin: "500px 0px" }
@@ -43,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Also called for cards added from the data files after watching has started.
   const watchBgs = (scope) => {
     if (scope instanceof Node) { if (!watchingBgs) return; } else { watchingBgs = true; scope = document; }
-    scope.querySelectorAll("[data-bg]:not(.bg-on)").forEach((el) => bgObserver.observe(el));
+    scope.querySelectorAll("[data-bg]:not(.bg-on), img[data-src]:not([src])").forEach((el) => bgObserver.observe(el));
   };
   const dataLoads = []; // data files being fetched (see loadData)
   const startWatching = () => Promise.allSettled(dataLoads).then(() => watchBgs());
@@ -53,7 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", () => watchBgs(), { once: true, passive: true });
   }
   // Start the rest downloading, so a second printout has every photo.
-  window.addEventListener("beforeprint", () => document.querySelectorAll("[data-bg]").forEach(showBg));
+  window.addEventListener("beforeprint", () => {
+    document.querySelectorAll("[data-bg]").forEach(showBg);
+    document.querySelectorAll("img[data-src]").forEach(showLazyImg);
+  });
 
   /* ---------------- Navbar ---------------- */
   const navbar = document.getElementById("navbar");

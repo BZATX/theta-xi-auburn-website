@@ -18,8 +18,9 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="canonical" href="https://www.auburnthetaxi.com/pages/parents.html">
-  <link rel="preload" as="image" href="../assets/images/backgrounds/auburn-sign.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="../css/main.css?v=42">
+  <link rel="preload" as="image" href="../assets/images/backgrounds/auburn-sign.jpg" media="not all and (max-width: 640px)" fetchpriority="high">
+  <link rel="preload" as="image" href="../assets/images/backgrounds/auburn-sign-1200.jpg" media="(max-width: 640px)" fetchpriority="high">
+  <link rel="stylesheet" href="../css/main.css?v=43">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
@@ -55,7 +56,7 @@
 
   <main>
     <section class="page-hero">
-      <div class="hero-bg" style="background-image:url('../assets/images/backgrounds/auburn-sign.jpg')"></div>
+      <div class="hero-bg photo-sign"></div>
       <div class="hero-veil"></div>
       <div class="container reveal in">
         <span class="eyebrow">For Families</span>
@@ -74,7 +75,13 @@
             <p>The chapter puts academics, leadership, and service first. Brothers hold each other accountable, and we expect them to carry themselves like gentlemen.</p>
           </div>
           <div class="split-media reveal d2">
-            <div class="media-bg" style="background-image:url('../assets/images/backgrounds/House Pic Daytime.jpg'); min-height:400px;"></div>
+            <img alt="" width="1800" height="1200" loading="lazy" decoding="async" fetchpriority="low" data-src="../assets/images/backgrounds/House Pic Daytime.jpg" data-src-sm="../assets/images/backgrounds/House Pic Daytime-1200.jpg" style="min-height:400px;">
+            <noscript>
+              <picture>
+                <source srcset="../assets/images/backgrounds/House%20Pic%20Daytime-1200.jpg" media="(max-width: 640px)">
+                <img src="../assets/images/backgrounds/House Pic Daytime.jpg" alt="" width="1800" height="1200" style="min-height:400px;">
+              </picture>
+            </noscript>
             <div class="media-caption">The chapter house on West Magnolia Avenue.</div>
           </div>
         </div>
@@ -135,7 +142,7 @@
     <section class="section" style="padding-top:0;">
       <div class="container">
         <div class="cta-banner reveal">
-          <div class="cta-bg" style="background-image:url('../assets/images/backgrounds/House Pic Daytime.jpg')"></div>
+          <div class="cta-bg" data-bg style="--bg:url('/assets/images/backgrounds/House Pic Daytime.jpg'); --bg-sm:url('/assets/images/backgrounds/House Pic Daytime-1200.jpg')"></div>
           <h2>Have Questions?</h2>
           <p>The Alumni Board answers parents' questions. Email them any time.</p>
           <div class="hero-actions">
