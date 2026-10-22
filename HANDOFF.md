@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 22, 2026.** Update this file at the end of any work
+**Last updated: Oct 22, 2026, 11:40 AM Eastern.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -28,15 +28,16 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing. The security policy was switched from
-  test mode to enforced and pushed to `main` on Oct 22, 11:08 AM Eastern
-  (one rule in `_headers`, now on every page including "page not found").
-  Grok's check of the live console and a local test of every page found
-  nothing it would block. The owner should check that the Instagram posts
-  on Social and Brotherhood and the maps on Home, Parents and Recruitment
-  still show; if one goes blank, rename the header back to
-  `Content-Security-Policy-Report-Only` to undo. The `/admin` page stays
-  removed; the owner confirmed it shows "Page not found".
+- **Waiting to go live:** the Instagram posts on Social and Brotherhood
+  stack in two columns, so a short post no longer leaves a gap beside a
+  tall one. Phones stay a single stack in the listed order. This is on
+  `cursor/social-staggered` (stylesheet `main.css?v=44`), awaiting the
+  owner's review and "push to main". It is not on the live site yet.
+- **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
+  (one rule in `_headers`, including "page not found"). A check of the live
+  console found nothing it would block. If an embed goes blank, rename the
+  header back to `Content-Security-Policy-Report-Only` to undo. The
+  `/admin` page stays removed; the owner confirmed it shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -61,7 +62,9 @@ public pages); and many fixes to the `/admin` editor, which was retired
 soon after (see below).
 
 Versions on the live site: `main.css?v=43` on every page (photo batch,
-Oct 21, 9:11 PM Eastern). The next change to `css/main.css` needs 44.
+Oct 21, 9:11 PM Eastern). The Instagram column change waiting on
+`cursor/social-staggered` moves it to 44. The next change after that
+needs 45.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,

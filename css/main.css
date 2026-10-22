@@ -914,35 +914,39 @@ main.hero-only::after {
 .text-link:hover { color: var(--azure-text); text-decoration: underline; }
 .card-link:hover { color: var(--azure-text); }
 
-/* Instagram embeds (Journal) */
+/* Instagram embeds (Journal and Brotherhood).
+   On a laptop each column stacks its own posts, so a short post does not
+   leave a gap beside a tall one. The posts stay in listed order: down the
+   left column, then down the right, which is also the keyboard order.
+   On a phone they stack in that same order.
+   The height is reserved before the posts arrive (two posts per column,
+   each about 600px, plus the space under each one), so the page below
+   doesn't jump when the boxes appear. Instagram may still make a post
+   taller than 600px once it loads. */
 .ig-grid {
-  /* 2×2 on desktop — four embeds balance instead of leaving an orphan tile.
-     The height is reserved before the posts arrive, so the news below
-     doesn't jump. Two rows on a laptop, four stacked on a phone. */
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-  align-items: start;
-  justify-items: center;
+  display: block;
+  column-count: 2;
+  column-gap: 1.5rem;
   max-width: 1140px;
   margin: 0 auto;
-  min-height: calc(2 * 600px + 1.5rem);
+  min-height: calc(2 * 600px + 2 * 1.5rem);
 }
 @media (max-width: 700px) {
   .ig-grid {
-    grid-template-columns: 1fr;
-    min-height: calc(4 * 600px + 3 * 1.5rem);
+    column-count: 1;
+    min-height: calc(4 * 600px + 4 * 1.5rem);
   }
 }
 .ig-grid .instagram-media {
-  /* override Instagram's inline min/max so embeds fit the grid on small screens.
-     The reserved height is the space an embed usually takes, so the page
-     doesn't jump when Instagram fills the box. */
+  /* override Instagram's inline min/max so embeds fit the column on small screens */
   width: 100% !important;
   min-width: 0 !important;
   max-width: 540px !important;
-  margin: 0 !important;
+  margin: 0 auto 1.5rem !important;
   min-height: 600px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
   border-radius: var(--radius-md);
   background: rgba(244, 248, 253, 0.6);
   border: 1px solid rgba(13, 42, 80, 0.10);
