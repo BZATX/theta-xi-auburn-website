@@ -28,10 +28,9 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing. The photo batch is on `main`. This
-  handoff note is on `claude/great-sagan-6b17gi` only and has not been
-  pushed to `main`. The `/admin` page stays removed; the owner confirmed
-  it shows "Page not found".
+- **Waiting to go live:** nothing. The photo batch is on `main`, and this
+  note went to `main` with `[skip netlify]`. The `/admin` page stays
+  removed; the owner confirmed it shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
