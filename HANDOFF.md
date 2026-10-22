@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 22, 2026.** Update this file at the end of any work
+**Last updated: Oct 21, 2026, 9:11 PM Eastern.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -17,24 +17,21 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
   from the site in a third publish that evening.
-- **Live site:** `main` at `6499e06` (Oct 21, 2026, evening): the backlog
-  batch plus the `/admin` removal. Later
-  commits on `main` that only change docs should carry `[skip netlify]`, so
-  they don't publish anything or use credits.
+- **Live site:** `main` at `0b4480c` (Oct 21, 2026, 9:11 PM Eastern): smaller
+  phone photos and the top photo loading first. Stylesheet is `main.css?v=43`.
+  The previous publish that evening (`6499e06`) was the backlog batch plus
+  the `/admin` removal. Later commits on `main` that only change docs should
+  carry `[skip netlify]`, so they don't publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
   GitHub's default branch is `main` too. A GitHub ruleset, "Protect Main"
   (added Oct 21), stops anyone deleting `main` or force-pushing to it;
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** photo-speed work on `claude/great-sagan-6b17gi`
-  (Oct 22). This is a site change, so it waits for the owner's "push to
-  main" and will use a Netlify credit. Do not put `[skip netlify]` on that
-  push. The same branch still has the earlier doc note (`BACKLOG.md` #51,
-  main protected by a ruleset). The last site publish (Oct 21, evening)
-  removed the retired `/admin` page (`admin/` folder, its `_headers` rules
-  and the `robots.txt` note); the owner confirmed `/admin` now shows
-  "Page not found".
+- **Waiting to go live:** nothing. The photo batch is on `main`. This
+  handoff note is on `claude/great-sagan-6b17gi` only and has not been
+  pushed to `main`. The `/admin` page stays removed; the owner confirmed
+  it shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -58,9 +55,8 @@ descriptions and link previews; a content security policy (test mode on
 public pages); and many fixes to the `/admin` editor, which was retired
 soon after (see below).
 
-Versions on the live site: `main.css?v=42` on every page. The Oct 22
-photo batch on `claude/great-sagan-6b17gi` moves that to 43. The next
-change to `css/main.css` after this batch needs 44.
+Versions on the live site: `main.css?v=43` on every page (photo batch,
+Oct 21, 9:11 PM Eastern). The next change to `css/main.css` needs 44.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,
@@ -166,9 +162,14 @@ Not yet approved; ask the owner before doing these.
 - The three landing-page redesign concepts (Oct 2026) were turned down; the
   home page stays as it is.
 
-## Oct 22, 2026: smaller photos, top photo first (not live yet)
+## Oct 21, 2026, 9:11 PM Eastern: smaller photos are live
 
-On `claude/great-sagan-6b17gi`, waiting for the owner's "push to main".
+Published to `main` as `0b4480c` after the owner said "push to main".
+Netlify was serving `main.css?v=43` by 9:11 PM Eastern. A phone-width
+check of Home, Philanthropy, Parents, Scholarship, Brotherhood, and
+Journal found the new smaller photos, no broken images, and the
+stylesheet at version 43. On a slow phone the top photo was about 2.7
+seconds on Home and 3.6 seconds on Philanthropy.
 
 Phones get a 1200px JPEG for the full-width top photos (house, Auburn
 sign, tailgate, Jordan-Hare dusk, Hargis Hall). Laptops keep the 1800px
