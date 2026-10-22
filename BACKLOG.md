@@ -234,13 +234,10 @@ small follow-up.
   itself was decommissioned soon after (Oct 21, 2026), so this no longer
   matters.
 - **#30 Add an extra layer of browser security** (fixed, published Oct 21)
-  A content security policy is in place: in test mode on the public pages
-  (it was also enforced on the /admin page, now decommissioned). The
-  outdated X-XSS-Protection header was removed. Still to do after
-  publishing: open the Social and Brotherhood pages on the live site, check
-  the browser console for policy warnings (the Instagram posts are the
-  likely ones), then switch the public policy from test mode to enforced in
-  `_headers`.
+  A content security policy is in place and enforced on every page since Oct
+  22, 2026, after a check of the live pages' browser console found nothing
+  it would block. The outdated X-XSS-Protection header was removed. New
+  outside embeds need their address added to the policy in _headers.
 - **#32 Admin login and save errors are confusing** (fixed, published Oct 21)
   Admin login and save errors are in plain English, the editor logs out only
   when GitHub rejects the token, and it explains what to do when someone

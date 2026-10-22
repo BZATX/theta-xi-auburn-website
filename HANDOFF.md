@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 21, 2026, 9:11 PM Eastern.** Update this file at the end of any work
+**Last updated: Oct 22, 2026.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -28,17 +28,15 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** the security policy switched from test mode to
-  enforced (one rule in `_headers`, now on every page including "page not
-  found"), on `claude/great-sagan-6b17gi`. Grok's check of the live console
-  found nothing it would block, and a local test of every page at phone and
-  laptop width (menu, photo viewer, form send) found no blocks either. Site
-  change: needs the owner's "push to main" and one Netlify deploy. After it
-  goes live, check that the Instagram posts on Social and Brotherhood and
-  the maps on Home, Parents and Recruitment still show. If one goes blank,
-  rename the header back to `Content-Security-Policy-Report-Only` to undo.
-  The `/admin` page stays removed; the owner confirmed it shows "Page not
-  found".
+- **Waiting to go live:** nothing. The security policy was switched from
+  test mode to enforced and pushed to `main` on Oct 22, 11:08 AM Eastern
+  (one rule in `_headers`, now on every page including "page not found").
+  Grok's check of the live console and a local test of every page found
+  nothing it would block. The owner should check that the Instagram posts
+  on Social and Brotherhood and the maps on Home, Parents and Recruitment
+  still show; if one goes blank, rename the header back to
+  `Content-Security-Policy-Report-Only` to undo. The `/admin` page stays
+  removed; the owner confirmed it shows "Page not found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
