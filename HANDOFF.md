@@ -28,9 +28,17 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing. The photo batch is on `main`, and this
-  note went to `main` with `[skip netlify]`. The `/admin` page stays
-  removed; the owner confirmed it shows "Page not found".
+- **Waiting to go live:** the security policy switched from test mode to
+  enforced (one rule in `_headers`, now on every page including "page not
+  found"), on `claude/great-sagan-6b17gi`. Grok's check of the live console
+  found nothing it would block, and a local test of every page at phone and
+  laptop width (menu, photo viewer, form send) found no blocks either. Site
+  change: needs the owner's "push to main" and one Netlify deploy. After it
+  goes live, check that the Instagram posts on Social and Brotherhood and
+  the maps on Home, Parents and Recruitment still show. If one goes blank,
+  rename the header back to `Content-Security-Policy-Report-Only` to undo.
+  The `/admin` page stays removed; the owner confirmed it shows "Page not
+  found".
 - **Netlify credits:** the account ran out on Oct 9 after 14 separate
   publishes between Sept 22 and Oct 9. An Oct 20 push (`43ba463`) was
   skipped by Netlify because the credits hadn't reset; they reset sometime
@@ -66,11 +74,9 @@ problems they found were fixed and re-checked; the few small ones left are
 Still to do now that it's pushed:
 - The owner checks that Netlify published it (Deploys list) and looks at
   Home, Recruitment, Meet the Officers and Donate on a phone and a laptop.
-- Security policy (#30): someone opens the Social and Brotherhood pages in a
-  desktop browser with the developer console open and looks for "Content
-  Security Policy" warnings. If there are none, the public policy can be
-  switched from test mode to enforced in `_headers` (a small change for the
-  next batch).
+- Security policy (#30): done Oct 22. Grok checked the live pages' browser
+  console and found nothing the test-mode policy would block, so it was
+  switched to enforced (see "Waiting to go live").
 
 ## Previous publish (Oct 21, 2026, morning)
 

@@ -71,6 +71,11 @@ require a single writer per task).
 - **Bump the stylesheet version** (`main.css?v=N`) on every page whenever
   `css/main.css` changes: ideally in the same commit, and always before the
   next push to `main`.
+- **Outside embeds need the security policy updated.** `_headers` lists the
+  only outside addresses pages may load from (Google Fonts, Instagram, Google
+  Maps). A new embed, script, font or form from anywhere else (a video, a
+  calendar, a donation widget) is blocked until its address is added there.
+  Test it in a real browser and check the console before publishing.
 - **Escape JSON values** with `esc()` before putting them into HTML in
   `js/main.js`.
 - **Forms** are found by `data-ajax-submit` (Netlify strips `data-netlify`

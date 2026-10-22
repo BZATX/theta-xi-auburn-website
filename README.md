@@ -174,8 +174,8 @@ js/main.js        Menus and animations, JSON rendering, the photo viewer,
                   and both forms (rush-interest, alumni-update)
 data/             Content JSON (see above)
 _redirects        Forwards old addresses (e.g. join.html → recruitment.html)
-_headers          Security headers, a test-mode content policy for the
-                  pages, and caching rules
+_headers          Security headers (including the content security policy:
+                  the outside addresses pages may load from) and caching rules
 robots.txt, sitemap.xml, site.webmanifest, icons, og-image.png
 ```
 

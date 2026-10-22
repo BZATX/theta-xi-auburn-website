@@ -1,30 +1,20 @@
 # Response headers Netlify adds to the site (Netlify reads this file).
 
-# Security headers for every file.
+# Security headers for every file, including the "page not found" page shown
+# at a mistyped address. The Content-Security-Policy lists the only places the
+# pages may load things from: our own files, Google Fonts, the Instagram embeds
+# and their script, the Google Maps embeds, and the inline styles the pages
+# use. Anything else is blocked. If you add an outside embed, script, font or
+# form (a video, a calendar, a donation widget), add its address here too, or
+# it won't show. It was in test ("report only") mode until Oct 2026; a check of
+# the live pages found nothing it would block.
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-
-# Content Security Policy for the public pages, in test ("report only") mode:
-# a browser lists anything outside it in the developer console but blocks
-# nothing. It allows what the pages really load: our own files, Google Fonts,
-# the Instagram embeds and their script, the Google Maps embeds, and the
-# inline styles the pages use. Once the live site's console stays clean, it
-# can be enforced by renaming the header to Content-Security-Policy.
-# Keep these four copies identical. Netlify matches the address asked for, so
-# the "page not found" page shown at a mistyped address gets none of these;
-# when enforcing, consider one /* rule instead.
-/
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
-/index.html
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
-/404.html
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
-/pages/*
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src https://www.google.com https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; manifest-src 'self'
 
 # Caching. Browsers may keep photos and other images for a day. The
 # stylesheet is linked as main.css?v=N and N changes with every edit, so it
