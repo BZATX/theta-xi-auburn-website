@@ -22,11 +22,13 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   commits on `main` that only change docs should carry `[skip netlify]`, so
   they don't publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
-  GitHub's default branch is `main` too. Claude's working branch is
+  GitHub's default branch is `main` too. A GitHub ruleset, "Protect Main"
+  (added Oct 21), stops anyone deleting `main` or force-pushing to it;
+  normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** nothing. (Doc updates after the last site
-  publish went to `main` with `[skip netlify]`.) The last site publish
+- **Waiting to go live:** a doc update on `claude/great-sagan-6b17gi`
+  (this note and `BACKLOG.md` #51), to go to `main` with `[skip netlify]`. The last site publish
   (Oct 21, evening) removed the retired `/admin` page (`admin/` folder, its
   `_headers` rules and the `robots.txt` note); the owner confirmed `/admin`
   now shows "Page not found".

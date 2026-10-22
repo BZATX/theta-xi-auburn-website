@@ -14,8 +14,8 @@ working on it, follow the rules in `AGENTS.md`, and update this file when an
 item is done or turned down. Line numbers can drift; search for the text if a
 line doesn't match.
 
-Status on Oct 21: 30 fixed and published, 0 open, 7 partly done, 8 waiting on
-the owner or board, 9 done, 2 turned down, 1 no longer applies.
+Status on Oct 21: 30 fixed and published, 0 open, 6 partly done, 8 waiting on
+the owner or board, 10 done, 2 turned down, 1 no longer applies.
 
 ## Waiting on the owner or board
 
@@ -157,21 +157,6 @@ Polish and housekeeping.
   - Why it matters: It's minor, but it's on the most-viewed phone layouts
     and in the logo on every page.
   - Where: css/main.css:1785 · js/layout.js:43 · css/main.css:343-350
-
-## Reminders
-
-- **#51 Fix GitHub's default branch and protect the live branch** (partly done)
-  The default branch is now main, and Netlify publishes main. Main still has
-  no protection, so the owner needs to add a GitHub ruleset for main that
-  blocks deletion and force-pushes. With /admin decommissioned, the ruleset
-  could also require pull requests, but that would change how the AI tools
-  publish (they push straight to main after "push to main"), so decide that
-  separately. Don't delete claude/great-sagan-6b17gi: it's still the active
-  working branch.
-  - Why it matters: It causes 'my change didn't go live' confusion now, and
-    leaves the live site one mistake away from being overwritten.
-  - Where: GitHub: BZATX/theta-xi-auburn-website → Settings → Rules →
-    Rulesets
 
 ## Fixed and published
 
@@ -320,6 +305,7 @@ small follow-up.
 - #26 Eric O'Neill's photo comes from Wikimedia Commons and is shown without the required credit (turned down by the owner)
 - #28 README and PLAN docs are out of date, and PLAN wrongly says the Habitat photos are AI-generated (done)
 - #50 Remove the alumni reunion section after Oct 3 (done)
+- #51 Fix GitHub's default branch and protect the live branch (done)
 - #53 Chapter news is almost a year old (done)
 
 Notes: #26, the owner dropped the Eric O'Neill photo credit on Oct 21, 2026.
