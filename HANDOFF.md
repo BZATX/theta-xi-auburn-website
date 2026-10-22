@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 22, 2026, 11:40 AM Eastern.** Update this file at the end of any work
+**Last updated: Oct 22, 2026, 1:55 PM Eastern.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -17,22 +17,27 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
   from the site in a third publish that evening.
-- **Live site:** `main` at `0b4480c` (Oct 21, 2026, 9:11 PM Eastern): smaller
-  phone photos and the top photo loading first. Stylesheet is `main.css?v=43`.
-  The previous publish that evening (`6499e06`) was the backlog batch plus
-  the `/admin` removal. Later commits on `main` that only change docs should
-  carry `[skip netlify]`, so they don't publish anything or use credits.
+- **Live site:** `main` at `e0ce474` (Oct 22, 2026, 1:49 PM Eastern):
+  Instagram posts stack in two columns. Stylesheet is `main.css?v=44`.
+  The previous publish (`0b4480c`, Oct 21, 9:11 PM Eastern) was smaller
+  phone photos and the top photo loading first. Later commits on `main`
+  that only change docs should carry `[skip netlify]`, so they don't
+  publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
   GitHub's default branch is `main` too. A GitHub ruleset, "Protect Main"
   (added Oct 21), stops anyone deleting `main` or force-pushing to it;
   normal pushes work as before. Don't rebase or rewrite `main`'s history. Claude's working branch is
   `claude/great-sagan-6b17gi`; other tools use their own (`cursor/…`,
   `grok/…`). Only one tool works on the site at a time.
-- **Waiting to go live:** the Instagram posts on Social and Brotherhood
-  stack in two columns, so a short post no longer leaves a gap beside a
-  tall one. Phones stay a single stack in the listed order. This is on
-  `cursor/social-staggered` (stylesheet `main.css?v=44`), awaiting the
-  owner's review and "push to main". It is not on the live site yet.
+- **Instagram columns went live** Oct 22, 2026, at 1:49 PM Eastern
+  (`main` `e0ce474`, stylesheet `main.css?v=44`). Journal and Brotherhood
+  were checked at laptop and phone width. The security policy is still
+  enforced, and that check found no violations. Claude's other layout
+  (`7f40170`) and the square-photo try (`cd0ccc0` on
+  `claude/great-sagan-6b17gi`) were not published. They conflict with
+  `main` now; rebuild on current `main` if either is still wanted. That
+  branch has since moved back to `02a03c8`, so those two commits are no
+  longer its tip.
 - **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
   (one rule in `_headers`, including "page not found"). A check of the live
   console found nothing it would block. If an embed goes blank, rename the
@@ -61,10 +66,8 @@ descriptions and link previews; a content security policy (test mode on
 public pages); and many fixes to the `/admin` editor, which was retired
 soon after (see below).
 
-Versions on the live site: `main.css?v=43` on every page (photo batch,
-Oct 21, 9:11 PM Eastern). The Instagram column change waiting on
-`cursor/social-staggered` moves it to 44. The next change after that
-needs 45.
+Versions on the live site: `main.css?v=44` on every page (Instagram
+columns, Oct 22, 1:49 PM Eastern). The next stylesheet change needs 45.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,
@@ -77,7 +80,7 @@ Still to do now that it's pushed:
   Home, Recruitment, Meet the Officers and Donate on a phone and a laptop.
 - Security policy (#30): done Oct 22. Grok checked the live pages' browser
   console and found nothing the test-mode policy would block, so it was
-  switched to enforced (see "Waiting to go live").
+  switched to enforced (see "Security policy" above).
 
 ## Previous publish (Oct 21, 2026, morning)
 
