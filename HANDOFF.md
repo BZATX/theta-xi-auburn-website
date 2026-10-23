@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 22, 2026, 2:00 PM Eastern.** Update this file at the end of any work
+**Last updated: Oct 23, 2026, 7:19 PM Eastern.** Update this file at the end of any work
 session that changes what's live, what's waiting, or what's open. Dates are
 US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -17,12 +17,12 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
   from the site in a third publish that evening.
-- **Live site:** `main` at `e0ce474` (Oct 22, 2026, 1:49 PM Eastern):
-  Instagram posts stack in two columns. Stylesheet is `main.css?v=44`.
-  The previous publish (`0b4480c`, Oct 21, 9:11 PM Eastern) was smaller
-  phone photos and the top photo loading first. Later commits on `main`
-  that only change docs should carry `[skip netlify]`, so they don't
-  publish anything or use credits.
+- **Live site:** `main` at `b82651b` (Oct 22, 2026, 2:07 PM Eastern):
+  the initiation Instagram post replaced the summer rush schedule post.
+  Stylesheet is `main.css?v=44`. The previous publish (`e0ce474`, Oct 22,
+  1:49 PM Eastern) stacked the Instagram posts in two columns. Later
+  commits on `main` that only change docs should carry `[skip netlify]`,
+  so they don't publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
   GitHub's default branch is `main` too. A GitHub ruleset, "Protect Main"
   (added Oct 21), stops anyone deleting `main` or force-pushing to it;
@@ -38,10 +38,12 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
   `main` now; rebuild on current `main` if either is still wanted. That
   branch has since moved back to `02a03c8`, so those two commits are no
   longer its tip.
-- **Waiting to go live:** on Journal and Brotherhood, the summer rush
-  schedule post is removed and the new-member initiation post is added
-  (https://www.instagram.com/p/DezbpNPRxmU/). On `cursor/handoff-oct22`
-  with the notes update. Not live yet. Stylesheet stays v44.
+- **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
+  (`main` `b82651b`). The initiation post is first on Journal and
+  Brotherhood, and the summer rush schedule post is gone.
+- **Waiting to go live:** the home page Active Brothers count, now 39
+  (it was 31). On `cursor/active-brothers-39`, awaiting review. Not live
+  yet. Stylesheet stays v44.
 - **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
   (one rule in `_headers`, including "page not found"). A check of the live
   console found nothing it would block. If an embed goes blank, rename the
