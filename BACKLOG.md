@@ -46,7 +46,7 @@ confirm. Some have a small code change that follows.
     credits)
 - **#52 Confirm which web address is the main one in Netlify** (needs the owner or board)
   Ben Waters owns the Netlify account and Shaun owns the domain (owner,
-  Oct 24, 2026). Ben still needs to check in Netlify → Domain management
+  Oct 23, 2026). Ben still needs to check in Netlify → Domain management
   that www.auburnthetaxi.com is the primary domain and that
   auburnthetaxi.com forwards to it. Before setting up any new subdomain, make sure it has
   https, because the security header covers all subdomains.
@@ -105,7 +105,11 @@ for whoever edits the site next.
   The /admin editor that showed these fields was decommissioned on Oct 21,
   2026. data/chapter.json still holds contact and rush-chair fields that no
   page uses. The owner still needs to decide: remove the fields, or connect
-  them to the site so contact details live in one place.
+  them to the site so contact details live in one place. If they're
+  connected with `<a data-slot>` links, the fill-in code in `js/main.js`
+  (fillSlots) opens outside links in a new tab but doesn't add the hidden
+  "(opens in a new tab)" note for screen readers, and it replaces any `rel`
+  written in the HTML; fix both then.
   - Why it matters: Someone updating contact details in the editor will
     believe it worked while the old details are still showing.
   - Where: data/chapter.json · js/layout.js:10-14, 120-123 ·
@@ -135,15 +139,13 @@ for whoever edits the site next.
     pages/update-info.html:11 · data/gallery.json:4 · data/journal.json:23,
     26 (also used as a background at index.html:147, pages/alumni.html:112,
     pages/why-theta-xi.html:125)
-- **#29 Photo credits list missing files, and an old photo-download tool is still active** (partly done)
+- **#29 Photo credits: confirm who took the three campus photos** (partly done)
   The README credits are fixed, and the old GitHub photo-download tool and
-  its README note were removed in the Oct 24 security review. The owner
+  its README note were removed in the Oct 23 security review. The owner
   still needs to confirm who took the three campus photos.
   - Why it matters: If a photo's rights are ever questioned there's no
-    record of where it came from, and re-running the old tool would make
-    unwanted changes to the live site.
-  - Where: .github/workflows/fetch-campus-photos.yml · README.md:256-260,
-    262-275 · PLAN.md:83-87
+    record of where it came from.
+  - Where: README.md (Photo credits) · PLAN.md:83-87
 
 ## Nice to have
 

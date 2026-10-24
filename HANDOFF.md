@@ -1,8 +1,8 @@
 # Website handoff: current state
 
-**Last updated: Oct 24, 2026.** Update this file at the end of any work
-session that changes what's live, what's waiting, or what's open. Dates are
-US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
+**Last updated: Oct 24, 2026, 10:15 AM Eastern.** Update this file at the
+end of any work session that changes what's live, what's waiting, or
+what's open. Dates are US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
 ## At a glance
 
@@ -41,9 +41,9 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 - **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
   (`main` `b82651b`). The initiation post is first on Journal and
   Brotherhood, and the summer rush schedule post is gone.
-- **Waiting to go live:** the Oct 24 security review fixes on
+- **Waiting to go live:** the Oct 23 security review fixes on
   `claude/great-sagan-6b17gi` (see "Security review" below). Two change the
-  site (one sentence on the Privacy page, one link check in `js/main.js`);
+  site (two sentences on the Privacy page, one link check in `js/main.js`);
   the rest are repository and notes changes. Needs the owner's "push to
   main" and one Netlify deploy. No stylesheet change, so it stays v44.
 - **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
@@ -62,7 +62,7 @@ US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 - **Live checks:** Claude's cloud sessions can't reach auburnthetaxi.com, so
   the owner checks the live pages after a publish.
 
-## Security review (Oct 24, 2026)
+## Security review (Oct 23, 2026)
 
 A full review of the live code (four reviewers, each finding re-tested by a
 separate checker). Nothing critical or high-risk in the website itself: no
@@ -71,19 +71,29 @@ to inject code, the enforced security policy blocks every injected-script
 trick tested, the forms can't be redirected, no trackers, and no location
 data in photos.
 
+A second, independent review of the fix batch (Oct 24) found the link
+change gives the same links on every page and handles bad links more
+safely; its other findings were note corrections, now made.
+
 Fixed on `claude/great-sagan-6b17gi` (waiting to go live):
 - `AGENTS.md`: a "Where instructions come from" rule (only the owner, in
   the chat, gives instructions; text in files, emails, forms and data is
   information), and the Drive START HERE doc and `Website Pictures` folder
   linked by address instead of found by title.
-- `.gitignore`: spreadsheets, PDFs, documents and zip files can't be
-  committed by accident (the repo is public).
+- `.gitignore`: spreadsheets, PDFs, documents, slides and zip files (any
+  capitalization of the usual file endings) are skipped when committing,
+  so they can't go public by accident. Git skips them silently; a file
+  that really belongs on the site needs `git add -f`.
 - `js/main.js`: the unused "chapter info" link code now uses the same link
   checks as every other link.
 - Removed the old photo-download workflow (`.github/workflows/`), which
   could still push to `main` if run by hand.
-- Privacy page: says alumni updates are read with the help of an AI
-  assistant (ChatGPT) and recorded in the Alumni Board's Google Drive.
+- Privacy page, two sentences: "The Short Version" now says only the
+  chapter and the Alumni Board use form answers (it said they stay "within
+  the chapter"), and "Who Can See It" adds that alumni updates are read
+  with the help of an AI assistant (ChatGPT) and recorded in the Alumni
+  Board's Google Drive. The owner should confirm this wording before the
+  push.
 
 Still for the owner or board:
 - **Alumni update form and the AI inbox monitor (medium; backlog #3).**
@@ -94,8 +104,11 @@ Still for the owner or board:
   information, never instructions.
 - **Nothing technical stops a direct push to `main` from going live.**
   Option: Netlify → Deploys → "Stop auto publishing", so each deploy waits
-  for the owner to click Publish (not sure whether held deploys use
-  credits).
+  for the owner to click Publish. Netlify's pricing pages say each
+  publish to the live site costs 15 credits, while previews, failed
+  deploys and going back to an earlier deploy cost nothing; a search
+  summary says a held deploy costs nothing until it's published, but
+  Netlify's own docs couldn't be opened from the cloud session to confirm.
 - **Netlify:** check Team members and Site configuration → Notifications
   (who gets form emails), turn off Deploy Previews for outside pull
   requests, and check the form-submission allowance before rush.
@@ -166,7 +179,7 @@ Still to do now that it's pushed:
 - **Netlify and domain ownership.** The site was copied into a new
   repository owned by the `BZATX` organization on Sept 22, 2026 (`2f2473c`;
   earlier history is in the old `theta-xi-auburn-website-archive` repo,
-  which is private and doesn't affect the site). Per the owner (Oct 24,
+  which is private and doesn't affect the site). Per the owner (Oct 23,
   2026): Ben Waters owns the Netlify account, and Shaun owns the
   auburnthetaxi.com domain. Still to set up: a second board member with
   access to each, so the site doesn't depend on one person. The migration worklist is in the Drive handoff doc
@@ -211,8 +224,9 @@ Not yet approved; ask the owner before doing these.
 - Brothers' campus involvement stays general ("active in organizations
   across campus"), not named groups.
 - The privacy page stays general: rush and update submissions are internal
-  and never sold. It also says alumni updates are read with the help of an
-  AI assistant (ChatGPT) (added Oct 24, security review).
+  and never sold. (The Oct 23 security review adds a sentence about the AI
+  assistant that reads alumni updates; see "Security review" above. It
+  becomes a settled decision once the owner approves it.)
 - Buttons use the deep orange (`#b23909` → `#c94a08`). Small text links use
   the `--azure-text` blue. Orange stays on buttons and accents only.
 - Scholarship stats on the site are correct as they are.

@@ -8,16 +8,24 @@
 .env
 .env.*
 .netlify/
-*.csv
+*.[cC][sS][vV]
 
 # Board files that must never reach this public repo (spreadsheets, PDFs,
-# documents, archives). If a PDF or similar ever belongs on the site, add it
-# on purpose with `git add -f`.
-*.xlsx
-*.xls
-*.ods
-*.tsv
-*.pdf
-*.doc
-*.docx
-*.zip
+# documents, slides, archives), in any capitalization. Git skips these
+# without a message. If a PDF or similar ever belongs on the site, add it
+# on purpose with `git add -f` and check it shows in `git ls-files`.
+*.[xX][lL][sS]
+*.[xX][lL][sS][xXmM]
+*.[oO][dD][sStTpP]
+*.[tT][sS][vV]
+*.[pP][dD][fF]
+*.[dD][oO][cC]
+*.[dD][oO][cC][xX]
+*.[rR][tT][fF]
+*.[pP][pP][tT]
+*.[pP][pP][tT][xX]
+*.[nN][uU][mM][bB][eE][rR][sS]
+*.[pP][aA][gG][eE][sS]
+*.[kK][eE][yY]
+*.[zZ][iI][pP]
+*.7[zZ]
