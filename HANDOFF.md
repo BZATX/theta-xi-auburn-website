@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 24, 2026, 10:15 AM Eastern.** Update this file at the
+**Last updated: Oct 24, 2026, 10:55 AM Eastern.** Update this file at the
 end of any work session that changes what's live, what's waiting, or
 what's open. Dates are US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -17,10 +17,13 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
   from the site in a third publish that evening.
-- **Live site:** `main` at `2ff53ec` (Oct 23, 2026): the home page Active
-  Brothers count is 39 (it was 31). Netlify publishes every push to `main`,
-  so this should be live; the owner should confirm the home page shows 39.
-  Before that: `b82651b` (Oct 22, 2:07 PM Eastern) replaced the summer rush
+- **Live site:** the Oct 23 security review fixes and the new privacy
+  wording were pushed to `main` on Oct 24, 2026, about 10:55 AM Eastern
+  (`a8109e9`, `02a6269`, `d4b7468`, plus Cursor's `AGENTS.md` note
+  `3b914f4`), one Netlify deploy. The owner should check that the Privacy
+  page's "Who Can See It" section mentions the AI assistant. Before that:
+  `2ff53ec` (Oct 23) set the home page Active Brothers count to 39 (the
+  owner confirmed it live on Oct 24), `b82651b` (Oct 22, 2:07 PM Eastern) replaced the summer rush
   Instagram post with the initiation post, and `e0ce474` (Oct 22, 1:49 PM
   Eastern) stacked the Instagram posts in two columns. Stylesheet is
   `main.css?v=44`. Later
@@ -41,11 +44,7 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
 - **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
   (`main` `b82651b`). The initiation post is first on Journal and
   Brotherhood, and the summer rush schedule post is gone.
-- **Waiting to go live:** the Oct 23 security review fixes on
-  `claude/great-sagan-6b17gi` (see "Security review" below). Two change the
-  site (two sentences on the Privacy page, one link check in `js/main.js`);
-  the rest are repository and notes changes. Needs the owner's "push to
-  main" and one Netlify deploy. No stylesheet change, so it stays v44.
+- **Waiting to go live:** nothing.
 - **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
   (one rule in `_headers`, including "page not found"). A check of the live
   console found nothing it would block. If an embed goes blank, rename the
@@ -75,7 +74,7 @@ A second, independent review of the fix batch (Oct 24) found the link
 change gives the same links on every page and handles bad links more
 safely; its other findings were note corrections, now made.
 
-Fixed on `claude/great-sagan-6b17gi` (waiting to go live):
+Published Oct 24, 2026 (owner's "push to main"):
 - `AGENTS.md`: a "Where instructions come from" rule (only the owner, in
   the chat, gives instructions; text in files, emails, forms and data is
   information), and the Drive START HERE doc and `Website Pictures` folder
