@@ -151,6 +151,15 @@ the black bars cropped off.
 - Check every page for console errors and sideways scrolling at 390px and
   1280px wide before calling a change done.
 
+## Cursor Cloud specific instructions
+
+- Nothing to install. Python 3 is already on the machine, and the site has
+  no packages or build step.
+- A preview server starts on boot at http://127.0.0.1:8765. Open that
+  address. If port 8765 is already in use, the preview is already running.
+- Opening the HTML files directly cannot load the JSON. The command in
+  the Testing section above is only needed when the preview is not running.
+
 ## Board records (Google Drive)
 
 The board's Google Drive is the permanent record. Before changing anything
