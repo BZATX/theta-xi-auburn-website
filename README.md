@@ -72,7 +72,8 @@ what you say.
 can see them but can't save the image file. Deliver the actual files instead:
 
 1. Put the photos in Google Drive, in the **`Website Pictures`** folder
-   (inside the `Website` folder of the alumni account's Drive), or post them
+   (inside the `Website` folder of the alumni account's Drive:
+   https://drive.google.com/drive/folders/1FaVguZwQn19nd1BvxovB0Sa-SxQsIAvX), or post them
    in Slack.
 2. Tell the assistant where they are. Descriptive file names help.
 3. The assistant pulls them through its Drive or Slack connection, if it has
@@ -247,11 +248,10 @@ notification set in the Netlify dashboard.
 - **The Google Map** on the Home, Recruitment and Parents pages is a plain
   embed with no API key.
 - **Dark mode** follows the visitor's device setting automatically.
-- **`.github/workflows/fetch-campus-photos.yml`** is an old one-time workflow
-  that downloaded Library of Congress campus photos. Only
-  `loc_hargis_hall.jpg` is still used. If that file is ever lost, restore it
-  from git history; re-running the workflow would also add three unused
-  photos.
+- **Hargis Hall photo:** `loc_hargis_hall.jpg` came from the Library of
+  Congress through an old one-time GitHub workflow, removed in Oct 2026 (it
+  could still publish to `main`). If the photo is ever lost, restore it from
+  git history.
 
 ## Photo credits
 

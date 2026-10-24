@@ -9,3 +9,15 @@
 .env.*
 .netlify/
 *.csv
+
+# Board files that must never reach this public repo (spreadsheets, PDFs,
+# documents, archives). If a PDF or similar ever belongs on the site, add it
+# on purpose with `git add -f`.
+*.xlsx
+*.xls
+*.ods
+*.tsv
+*.pdf
+*.doc
+*.docx
+*.zip

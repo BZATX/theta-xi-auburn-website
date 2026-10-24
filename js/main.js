@@ -433,7 +433,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // (Mid-count, the animation picks up the new target by itself.)
         if (el.dataset.counted === "done") el.textContent = formatCount(el, parseFloat(value));
       } else if (el.tagName === "A") {
-        el.href = String(value).includes("@") ? `mailto:${value}` : value;
+        // Same link checks as every other link from the data files.
+        const link = cleanLink(value);
+        if (link) {
+          el.href = link.href;
+          if (link.newTab) { el.target = "_blank"; el.rel = "noopener"; }
+        } else el.removeAttribute("href");
         if (!el.dataset.keepText) el.textContent = value;
       } else {
         el.textContent = value;

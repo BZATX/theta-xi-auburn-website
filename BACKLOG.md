@@ -45,9 +45,10 @@ confirm. Some have a small code change that follows.
     assets/images/portraits/jimmy-rane-auburn.jpg · README.md:262-275 (Photo
     credits)
 - **#52 Confirm which web address is the main one in Netlify** (needs the owner or board)
-  Someone still needs to check in Netlify → Domain management that
-  www.auburnthetaxi.com is the primary domain and that auburnthetaxi.com
-  forwards to it. Before setting up any new subdomain, make sure it has
+  Ben Waters owns the Netlify account and Shaun owns the domain (owner,
+  Oct 24, 2026). Ben still needs to check in Netlify → Domain management
+  that www.auburnthetaxi.com is the primary domain and that
+  auburnthetaxi.com forwards to it. Before setting up any new subdomain, make sure it has
   https, because the security header covers all subdomains.
   - Where: Netlify → Domain management · _headers:7
 - **#54 Updates needed after officer elections and every year** (needs the owner or board)
@@ -135,11 +136,9 @@ for whoever edits the site next.
     26 (also used as a background at index.html:147, pages/alumni.html:112,
     pages/why-theta-xi.html:125)
 - **#29 Photo credits list missing files, and an old photo-download tool is still active** (partly done)
-  The README credits are fixed, but the old GitHub photo-download tool is
-  still in the repo, with permission to change the site, and can still be
-  run from the Actions tab. Delete it along with its README note
-  (README.md:256-260). The owner still needs to confirm who took the three
-  campus photos.
+  The README credits are fixed, and the old GitHub photo-download tool and
+  its README note were removed in the Oct 24 security review. The owner
+  still needs to confirm who took the three campus photos.
   - Why it matters: If a photo's rights are ever questioned there's no
     record of where it came from, and re-running the old tool would make
     unwanted changes to the live site.
