@@ -23,10 +23,11 @@ These need a decision, an outside account, or a fact only a person can
 confirm. Some have a small code change that follows.
 
 - **#3 Alumni update form can be used to change someone's contact details** (needs the owner or board)
-  No website change is needed. The board should confirm that the ChatGPT
-  Alumni Inbox Monitor's Drive runbook acts only on real Netlify emails,
-  sends any change to an existing email, phone or address to a person for
-  review, and treats form text as information, never as instructions.
+  No website change is needed. The board should confirm that the Alumni
+  Inbox Monitor (run by Grok as of Oct 24, 2026, per the owner; ChatGPT
+  before) and its Drive runbook act only on real Netlify emails, send any
+  change to an existing email, phone or address to a person for review,
+  and treat form text as information, never as instructions.
   - Where: Drive: Alumni Relations / Alumni Database & Contact Updates /
     "Alumni Inbox Monitor - Operating Runbook - Current" ·
     pages/update-info.html · README.md:218-236

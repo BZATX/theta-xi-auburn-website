@@ -219,7 +219,8 @@ configuration → Notifications → Form submission notifications).
 1. Netlify emails the labeled answers to the alumni board inbox,
    `betazetatxalumni@gmail.com`. A backup copy of every submission stays in
    the Netlify dashboard under Forms → alumni-update.
-2. The board's **Alumni Inbox Monitor** automation (a ChatGPT task) reads
+2. The board's **Alumni Inbox Monitor** automation (an AI assistant task:
+   Grok as of Oct 24, 2026, per the owner; it was a ChatGPT task before) reads
    those emails and updates the "BZ Alumni Database Clean" sheet in Drive
    only when it can match the person safely; anything uncertain is labeled
    for a human to review.
