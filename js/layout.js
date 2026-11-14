@@ -115,7 +115,7 @@
           </div>
           <p><strong style="color:var(--text-hi)">Theta Xi Fraternity</strong><br>
           Beta Zeta Chapter &middot; Auburn University<br>
-          Founded 1954 &middot; <em>Juncti Juvant — United They Serve</em></p>
+          Founded 1954 &middot; <em>Juncti Juvant, United They Serve</em></p>
         </div>
         <div class="footer-col">
           <h2>Explore</h2>

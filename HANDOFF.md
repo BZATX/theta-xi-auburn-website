@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Oct 24, 2026, 10:55 AM Eastern.** Update this file at the
+**Last updated: Nov 13, 2026, 9:15 PM Eastern.** Update this file at the
 end of any work session that changes what's live, what's waiting, or
 what's open. Dates are US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -44,7 +44,31 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
 - **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
   (`main` `b82651b`). The initiation post is first on Journal and
   Brotherhood, and the summer rush schedule post is gone.
-- **Waiting to go live:** nothing.
+- **Waiting to go live:** a polish pass on `claude/great-sagan-6b17gi`
+  (Nov 13, 2026), found by looking at every page at phone, tablet and
+  laptop width in light and dark mode. Needs the owner's "push to main"
+  and one Netlify deploy. The stylesheet goes to `main.css?v=45`. What it
+  fixes:
+  - Philanthropy: the Taxi Bash and Habitat photos were stretched tall
+    (a 4:5 photo shown 407 by 1250). They got width and height tags in the
+    Oct 21 photo-speed change and nothing kept their shape. `img` now has
+    `height: auto`.
+  - Footer, every page: the Instagram and Facebook icons sat in the corner
+    of their buttons; now centered. The motto's long dash is a comma.
+  - Phones: officer and alumni card photos run edge to edge (they were
+    inset, with the text indented further), so home page officer names
+    fit on one line.
+  - Card links ("Learn more", "Explore") line up along the bottom of a row.
+  - Home page: two section gaps were 230px where every other gap on the
+    site is 115px.
+  - Headings, short intros and button labels break into even lines
+    (`text-wrap: balance`); the home page label fits on one line on phones.
+  - Smaller: Building Fund buttons match the other fund cards; space above
+    the scholarship Apply buttons; the required star stays with its label;
+    the recruitment chairman's contact line stacks on phones; a gallery
+    with fewer than four photos is centered.
+  Checked on all 18 pages at 320, 360, 390, 768, 1024 and 1280px: no
+  console errors and no sideways scrolling. No colors changed.
 - **Security policy:** enforced on every page since Oct 22, 11:08 AM Eastern
   (one rule in `_headers`, including "page not found"). A check of the live
   console found nothing it would block. If an embed goes blank, rename the

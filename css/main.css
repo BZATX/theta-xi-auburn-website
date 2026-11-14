@@ -119,7 +119,10 @@ body {
   background-size: 3px 3px;
 }
 
-img { max-width: 100%; display: block; }
+/* height: auto keeps a photo's shape when its tag carries width and height
+   (used to hold its space before it loads) and the page sets only the width.
+   Without it the Philanthropy photos were stretched to their full height. */
+img { max-width: 100%; height: auto; display: block; }
 a { color: var(--azure); text-decoration: none; transition: var(--transition-fast); }
 a:hover { color: var(--orange); }
 ul { list-style: none; }
@@ -133,6 +136,7 @@ h1, h2, h3, h4 {
   letter-spacing: 0;
   font-weight: 600;
   overflow-wrap: anywhere; /* with very large text a long word wraps, even in a two-column layout */
+  text-wrap: balance; /* even lines, so a heading never leaves one word alone on its last line */
 }
 
 .container {
@@ -165,6 +169,7 @@ main { display: block; }
   max-width: 680px;
   font-size: 1.1rem;
   color: var(--text-mid);
+  text-wrap: balance;
 }
 
 .text-center { text-align: center; }
@@ -194,6 +199,9 @@ main { display: block; }
   cursor: pointer;
   transition: var(--transition);
   will-change: transform;
+  /* a long label that wraps on a phone stays centered, in even lines */
+  text-align: center;
+  text-wrap: balance;
 }
 
 .btn-primary {
@@ -1002,7 +1010,9 @@ main.hero-only::after {
   grid-template-columns: repeat(4, 1fr);
   gap: 1.4rem;
 }
-.pillar-card { text-align: left; display: block; }
+/* A column, so the link at the bottom of each card lines up across a row
+   whatever the length of the text above it. */
+.pillar-card { text-align: left; display: flex; flex-direction: column; }
 .pillar-icon {
   width: 54px;
   height: 54px;
@@ -1016,13 +1026,15 @@ main.hero-only::after {
 }
 .pillar-card h3 { font-size: 1.22rem; font-weight: 600; margin-bottom: 0.6rem; }
 .pillar-card p { font-size: 0.93rem; color: var(--text-mid); }
-.pillar-card .card-link { display: inline-block; margin-top: 0.9rem; }
+.pillar-card > p:last-of-type { flex-grow: 1; }
+.pillar-card .card-link { display: inline-block; align-self: flex-start; margin-top: 0.9rem; }
 
 /* Checklist */
 .check-list li {
   position: relative;
   padding: 0.45rem 0 0.45rem 2.1rem;
 }
+.check-list .card-link { white-space: nowrap; } /* a link inside a list line moves down whole instead of splitting */
 .check-list li::before {
   content: "";
   position: absolute;
@@ -1059,6 +1071,7 @@ main.hero-only::after {
   font-family: var(--font-ui);
   color: var(--azure-text);
 }
+@media (min-width: 681px) { .quote-band .cite-part { white-space: nowrap; } }
 /* The cite text is the same blue as its links, so underline the links */
 .quote-band cite a { text-decoration: underline; text-underline-offset: 0.2em; }
 
@@ -1373,6 +1386,12 @@ html.lightbox-open { overflow: hidden; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.2rem;
+}
+/* A gallery with fewer than four photos sits centered under its heading
+   instead of hugging the left edge with empty space beside it. */
+@media (min-width: 681px) {
+  .gallery-grid:not(:has(> :nth-child(4))) { display: flex; flex-wrap: wrap; justify-content: center; }
+  .gallery-grid:not(:has(> :nth-child(4))) > .gallery-item { flex: 1 1 280px; max-width: 380px; }
 }
 .gallery-item {
   position: relative;
@@ -1750,6 +1769,9 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   color: var(--text-mid);
 }
 .footer-col a:hover { color: var(--orange-soft); }
+/* The Instagram and Facebook buttons keep their own centering; the link
+   rule above made them plain blocks, which left the icons in the corner. */
+.footer-col .social-btn { display: grid; padding: 0; }
 .footer-col address {
   font-style: normal;
   font-size: 0.94rem;
@@ -1866,9 +1888,9 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 @container (max-width: 16.5em) {
   .nav-cta-mobile { display: none; }
 }
-/* Large text (about 125% or more on a phone): officer cards drop their outer
-   padding (the photo runs edge to edge, as on desktop) so the email and
-   "Recruitment Chairman" fit without breaking mid-word. */
+/* Large text (about 125% or more on a phone): cards get narrower side
+   padding so the email and "Recruitment Chairman" fit without breaking
+   mid-word. */
 @media (max-width: 17.5em) {
   .member-card.glass-card, .alumni-card.glass-card { padding: 0; }
   .member-body, .alumni-body { padding-left: 1rem; padding-right: 1rem; }
@@ -1894,7 +1916,25 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .hero { min-height: calc(92svh - 3rem + var(--sheet-x)); padding-bottom: calc(var(--sheet-x) + 5rem); }
   .hero-actions .btn { width: 100%; }
   .glass-card { padding: 1.6rem; }
-  .journal-card { padding: 0; } /* photo runs edge to edge, as on desktop */
+  .journal-card, .member-card, .alumni-card { padding: 0; } /* photo runs edge to edge, as on desktop */
+  /* A credit made of several parts (name, role, phone, email) puts each on
+     its own line on a phone instead of breaking mid-phrase around the dots. */
+  .quote-band cite { letter-spacing: 0.16em; line-height: 1.9; }
+  .quote-band .cite-part { display: block; }
+  .quote-band .cite-sep { display: none; }
+}
+/* Phones: the home page's "Auburn University · Beta Zeta Chapter · Est. 1954"
+   label fits on one line down to 360px wide (it left "1954" alone on a
+   second line); narrower than that, it breaks into two even lines. */
+@media (max-width: 420px) {
+  .hero .glass-pill {
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    text-align: center;
+    text-wrap: balance;
+  }
 }
 
 /* ============================================================
