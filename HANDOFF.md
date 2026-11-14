@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Nov 13, 2026, 9:15 PM Eastern.** Update this file at the
+**Last updated: Nov 13, 2026, 9:20 PM Eastern.** Update this file at the
 end of any work session that changes what's live, what's waiting, or
 what's open. Dates are US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -17,7 +17,8 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
   through AI coding assistants and GitHub. The `/admin` browser editor was
   decommissioned in Oct 2026 (owner, Oct 21), and its files were removed
   from the site in a third publish that evening.
-- **Live site:** the Oct 23 security review fixes and the new privacy
+- **Live site:** the Nov 13 polish pass (next item but one) is the latest
+  publish. Before that, the Oct 23 security review fixes and the new privacy
   wording were pushed to `main` on Oct 24, 2026, about 10:55 AM Eastern
   (`a8109e9`, `02a6269`, `d4b7468`, plus Cursor's `AGENTS.md` note
   `3b914f4`), one Netlify deploy. The owner should check that the Privacy
@@ -26,7 +27,7 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
   owner confirmed it live on Oct 24), `b82651b` (Oct 22, 2:07 PM Eastern) replaced the summer rush
   Instagram post with the initiation post, and `e0ce474` (Oct 22, 1:49 PM
   Eastern) stacked the Instagram posts in two columns. Stylesheet is
-  `main.css?v=44`. Later
+  `main.css?v=45` (since the Nov 13 polish pass). Later
   commits on `main` that only change docs should carry `[skip netlify]`,
   so they don't publish anything or use credits.
 - **Branches:** Netlify's production branch is `main`, and since Oct 21
@@ -44,11 +45,15 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
 - **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
   (`main` `b82651b`). The initiation post is first on Journal and
   Brotherhood, and the summer rush schedule post is gone.
-- **Waiting to go live:** a polish pass on `claude/great-sagan-6b17gi`
-  (Nov 13, 2026), found by looking at every page at phone, tablet and
-  laptop width in light and dark mode. Needs the owner's "push to main"
-  and one Netlify deploy. The stylesheet goes to `main.css?v=45`. What it
-  fixes:
+- **Waiting to go live:** nothing.
+- **Polish pass pushed to `main` on Nov 13, 2026, about 9:20 PM Eastern**
+  (`5ee7602`, owner's "push to main", one Netlify deploy). Found by looking
+  at every page at phone, tablet and laptop width in light and dark mode.
+  The stylesheet is now `main.css?v=45`, so the next CSS change needs v46.
+  The owner should check the Philanthropy photos on the live site, plus
+  the Instagram posts and maps, which can't be loaded in Claude's cloud
+  sessions. `AGENTS.md` now tells every tool to check for stretched photos.
+  What it fixed:
   - Philanthropy: the Taxi Bash and Habitat photos were stretched tall
     (a 4:5 photo shown 407 by 1250). They got width and height tags in the
     Oct 21 photo-speed change and nothing kept their shape. `img` now has
@@ -159,8 +164,9 @@ descriptions and link previews; a content security policy (test mode on
 public pages); and many fixes to the `/admin` editor, which was retired
 soon after (see below).
 
-Versions on the live site: `main.css?v=44` on every page (Instagram
-columns, Oct 22, 1:49 PM Eastern). The next stylesheet change needs 45.
+Versions on the live site: `main.css?v=45` on every page since the Nov 13
+polish pass (v44 came with the Instagram columns on Oct 22). The next
+stylesheet change needs 46.
 
 Testing: three rounds of independent checks before publishing (every page at
 320 to 1280px, light and dark, JavaScript off, print, large text, keyboard,

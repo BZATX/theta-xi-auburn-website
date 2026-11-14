@@ -150,6 +150,11 @@ the black bars cropped off.
   owner checks the live site after a publish.
 - Check every page for console errors and sideways scrolling at 390px and
   1280px wide before calling a change done.
+- Check that no photo is stretched or squashed: scroll each page to the
+  bottom so the late-loading photos appear, then compare each photo's shape
+  on the page with the shape of its file. A page can load without errors
+  and still show a stretched photo (the Philanthropy page did for three
+  weeks in Oct and Nov 2026).
 
 ## Cursor Cloud specific instructions
 
