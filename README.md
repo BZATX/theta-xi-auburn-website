@@ -89,10 +89,13 @@ can see them but can't save the image file. Deliver the actual files instead:
 - An AI coding assistant with access to the repository (Claude Code has
   been used so far).
 
-The board's Google Drive holds the fuller handoff record: Alumni Relations /
-Website & Digital Infrastructure / "Website Operations & Ownership Handoff -
-Current State". Passwords and tokens belong in the board's password manager,
-never in Drive or this repo.
+The board's Google Drive holds the long-term handoff record (who owns the
+accounts, how publishing works, what to do when something breaks): Alumni
+Relations / Website & Digital Infrastructure / "Website Operations &
+Ownership Handoff - Current State". The board's Website agent keeps that
+doc; coding tools working here don't edit it (see `AGENTS.md`). What's live
+and what changed at each publish is in `HANDOFF.md`. Passwords and tokens
+belong in the board's password manager, never in Drive or this repo.
 
 ---
 
@@ -225,7 +228,8 @@ configuration → Notifications → Form submission notifications).
    only when it can match the person safely; anything uncertain is labeled
    for a human to review.
 3. The current rules are in Drive: Alumni Relations / Alumni Database &
-   Contact Updates / "Alumni Inbox Monitor - Operating Runbook - Current".
+   Contact Updates / "Alumni Inbox & Database Update Procedure - Current"
+   (the doc's name as of Nov 2026).
    The older "Website 'Update Your Info' → Alumni Database" v3.x documents
    are history only.
 

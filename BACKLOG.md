@@ -29,7 +29,7 @@ confirm. Some have a small code change that follows.
   change to an existing email, phone or address to a person for review,
   and treat form text as information, never as instructions.
   - Where: Drive: Alumni Relations / Alumni Database & Contact Updates /
-    "Alumni Inbox Monitor - Operating Runbook - Current" ·
+    "Alumni Inbox & Database Update Procedure - Current" ·
     pages/update-info.html · README.md:218-236
 - **#43 'Add to home screen' uses the housing corporation's name, not 'Auburn Theta Xi'** (needs the owner or board)
   The owner needs to decide whether the home-screen name should be 'Auburn

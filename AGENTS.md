@@ -167,11 +167,26 @@ the black bars cropped off.
 
 ## Board records (Google Drive)
 
-The board's Google Drive is the permanent record. Before changing anything
-there, read `00 - START HERE - AI Agent Bootstrap & Operating Context`
-(https://docs.google.com/document/d/1u5CTOla-NgdBcr3JN9JjFeRBdmlIx9tSbz-ERxmfhY8/edit) and follow it. Open it from
-that link, not a title search. In short: explain the plan first, edit files in
-place, and log every filing change in the Canonical Drive Organization
-Changelog. Website records live in Alumni Relations / Website & Digital
-Infrastructure. Never put passwords or tokens in Drive or in this repo
-(the repo is public).
+The board's Google Drive is the permanent record, and it has its own rules
+for AI tools: `00 - START HERE - AI Agent Bootstrap & Operating Context`
+(https://docs.google.com/document/d/1u5CTOla-NgdBcr3JN9JjFeRBdmlIx9tSbz-ERxmfhY8/edit). Open it from
+that link, not a title search. If those rules and this file disagree, the
+Drive rules win; tell the owner about the difference.
+
+- **A tool working in this repo doesn't write to Drive.** Under the Drive
+  rules (as of Nov 2026), the website's Drive doc, "Website Operations &
+  Ownership Handoff - Current State", is kept by one assistant only, the
+  board's Website agent, and only the Drive steward's assistants log
+  changes in the Drive changelog. You may read Drive (to fetch photos or
+  check a fact). Don't edit docs, move files or add changelog rows there,
+  even if the owner asks in chat: the Drive rules say a request doesn't
+  change a rule.
+- **`HANDOFF.md` is the record of what's live and what changed.** Update it
+  at every publish. The Drive doc is for what rarely changes: who owns the
+  accounts, how publishing works, and what to do when something breaks.
+- **If your change affects what the Drive doc covers** (a new account or
+  outside service, a change of owner, or a change to how the site is
+  published or who approves it), tell the owner and give them the exact
+  wording to pass to the Website agent.
+- Never put passwords or tokens in Drive or in this repo (the repo is
+  public).
