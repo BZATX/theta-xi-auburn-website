@@ -355,10 +355,15 @@ main { display: block; }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   display: block;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); /* legible over bright patches of the photo */
 }
 .navbar.scrolled .brand-sub { color: var(--text-mid); text-shadow: none; }
+/* Narrow phones: tighter letter spacing keeps "Beta Zeta · Auburn" on one
+   line beside the Rush button (it broke in two at 375px and under). Below
+   about 340px it may still wrap rather than push the buttons off screen. */
+@media (max-width: 389px) { .brand-text .brand-sub { letter-spacing: 0.18em; } }
+@media (max-width: 359px) { .brand-text .brand-sub { letter-spacing: 0.1em; } }
 
 .nav-links {
   display: flex;
@@ -376,7 +381,7 @@ main { display: block; }
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
+  color: #fff; /* full white: at 0.88 it fell under 4.5:1 over bright sky */
   padding: 0.6rem 0.95rem;
   border-radius: 6px;
   position: relative;
@@ -631,6 +636,20 @@ main { display: block; }
   background:
     radial-gradient(900px 500px at 50% 30%, rgba(2, 10, 24, 0.05), rgba(2, 10, 24, 0.4)),
     linear-gradient(180deg, rgba(2, 12, 28, 0.55) 0%, rgba(3, 20, 42, 0.45) 50%, rgba(5, 20, 42, 0.3) 100%);
+}
+
+/* A little extra shade across the very top of the photo, behind the menu.
+   With it, the white menu text and the "Beta Zeta · Auburn" line reach
+   4.5:1 even where the photo is bright sky (they measured as low as 3.7:1).
+   It fades out just below the menu, and follows the menu's height when the
+   text size is larger. */
+.hero-veil::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--nav-height) + 4.5rem);
+  background: linear-gradient(180deg, rgba(2, 12, 28, 0.24), rgba(2, 12, 28, 0));
+  pointer-events: none;
 }
 
 .hero-content {

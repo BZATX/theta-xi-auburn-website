@@ -1,6 +1,6 @@
 # Website handoff: current state
 
-**Last updated: Nov 13, 2026, 9:35 PM Eastern.** Update this file at the
+**Last updated: Nov 13, 2026, 10:00 PM Eastern.** Update this file at the
 end of any work session that changes what's live, what's waiting, or
 what's open. Dates are US Eastern time. Rules for any AI tool working here are in `AGENTS.md`.
 
@@ -45,7 +45,24 @@ what's open. Dates are US Eastern time. Rules for any AI tool working here are i
 - **Instagram list went live** Oct 22, 2026, at 2:07 PM Eastern
   (`main` `b82651b`). The initiation post is first on Journal and
   Brotherhood, and the summer rush schedule post is gone.
-- **Waiting to go live:** nothing.
+- **Waiting to go live:** two small fixes on `claude/great-sagan-6b17gi`
+  (Nov 13, 2026, owner asked for them). Needs the owner's "push to main"
+  and one Netlify deploy. Stylesheet goes to `main.css?v=46`.
+  - Menu text over the top photos (backlog #10): the strip behind the menu
+    is slightly darker and the menu text and logo line are full white.
+    Lowest contrast measured against every pixel behind the text was 3.7:1
+    (14 of 18 pages under 4.5:1); now at least 5.3:1 on every page at
+    360, 390, 768, 1040, 1280, 1440 and 1920px, light and dark, at both
+    ends of the photo's slow drift.
+  - The logo line "Beta Zeta · Auburn" stays on one line on narrow phones
+    (backlog #31).
+- **Backlog #3 closed (Nov 13).** The alumni form and AI inbox concern is
+  covered by the board's Drive rules: every database write needs the
+  Alumni Relations governor's OK, form and email text is information
+  only, and the agent can't send email. Two things the Drive procedure
+  doesn't say, for the owner to pass on if wanted: confirm a changed email
+  or phone with the alum at the contact already on file, and write form
+  values into the sheet as plain text (never as formulas).
 - **Polish pass pushed to `main` on Nov 13, 2026, about 9:20 PM Eastern**
   (`5ee7602`, owner's "push to main", one Netlify deploy). Found by looking
   at every page at phone, tablet and laptop width in light and dark mode.

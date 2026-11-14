@@ -17,20 +17,15 @@ line doesn't match.
 Status on Oct 21: 30 fixed and published, 0 open, 6 partly done, 8 waiting on
 the owner or board, 10 done, 2 turned down, 1 no longer applies.
 
+Update, Nov 13, 2026: #3 is closed (handled by the board's Drive rules), #31
+is fixed, and the menu-text half of #10 is fixed. That leaves 7 waiting on
+the owner or board and 5 partly done.
+
 ## Waiting on the owner or board
 
 These need a decision, an outside account, or a fact only a person can
 confirm. Some have a small code change that follows.
 
-- **#3 Alumni update form can be used to change someone's contact details** (needs the owner or board)
-  No website change is needed. The board should confirm that the Alumni
-  Inbox Monitor (run by Grok as of Oct 24, 2026, per the owner; ChatGPT
-  before) and its Drive runbook act only on real Netlify emails, send any
-  change to an existing email, phone or address to a person for review,
-  and treat form text as information, never as instructions.
-  - Where: Drive: Alumni Relations / Alumni Database & Contact Updates /
-    "Alumni Inbox & Database Update Procedure - Current" ·
-    pages/update-info.html · README.md:218-236
 - **#43 'Add to home screen' uses the housing corporation's name, not 'Auburn Theta Xi'** (needs the owner or board)
   The owner needs to decide whether the home-screen name should be 'Auburn
   Theta Xi' or stay 'Beta Zeta Association of Theta Xi'. After that, rename
@@ -89,19 +84,20 @@ Accessibility barriers, inconsistencies, problems on some devices, and traps
 for whoever edits the site next.
 
 - **#10 Some text and buttons are too faint to read easily** (partly done)
-  Two parts are still open and need the owner's OK first. (1) The light-blue
+  One part is still open and needs the owner's OK first: the light-blue
   labels over top-of-page photos are unchanged, including the faint one on
-  Scholarships. (2) The white desktop menu text over the top photo measured
-  about 4.4:1 on About, Accessibility and Brotherhood. The grey example text
+  Scholarships. The white menu text over the top photo is fixed (Nov 13,
+  2026, stylesheet v46, goes live with the next publish): measured against
+  every pixel behind it, it was as low as 3.7:1 on 14 of 18 pages and is
+  now at least 5.3:1 on all of them, laptop and phone. The grey example text
   in form fields was darkened to 4.5:1 or better in this batch (published
   Oct 21). The Accessibility page still claims the site meets the AA
   contrast standard.
   - Why it matters: Low-vision visitors struggle to read the main calls to
     action, and the Accessibility page currently claims the site meets this
     standard.
-  - Where: css/main.css:154 (labels over photos) · css/main.css
-    navbar:not(.scrolled) rules (top menu over photos) ·
-    pages/accessibility.html:52
+  - Where: css/main.css `.eyebrow` rules for `.hero` and `.page-hero`
+    (labels over photos) · pages/accessibility.html:52
 - **#23 Contact fields in the admin 'Chapter Info' tab change nothing on the site** (partly done)
   The /admin editor that showed these fields was decommissioned on Oct 21,
   2026. data/chapter.json still holds contact and rush-chair fields that no
@@ -152,13 +148,11 @@ for whoever edits the site next.
 
 Polish and housekeeping.
 
-- **#31 Phone layout polish: officer and news cards, logo subtitle** (partly done)
-  News cards are fixed. On phones, the officer and alumni cards still get
-  the extra padding around their photos, and the logo line 'Beta Zeta ·
-  Auburn' still breaks onto two lines at 360-375px.
-  - Why it matters: It's minor, but it's on the most-viewed phone layouts
-    and in the logo on every page.
-  - Where: css/main.css:1785 · js/layout.js:43 · css/main.css:343-350
+- **#31 Phone layout polish: officer and news cards, logo subtitle** (fixed Nov 13, 2026)
+  News cards were fixed on Oct 21. The officer and alumni cards lost the
+  extra padding around their photos in the Nov 13 polish publish. The logo
+  line 'Beta Zeta · Auburn' now stays on one line down to about 344px wide
+  (stylesheet v46, goes live with the next publish).
 
 ## Fixed and published
 
@@ -294,6 +288,7 @@ small follow-up.
 ## Done or turned down
 
 - #1 Form confirmation messages never appear on the live site (done)
+- #3 Alumni update form can be used to change someone's contact details (done, Nov 13, 2026: covered by the board's Drive rules. Every database write needs the Alumni Relations governor's OK, form and email text is treated as information only, and the agent can't send email. Checked against the Drive procedure and bootstrap docs as they stood on Nov 13.)
 - #2 Old rush-form and Service page links now show 'Page Not Found' (done)
 - #4 'Up to $22,500 a year' doesn't match the scholarship amounts listed (turned down by the owner)
 - #5 James Voss's spacewalk is no longer the longest on record (done)
